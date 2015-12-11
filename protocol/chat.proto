@@ -1,0 +1,258 @@
+option java_package = "org.fish.chat.chat";
+option java_outer_classname = "ChatProtocol";  
+
+//用户资料
+message FishUser {
+	//用户uid	
+	required int64 uid = 1;
+	//用户姓名,服务端自动补全,上行可不填写,下行消息必有
+	optional string name = 2;
+	//用户头像,如果之前聊过下行没有，没聊过必有	
+	optional string avatar = 3;
+}
+
+//语音
+message FishSound {
+	//扩展ID 暂时无用
+	optional int64 sid = 1;
+	//语音文件url	
+	optional string url = 2;
+	//播放时长
+	optional int32 duration = 3;
+}
+
+//图片信息
+message FishImageInfo {
+	//图片url
+	required string url = 1;
+	//宽
+	required int32 width = 2;
+	//高
+	required int32 height = 3;
+}
+
+//图片消息
+message FishImage {
+	//扩展id,暂时无用
+	optional int64 iid = 1;
+	//缩略图
+	optional FishImageInfo tinyImage = 2;
+	//原始图片
+	optional FishImageInfo originImage = 3;
+}
+
+//动作
+message FishAction {
+	//动作id  0、预留 1、喜欢
+	required int32 aid = 1;
+	//扩展数据
+	optional string extend = 2;
+}
+
+//图文消息
+message FishArticle {
+	//标题
+	required string title = 1;
+	//描述
+	required string description = 2;
+	//图片地址
+	required string picUrl = 3;
+	//直聘协议url
+	required string url = 4;
+	//样式 0、大图模式 1、小图模式、2、全屏模式
+	optional int32 templateId = 5;
+	//底部按钮文字
+	optional string bottomText = 6;
+	//超时时间 ms
+	optional int64 timeout = 7;
+	//统计参数 {"p2":"", "p3":""...,"p8":""}
+	optional string statisticParameters = 8;
+}
+
+//通知
+message FishNotify {
+	//文本
+	required string text = 1;
+	//直聘协议url
+	optional string url = 2;
+}
+
+//按钮
+message FishButton {
+	//按钮文本
+	required string text = 1;
+	//直聘协议url
+	optional string url = 2;
+	//按钮模板
+	optional int32 templateId = 3;
+}
+
+//对话框
+message FishDialog {
+	//提示文案
+	required string text = 1;
+	//按钮
+	repeated FishButton buttons = 2;
+	//是否已经被操作
+	required bool operated = 3;
+	//是否只能点多次
+	optional bool clickMore = 4;
+	//对话框类型 0 为通用类型 1、微信对话框 2、简历对话框 3、全屏阻断
+	optional int32 type = 5;
+	//对话框背景图
+	optional string backgroundUrl = 6;
+	//超时时间 ms
+    optional int64 timeout = 7;
+	//统计参数 {"p2":"", "p3":""...,"p8":""}
+	optional string statisticParameters = 8;
+}
+
+//消息内容
+message FishMessageBody {
+	//消息类型 1.文本 2.语音 3.图片4.动作 5.图文 6.通知 7.对话框
+	required int32 type = 1;
+	//消息模板id 1.正常 2.居中 3.居中灰色 4.直聘技巧样式
+	required int32 templateId = 2;
+	//头部文字
+	optional string headTitle = 3;
+	//文本内容 当type为1是,必须设置
+	optional string text = 4;
+	//语音内容 当type为2时，必须设置
+	optional FishSound sound = 5;
+	//图片消息 当type为3时，必须设置
+	optional FishImage image = 6;
+	//动作消息 当type为4时，必须设置
+	optional FishAction action = 7;
+	//图文消息 当type为5时，必须设置
+	repeated FishArticle articles = 8;
+	//通知 当type为6时，必须设置
+	optional FishNotify notify = 9;
+	//对话框 当type为7时，必须设置
+	optional FishDialog dialog = 10;
+}
+
+//消息
+message FishMessage {
+	//消息发送者
+	required FishUser from = 1;
+	//消息接受者
+	required FishUser to = 2;
+	//消息类型，1.单聊 2。群聊 3.系统
+	required int32 type = 3;
+	//消息id, 上行时没有，下行时必有
+	optional int64 mid = 4;
+	//消息创建时间 上行时可传，下行时为服务器收到时间
+	optional int64 time = 5;
+	//消息主体
+	required FishMessageBody body = 6;
+	//是否为离线消息
+	optional bool offline = 7;
+	//是否被客户端接收过
+	optional bool received = 8;
+	//推送文案
+	optional string pushText = 9;
+	//任务id
+	optional int64 taskId = 10;
+}
+
+//客户端信息
+message FishClientInfo {
+	//客户端版本
+	optional string version = 1;
+	//手机操作系统
+	optional string system = 2;
+	//手机操作系统版本
+	optional string systemVersion = 3;
+	//机型
+	optional string model = 4;
+	//设备号
+	optional string uniqid = 5;
+	//网络
+	optional string network = 6;
+	//appid
+	optional int32 appid = 7;
+	//platform
+	optional string platform = 8;
+	//渠道id
+	optional string channel = 9;
+}
+
+
+//客户端时间信息
+message FishClientTime {
+	//启动时间
+	optional int64 startTime = 1;	
+	//唤醒
+	optional int64 resumeTime = 2;
+}
+
+//出席消息
+message FishPresence {
+	//出席类型, 1.上线, 2.隐身（上行）3.下线 4. 后台（Android） 5. 恢复前台（Android）
+	required int32 type = 1;
+	//出席人
+	required int32 uid = 2;
+	//客户端信息，第一次上线时需要
+	optional FishClientInfo clientInfo = 3;
+	//客户端信息，上线，后台，恢复前台时需要
+	optional FishClientTime clientTime = 4;
+}
+
+//iq消息
+message FishKVEntry {
+	required string key = 1;
+	required string value = 2;
+}
+
+//iq消息，模拟http请求
+message FishIq {
+	//唯一id
+	required int64 qid = 1;
+	//请求路径
+	required string query = 2;
+	//参数
+	repeated FishKVEntry params = 3;
+}
+
+//消息结果
+message FishIqResponse {
+	//唯一id
+	required int64 qid = 1;
+	//请求路径
+	required string query = 2;
+	//返回结果
+	repeated FishKVEntry results = 3;
+}
+
+//消息id同步协议  
+message FishMessageSync {
+	required int64 clientMid = 1;
+	required int64 serverMid = 2;
+}
+
+//消息已读
+message FishMessageRead {
+	required int64 userId = 1;
+	required int64 messageId = 2;
+	required int64 readTime = 3;
+}
+
+//聊天协议
+message FishChatProtocol {
+	//协议type 1:message 2: presence 3: iq 4: iqResponse 5:sync 6:read
+	required int32 type = 1;
+	//协议版本，默认为1.0 可不传
+	optional string version = 2;
+	//type为1时，必须设置
+	repeated FishMessage messages = 3;
+	//type为2时必须设置
+	optional FishPresence presence = 4;
+	//type为3时，必须设置
+	optional FishIq iq = 5;
+	//type为4时，必须设置
+	optional FishIqResponse iqResponse = 6;
+	//type为5时，必须设置
+	repeated FishMessageSync messageSync = 7;
+	//type为6时，必须设置
+	repeated FishMessageRead messageRead = 8;
+}

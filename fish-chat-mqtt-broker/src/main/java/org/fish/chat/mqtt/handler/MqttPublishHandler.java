@@ -27,7 +27,7 @@ public class MqttPublishHandler extends AbstractMqttHandler<MqttPublish> {
 
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
 
-        MqttPublish mqttPublish = (MqttPublish) msg;
+        MqttPublish mqttPublish = msg;
         int qos = mqttPublish.getMessage().getQos();
         switch (qos) {
             case MqttMessage.QOS_AT_LEAST_ONCE:

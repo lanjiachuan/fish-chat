@@ -29,7 +29,6 @@ public interface QosService {
      * 获取qos=2等待PubRel的消息(up)
      * 
      * @param userId
-     * @param messageId
      * @param clean
      * @return
      */
@@ -38,7 +37,7 @@ public interface QosService {
     /**
      * 获取正在飞行的消息
      * 
-     * @param cid
+     * @param userId
      * @return
      */
     public MqttPersistableWireMessage getInFlightMessage(long userId);
@@ -46,7 +45,7 @@ public interface QosService {
     /**
      * 获取下条待发送消息
      * 
-     * @param cid
+     * @param userId
      * @return
      */
     public MqttPersistableWireMessage getNextMessage(long userId);
