@@ -1,1 +1,1 @@
-merge=cn.techwolf.blue.common.dubbo.cluster.support.MergeCluster
+merge=org.fish.chat.common.dubbo.cluster.support.MergeCluster

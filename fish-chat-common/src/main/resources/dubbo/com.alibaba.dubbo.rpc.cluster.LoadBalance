@@ -1,2 +1,2 @@
-cid=cn.techwolf.blue.common.dubbo.loadbalance.CidLoadBalance
-uidlb=cn.techwolf.blue.common.dubbo.loadbalance.UserIdLoadBalance
+cid=org.fish.chat.common.dubbo.loadbalance.CidLoadBalance
+uidlb=org.fish.chat.common.dubbo.loadbalance.UserIdLoadBalance
