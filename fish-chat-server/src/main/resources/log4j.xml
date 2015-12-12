@@ -9,8 +9,8 @@
         </layout>
     </appender>
 
-    <appender name="debugBossAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/data/logs/blue/chat-server/blue_debug.log" />
+    <appender name="debugFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/chat-server/fish_debug.log" />
         <param name="DatePattern" value="'.'yyyy-MM-dd" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
@@ -23,8 +23,8 @@
         </filter>
     </appender>
 
-    <appender name="infoBossAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/data/logs/blue/chat-server/blue_info.log" />
+    <appender name="infoFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/chat-server/fish_info.log" />
         <param name="DatePattern" value="'.'yyyy-MM-dd" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
@@ -37,8 +37,8 @@
         </filter>
     </appender>
 
-    <appender name="warnBossAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/data/logs/blue/chat-server/blue_warn.log" />
+    <appender name="warnFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/chat-server/fish_warn.log" />
         <param name="DatePattern" value="'.'yyyy-MM-dd" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
@@ -51,8 +51,8 @@
         </filter>
     </appender>
 
-    <appender name="errorBossAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/data/logs/blue/chat-server/blue_error.log" />
+    <appender name="errorFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/chat-server/fish_error.log" />
         <param name="DatePattern" value="'.'yyyy-MM-dd" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
@@ -67,33 +67,33 @@
 
     <logger name="cn.techwolf" additivity="true">
         <level value="info" />
-        <appender-ref ref="infoBossAppender" />
+        <appender-ref ref="infoFishAppender" />
     </logger>
 
     <logger name="debug" additivity="false">
         <level value="debug" />
-        <appender-ref ref="debugBossAppender" />
+        <appender-ref ref="debugFishAppender" />
     </logger>
 
 
     <logger name="info" additivity="false">
         <level value="info" />
-        <appender-ref ref="infoBossAppender" />
+        <appender-ref ref="infoFishAppender" />
     </logger>
 
 
     <logger name="warn" additivity="false">
         <level value="warn" />
-        <appender-ref ref="infoBossAppender" />
-        <appender-ref ref="warnBossAppender" />
+        <appender-ref ref="infoFishAppender" />
+        <appender-ref ref="warnFishAppender" />
     </logger>
 
 
     <logger name="error" additivity="false">
         <level value="error" />
-        <appender-ref ref="infoBossAppender" />
-        <appender-ref ref="warnBossAppender" />
-        <appender-ref ref="errorBossAppender" />
+        <appender-ref ref="infoFishAppender" />
+        <appender-ref ref="warnFishAppender" />
+        <appender-ref ref="errorFishAppender" />
     </logger>
 
     <root>

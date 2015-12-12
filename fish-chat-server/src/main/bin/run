@@ -23,7 +23,7 @@ $APP_NAME_OPTS
 $SERVER_OPTS 
 -Djava.io.tmpdir=$TMP_DIR 
 -cp $CLASSPATH 
-org.fish.chat.mqtt.broker.MqttBootstrap "
+org.fish.chat.chat.server.ChatServerBootstrap "
 
 myid=`id -u`
 
