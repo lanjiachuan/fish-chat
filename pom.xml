@@ -15,6 +15,7 @@
         <module>fish-chat-mqtt-protocol</module>
         <module>fish-chat-protocol-def</module>
         <module>fish-chat-server</module>
+        <module>fish-chat-server-client</module>
         <module>fish-chat-common</module>
     </modules>
 
@@ -93,6 +94,11 @@
             <dependency>
                 <groupId>org.fish</groupId>
                 <artifactId>fish-chat-server</artifactId>
+                <version>${version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.fish</groupId>
+                <artifactId>fish-chat-server-client</artifactId>
                 <version>${version}</version>
             </dependency>
             <dependency>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+					 http://www.springframework.org/schema/beans/spring-beans.xsd 
+					 http://www.springframework.org/schema/context  
+					 http://www.springframework.org/schema/context/spring-context.xsd
+					 http://code.alibabatech.com/schema/dubbo 
+					 http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <dubbo:registry id="chatRegistry" protocol="zookeeper"
+                    address="${zk_registry}" group="dubbo/boss/chat-server"/>
+
+    <dubbo:reference id="mqttBizService"
+                     interface="org.fish.chat.mqtt.service.MqttBizService" version="1.0.0"
+                     check="false" registry="chatRegistry" loadbalance="uidlb">
+    </dubbo:reference>
+
+    <dubbo:reference id="chatSystemService"
+                     interface="org.fish.chat.chat.service.ChatSystemService" version="1.0.0"
+                     check="false" registry="chatRegistry" loadbalance="uidlb" retries="1"
+                     timeout="300000">
+
+        <dubbo:method name="sendSystemMessage" loadbalance="random" retries="1"/>
+        <dubbo:method name="multiSendSystemMessage" loadbalance="random" retries="1"/>
+
+    </dubbo:reference>
+
+    <!--<dubbo:reference id="cometChatService"-->
+    <!--interface="cn.techwolf.boss.chat.service.CometChatService" version="1.0.0"-->
+    <!--check="false" registry="chatRegistry" loadbalance="uidlb" async="true" />-->
+
+    <!--<dubbo:reference id="onlineStatusService"-->
+    <!--interface="cn.techwolf.boss.chat.service.OnlineStatusService" version="1.0.0"-->
+    <!--check="false" registry="chatRegistry" cluster="merge" async="true" />-->
+
+</beans>

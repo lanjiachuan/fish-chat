@@ -1,0 +1,2 @@
+cid=cn.techwolf.blue.common.dubbo.loadbalance.CidLoadBalance
+uidlb=cn.techwolf.blue.common.dubbo.loadbalance.UserIdLoadBalance
