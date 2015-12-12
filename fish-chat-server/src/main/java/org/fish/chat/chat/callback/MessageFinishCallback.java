@@ -4,6 +4,8 @@
 package org.fish.chat.chat.callback;
 
 
+import org.fish.chat.chat.model.Message;
+
 import java.util.List;
 
 /**

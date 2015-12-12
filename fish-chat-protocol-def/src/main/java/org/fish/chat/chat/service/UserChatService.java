@@ -23,14 +23,6 @@ public interface UserChatService {
      */
     public void sendUnreadMessage(UserSession userSession);
 
-    /**
-     * 上行
-     * 
-     * @param userId
-     * @param message
-     */
-    @Deprecated
-    public void dispatchMessage(long userId, Message message);
 
     /**
      * 上行
@@ -56,14 +48,10 @@ public interface UserChatService {
      */
     public void sendMessage(long userId, Message message, int sessionType);
 
-    public void sendMessage(long userId, List<Message> message);
-
-
     /**
      * 下行
      * 
      * @param userId
-     * @param message
      */
     public void sendMessage(long userId, List<Message> messageList, int sessionType);
 

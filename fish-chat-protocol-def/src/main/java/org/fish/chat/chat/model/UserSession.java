@@ -4,7 +4,6 @@
 package org.fish.chat.chat.model;
 
 
-import cn.techwolf.blue.common.constants.ActionLogConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -224,18 +223,7 @@ public class UserSession implements Serializable {
 
     public Map<String, String> getClientInfoMap() {
         Map<String, String> data = new HashMap<String, String>();
-        data.put(ActionLogConstants.ACTION_PROPERTIES_VERSION, String.valueOf(clientVersion));
-        data.put(ActionLogConstants.ACTION_PROPERTIES_DEVICEID, uniqId);
-        data.put(ActionLogConstants.ACTION_PROPERTIES_MODEL, clientModel);
-        data.put(ActionLogConstants.ACTION_PROPERTIES_SYSTEM, clientSystem);
-        data.put(ActionLogConstants.ACTION_PROPERTIES_SVERSION, clientSystemVersion);
-        data.put(ActionLogConstants.ACTION_PROPERTIES_APPID, String.valueOf(appId));
-        data.put(ActionLogConstants.ACTION_PROPERTIES_CHANNEL, String.valueOf(channel));
-        data.put(ActionLogConstants.ACTION_PROPERTIES_PLATFORM, String.valueOf(platform));
-        data.put(ActionLogConstants.ACTION_PROPERTIES_NETWORK, network);
-        data.put(ActionLogConstants.ACTION_PROPERTIES_FROM, "chat");
-        data.put(ActionLogConstants.ACTION_PROPERTIES_START_TIME, String.valueOf(clientStartTime));
-        data.put(ActionLogConstants.ACTION_PROPERTIES_RESUME_TIME, String.valueOf(clientResumeTime));
+        // TODO
         return data;
     }
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="mqttBizService" class="org.fish.chat.mqtt.service.impl.MqttBizServiceImpl">
+        <property name="messageAckCallback" ref="mqttServiceQosProxy" />
+        <property name="userSessionService" ref="userSessionService" />
+        <property name="userChatService" ref="userChatService" />
+        <property name="iqHandler" ref="dispatcherIqHandler"/>
+        <property name="messageService" ref="messageService"/>
+        <property name="mqttService" ref="mqttServiceQosProxy"/>
+    </bean>
+
+
+    <bean id="userChatService" class="org.fish.chat.chat.service.impl.UserChatServiceImpl">
+        <property name="userSessionService" ref="userSessionService" />
+        <property name="mqttService" ref="mqttServiceQosProxy" />
+        <property name="messageApi" ref="messageApi" />
+        <property name="chatFilter" ref="chatFilterChain" />
+        <property name="deliverService" ref="deliverService"/>
+    </bean>
+
+
+
+
+
+    <bean id="chatSystemService" class="org.fish.chat.chat.service.impl.ChatSystemServiceImpl">
+        <property name="userChatService" ref="userChatService" />
+        <property name="messageService" ref="messageService"/>
+    </bean>
+
+</beans>

@@ -58,6 +58,9 @@
         <commons-pool-version>1.6</commons-pool-version>
         <commons-codec-version>1.8</commons-codec-version>
         <commons-io-version>2.4</commons-io-version>
+
+        <jackson-version>1.9.12</jackson-version>
+        <jackson-all-version>1.9.12</jackson-all-version>
     </properties>
 
     <dependencyManagement>
@@ -341,6 +344,29 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons-codec-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-lgpl</artifactId>
+                <version>${jackson-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${jackson-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-all</artifactId>
+                <version>${jackson-all-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson-all-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
