@@ -1,0 +1,35 @@
+#! /bin/bash
+
+export LANG="zh_CN.UTF-8"
+ulimit -u 10240
+#SERVER_HOME=`dirname $0`
+SERVER_HOME=/data/mqtt-broker
+LOG_PATH=/data/logs/blue/mqtt-broker
+LIB_DIR=$SERVER_HOME/lib
+TMP_DIR=/tmp
+SERVER_OPTS="-Xms1G -Xmx1G -Xmn600M -server -XX:ThreadStackSize=512 -XX:MaxPermSize=256M -Dfile.encoding=UTF-8"
+SERVER_OPTS="$SERVER_OPTS -XX:+UseConcMarkSweepGC -XX:SurvivorRatio=5 -XX:CMSInitiatingOccupancyFraction=80"
+SERVER_OPTS="$SERVER_OPTS -XX:+PrintTenuringDistribution -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -Xloggc:$LOG_PATH/gc.log"
+CLASSPATH=$JAVA_HOME/lib/tools.jar:$LIB_DIR
+for jar in `ls $LIB_DIR/*.jar`
+do
+        CLASSPATH=$CLASSPATH:$jar
+done
+
+#mkdir -p $SERVER_HOME/logs
+
+cmd="/data/j2sdk/bin/java 
+$APP_NAME_OPTS 
+$SERVER_OPTS 
+-Djava.io.tmpdir=$TMP_DIR 
+-cp $CLASSPATH 
+org.fish.chat.mqtt.broker.MqttBootstrap "
+
+myid=`id -u`
+
+if [ $myid -eq 0 ]; then
+    # daemontools 会以root身份运行run脚本。用setuidgid切换到work账户。
+    exec setuidgid work $cmd >>$LOG_PATH/stdout.log 2>>$LOG_PATH/stderr.log
+else
+    exec $cmd >>$LOG_PATH/stdout.log 2>>$LOG_PATH/stderr.log
+fi

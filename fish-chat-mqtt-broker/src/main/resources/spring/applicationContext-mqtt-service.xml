@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="mqttService" class="org.fish.chat.mqtt.impl.MqttServiceImpl">
+        <property name="channelSessionManager" ref="channelSessionManager"/>
+    </bean>
+
+    <bean id="channelSessionManager" class="org.fish.chat.mqtt.session.manager.impl.ChannelSessionManagerImpl"></bean>
+
+</beans>

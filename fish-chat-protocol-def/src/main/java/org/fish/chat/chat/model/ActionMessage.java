@@ -3,11 +3,11 @@
  */
 package org.fish.chat.chat.model;
 
-import cn.techwolf.blue.common.constants.ProtocalConstants;
 import cn.techwolf.common.log.LoggerManager;
 import com.google.gson.annotations.Expose;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.fish.chat.common.constants.ProtocalConstants;
 
 import java.io.Serializable;
 

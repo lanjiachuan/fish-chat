@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="abstractMqttHandler" abstract="true">
+        <property name="channelSessionManager" ref="channelSessionManager"/>
+        <property name="mqttBizService" ref="mqttBizService"/>
+    </bean>
+
+    <bean id="mqttDispatcherHandler" class="org.fish.chat.mqtt.handler.MqttDispatcherHandler">
+        <property name="mqttConnectHandler" ref="mqttConnectHandler"/>
+        <property name="mqttPublishHandler" ref="mqttPublishHandler"/>
+        <property name="mqttPubAckHandler" ref="mqttPubAckHandler"/>
+        <property name="mqttPingReqHandler" ref="mqttPingReqHandler"/>
+        <property name="mqttPubRecHandler" ref="mqttPubRecHandler"/>
+        <property name="mqttPubRelHandler" ref="mqttPubRelHandler"/>
+        <property name="mqttPubCompHandler" ref="mqttPubCompHandler"/>
+        <property name="mqttSubscribeHandler" ref="mqttSubscribeHandler"/>
+        <property name="mqttUnsubscribeHandler" ref="mqttUnsubscribeHandler"/>
+        <property name="channelSessionManager" ref="channelSessionManager"/>
+        <property name="mqttDisconnectHandler" ref="mqttDisconnectHandler"/>
+        <property name="mqttBizService" ref="mqttBizService"/>
+    </bean>
+
+    <bean id="mqttConnectHandler" class="org.fish.chat.mqtt.handler.MqttConnectHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttPublishHandler" class="org.fish.chat.mqtt.handler.MqttPublishHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttPubAckHandler" class="org.fish.chat.mqtt.handler.MqttPubAckHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttPingReqHandler" class="org.fish.chat.mqtt.handler.MqttPingReqHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttPubRecHandler" class="org.fish.chat.mqtt.handler.MqttPubRecHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttPubRelHandler" class="org.fish.chat.mqtt.handler.MqttPubRelHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttPubCompHandler" class="org.fish.chat.mqtt.handler.MqttPubCompHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttSubscribeHandler" class="org.fish.chat.mqtt.handler.MqttSubscribeHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttUnsubscribeHandler" class="org.fish.chat.mqtt.handler.MqttUnsubscribeHandler"
+          parent="abstractMqttHandler"/>
+
+    <bean id="mqttDisconnectHandler" class="org.fish.chat.mqtt.handler.MqttDisconnectHandler"
+          parent="abstractMqttHandler"/>
+
+
+</beans>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="debugFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/mqtt-broker/fish_debug.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
+        </layout>
+        <!--过滤器设置输出的级别 -->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="debug" />
+            <param name="levelMax" value="debug" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+    <appender name="infoFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/mqtt-broker/fish_info.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
+        </layout>
+        <!--过滤器设置输出的级别 -->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="info" />
+            <param name="levelMax" value="error" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+    <appender name="warnFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/mqtt-broker/fish_warn.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
+        </layout>
+        <!--过滤器设置输出的级别 -->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="warn" />
+            <param name="levelMax" value="error" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+    <appender name="errorFishAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/logs/fish/mqtt-broker/fish_error.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p - %m%n" />
+        </layout>
+        <!--过滤器设置输出的级别 -->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="error" />
+            <param name="levelMax" value="error" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+    <logger name="org.fish" additivity="true">
+        <level value="info" />
+        <appender-ref ref="infoFishAppender" />
+    </logger>
+
+    <logger name="debug" additivity="false">
+        <level value="debug" />
+        <appender-ref ref="debugFishAppender" />
+    </logger>
+
+
+    <logger name="info" additivity="false">
+        <level value="info" />
+        <appender-ref ref="infoFishAppender" />
+    </logger>
+
+
+    <logger name="warn" additivity="false">
+        <level value="warn" />
+        <appender-ref ref="infoFishAppender" />
+        <appender-ref ref="warnFishAppender" />
+    </logger>
+
+
+    <logger name="error" additivity="false">
+        <level value="error" />
+        <appender-ref ref="infoFishAppender" />
+        <appender-ref ref="warnFishAppender" />
+        <appender-ref ref="errorFishAppender" />
+    </logger>
+
+    <root>
+        <priority value="error" />
+        <appender-ref ref="stdout" />
+    </root>
+</log4j:configuration>

@@ -3,9 +3,9 @@
  */
 package org.fish.chat.chat.model;
 
-import cn.techwolf.blue.common.constants.ProtocalConstants;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.fish.chat.common.constants.ProtocalConstants;
 
 import java.util.ArrayList;
 import java.util.List;
