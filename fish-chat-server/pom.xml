@@ -11,9 +11,7 @@
 
     <artifactId>fish-chat-server</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>../fish-chat-server-client</module>
-    </modules>
+
 
     <dependencies>
         <dependency>
