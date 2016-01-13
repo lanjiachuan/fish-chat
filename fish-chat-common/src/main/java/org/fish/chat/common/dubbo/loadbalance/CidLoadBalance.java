@@ -3,7 +3,7 @@
  */
 package org.fish.chat.common.dubbo.loadbalance;
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;

@@ -3,8 +3,8 @@
  */
 package org.fish.chat.mqtt.handler;
 
-import cn.techwolf.common.log.LoggerManager;
-import cn.techwolf.common.utils.RequestIdUtil;
+import org.fish.chat.common.log.LoggerManager;
+import org.fish.chat.common.utils.RequestIdUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;

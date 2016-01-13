@@ -1,7 +1,7 @@
 package org.fish.chat.chat.service.impl;
 
-import cn.techwolf.common.log.LoggerManager;
-import cn.techwolf.common.utils.RequestIdUtil;
+import org.fish.chat.common.log.LoggerManager;
+import org.fish.chat.common.utils.RequestIdUtil;
 import com.googlecode.protobuf.format.JsonFormat;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;

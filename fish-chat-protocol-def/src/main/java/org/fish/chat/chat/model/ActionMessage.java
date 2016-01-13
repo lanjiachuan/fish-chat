@@ -3,7 +3,7 @@
  */
 package org.fish.chat.chat.model;
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import com.google.gson.annotations.Expose;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;

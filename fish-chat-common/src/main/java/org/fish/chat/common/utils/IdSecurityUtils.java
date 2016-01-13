@@ -1,6 +1,6 @@
 package org.fish.chat.common.utils;
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;

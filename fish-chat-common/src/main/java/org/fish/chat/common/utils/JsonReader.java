@@ -1,7 +1,7 @@
 package org.fish.chat.common.utils;
 
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;

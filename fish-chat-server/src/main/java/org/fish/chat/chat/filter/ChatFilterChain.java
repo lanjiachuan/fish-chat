@@ -4,7 +4,7 @@
 package org.fish.chat.chat.filter;
 
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.fish.chat.chat.model.Message;
 import org.fish.chat.chat.model.UserSession;

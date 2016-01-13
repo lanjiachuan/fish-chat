@@ -4,7 +4,7 @@
 package org.fish.chat.chat.utils;
 
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import org.apache.commons.lang3.StringUtils;
 import org.fish.chat.chat.ChatProtocol;
 import org.fish.chat.chat.model.*;

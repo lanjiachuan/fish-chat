@@ -3,7 +3,7 @@
  */
 package org.fish.chat.mqtt.session.manager.impl;
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.fish.chat.mqtt.protocol.wire.MqttConnect;

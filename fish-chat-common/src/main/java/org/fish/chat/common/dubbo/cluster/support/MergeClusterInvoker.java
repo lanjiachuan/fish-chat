@@ -1,6 +1,6 @@
 package org.fish.chat.common.dubbo.cluster.support;
 
-import cn.techwolf.common.log.LoggerManager;
+import org.fish.chat.common.log.LoggerManager;
 import com.alibaba.dubbo.common.utils.NamedThreadFactory;
 import com.alibaba.dubbo.rpc.*;
 import com.alibaba.dubbo.rpc.cluster.Directory;

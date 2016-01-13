@@ -4,8 +4,8 @@
 package org.fish.chat.mqtt.service.impl;
 
 
-import cn.techwolf.common.log.LoggerManager;
-import cn.techwolf.common.utils.RequestIdUtil;
+import org.fish.chat.common.log.LoggerManager;
+import org.fish.chat.common.utils.RequestIdUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.googlecode.protobuf.format.JsonFormat;
 import org.apache.commons.collections.CollectionUtils;

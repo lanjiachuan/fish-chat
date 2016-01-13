@@ -3,8 +3,8 @@
  */
 package org.fish.chat.chat.server;
 
-import cn.techwolf.common.log.LoggerManager;
-import cn.techwolf.common.utils.RequestIdUtil;
+import org.fish.chat.common.log.LoggerManager;
+import org.fish.chat.common.utils.RequestIdUtil;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**

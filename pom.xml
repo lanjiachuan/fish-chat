@@ -62,6 +62,8 @@
 
         <jackson-version>1.9.12</jackson-version>
         <jackson-all-version>1.9.12</jackson-all-version>
+
+        <log4j-version>1.2.16</log4j-version>
     </properties>
 
     <dependencyManagement>
@@ -380,6 +382,14 @@
                 <artifactId>zkclient</artifactId>
                 <version>0.4</version>
             </dependency>
+
+            <!--log-->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j-version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
