@@ -1,4 +1,3 @@
-
 package org.fish.chat.mqtt.session.manager;
 
 import io.netty.channel.Channel;
@@ -8,9 +7,8 @@ import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
  * Comments for ChannelSessionManager.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午1:46:25
+ *
+ *
  */
 public interface ChannelSessionManager {
 
@@ -50,5 +48,5 @@ public interface ChannelSessionManager {
     /**
      * @param session
      */
-    public void destoryChannelSession(ChannelSession session);
+    public void destroyChannelSession(ChannelSession session);
 }

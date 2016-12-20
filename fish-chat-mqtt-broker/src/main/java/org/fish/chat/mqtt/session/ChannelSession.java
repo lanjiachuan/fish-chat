@@ -1,4 +1,3 @@
-
 package org.fish.chat.mqtt.session;
 
 import cn.techwolf.common.location.utils.IpUtil;
@@ -9,9 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Comments for ChannelSession.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月9日 下午7:49:01
+ *
  */
 public class ChannelSession {
 

@@ -91,7 +91,7 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
             RequestIdUtil.setRequestId(channelSession.getUserId());
             LoggerManager.info("channelInactive, userId=" + channelSession.getUserId() + ",cid="
                     + channelSession.getCid());
-            channelSessionManager.destoryChannelSession(channelSession);
+            channelSessionManager.destroyChannelSession(channelSession);
             mqttBizService.channelInactive(channelSession.getUserId(), channelSession.getCid());
         }
         LoggerManager.info(ctx.channel().remoteAddress() + " was closed!");

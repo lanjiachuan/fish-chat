@@ -22,7 +22,7 @@ public class MqttDisconnectHandler extends AbstractMqttHandler<MqttDisconnect> {
         if (channelSession != null) {
             mqttBizService.disconnect(channelSession.getUserId(), channelSession.getCid(),
                     mqttDisconnect);
-            channelSessionManager.destoryChannelSession(channelSession);
+            channelSessionManager.destroyChannelSession(channelSession);
             LoggerManager.info("destory channelSession successful,uid="
                     + channelSession.getUserId() + ", cid=" + channelSession.getCid());
         } else {

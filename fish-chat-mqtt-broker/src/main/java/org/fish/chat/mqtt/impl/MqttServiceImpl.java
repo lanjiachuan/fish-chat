@@ -1,4 +1,3 @@
-
 package org.fish.chat.mqtt.impl;
 
 
@@ -17,9 +16,7 @@ import org.springframework.util.Assert;
 
 /**
  * Comments for MqttServiceImpl.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午6:47:35
+ *
  */
 public class MqttServiceImpl implements MqttService, InitializingBean {
 

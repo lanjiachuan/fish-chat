@@ -17,9 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Comments for ChannelSessionManagerImpl.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午1:49:40
+ *
  */
 public class ChannelSessionManagerImpl implements ChannelSessionManager, InitializingBean {
 
@@ -77,7 +75,7 @@ public class ChannelSessionManagerImpl implements ChannelSessionManager, Initial
                             LoggerManager.warn("channelSession is not active , uid ="
                                     + channelSession.getUserId() + ", cid="
                                     + channelSession.getCid());
-                            destoryChannelSession(channelSession);
+                            destroyChannelSession(channelSession);
                         } catch (Exception e) {
                             LoggerManager.error("", e);
                         }
@@ -88,10 +86,10 @@ public class ChannelSessionManagerImpl implements ChannelSessionManager, Initial
     }
 
     /* (non-Javadoc)
-     * @see cn.techwolf.boss.mqtt.session.manager.ChannelSessionManager#destoryChannelSession(io.netty.channel.Channel)
+     * @see cn.techwolf.boss.mqtt.session.manager.ChannelSessionManager#destroyChannelSession(io.netty.channel.Channel)
      */
     @Override
-    public void destoryChannelSession(ChannelSession channelSession) {
+    public void destroyChannelSession(ChannelSession channelSession) {
         if (channelSession != null) {
             channelSessionMap.remove(channelSession.getCid());
         }
