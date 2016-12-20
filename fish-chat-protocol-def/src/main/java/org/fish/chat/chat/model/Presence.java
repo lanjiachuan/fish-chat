@@ -1,6 +1,4 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.chat.model;
 
 import java.io.Serializable;

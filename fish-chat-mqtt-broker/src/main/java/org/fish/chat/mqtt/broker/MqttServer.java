@@ -1,6 +1,4 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.mqtt.broker;
 
 import org.fish.chat.common.log.LoggerManager;

@@ -1,13 +1,8 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.common.constants;
 
 /**
  * Comments for ChatConstant.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月19日 上午11:58:28
+ *
  */
 public interface ChatConstant {
 
@@ -16,7 +11,7 @@ public interface ChatConstant {
     long NOTIFY_COUNT_USER_ID = 998;
     long KUAIBAO_USER_ID = 997;
     long SYSTEM_PUSH_USER_ID = 899; // 推送小秘书
-    String SYSTEM_USER_NAME = "直聘小秘书";
+
     String DEFAULT_TOPIC_NAME = "chat";
     //心跳间隔时间
     int HEART_BEAT_INTERVAL = 60;

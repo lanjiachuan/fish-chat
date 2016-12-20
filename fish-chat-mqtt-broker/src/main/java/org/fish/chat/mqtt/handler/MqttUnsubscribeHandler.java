@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.mqtt.handler;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -10,9 +7,7 @@ import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
  * Comments for MqttUnsubscribeHandler.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午8:58:24
+ *
  */
 public class MqttUnsubscribeHandler extends AbstractMqttHandler<MqttUnsubscribe> {
 

@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.common.dubbo.loadbalance;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -15,9 +12,8 @@ import java.util.List;
 
 /**
  * Comments for CidLoadBalance.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年5月2日 下午6:39:54
+ *
+ * mqtt channel session load balance
  */
 public class CidLoadBalance extends RoundRobinLoadBalance {
 
@@ -37,9 +33,6 @@ public class CidLoadBalance extends RoundRobinLoadBalance {
                     String invokerIp = invoker.getUrl().getIp();
 
                     if (StringUtils.equals(ip, invokerIp)) {
-                        if (LoggerManager.isDebugEnabled()) {
-                            LoggerManager.debug("use invoker = " + invoker + ", ip = " + invokerIp);
-                        }
                         return invoker;
                     }
                 }

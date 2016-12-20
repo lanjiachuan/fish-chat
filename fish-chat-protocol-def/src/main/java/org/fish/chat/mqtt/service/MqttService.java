@@ -1,6 +1,4 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.mqtt.service;
 
 

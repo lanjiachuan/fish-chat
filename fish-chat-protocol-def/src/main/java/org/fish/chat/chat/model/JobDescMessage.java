@@ -1,11 +1,9 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.fish.chat.common.constants.ProtocalConstants;
+import org.fish.chat.common.constants.ProtocolConstants;
 
 /**
  * Comments for JobDescMessage.java
@@ -115,7 +113,7 @@ public class JobDescMessage extends Message {
 
     @Override
     public String getPushUrl() {
-        return ProtocalConstants.URL_PATH + "?type=f2";
+        return ProtocolConstants.URL_PATH + "?type=f2";
     }
 
     public long getJobId() {

@@ -1,10 +1,8 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONObject;
-import org.fish.chat.common.constants.ProtocalConstants;
+import org.fish.chat.common.constants.ProtocolConstants;
 
 /**
  * Comments for NotifyMessage.java
@@ -52,7 +50,7 @@ public class NotifyMessage extends Message {
 
     @Override
     public String getPushUrl() {
-        return ProtocalConstants.URL_PATH + "?type=f2";
+        return ProtocolConstants.URL_PATH + "?type=f2";
     }
 
     public String getText() {

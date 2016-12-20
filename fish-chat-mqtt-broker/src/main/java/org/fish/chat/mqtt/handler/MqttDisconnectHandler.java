@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.mqtt.handler;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -10,9 +7,8 @@ import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
  * Comments for MqttDisConnectHandler.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午4:34:02
+ *
+ * mqtt disconnect destroy channel session
  */
 public class MqttDisconnectHandler extends AbstractMqttHandler<MqttDisconnect> {
 
@@ -21,7 +17,7 @@ public class MqttDisconnectHandler extends AbstractMqttHandler<MqttDisconnect> {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttDisconnect msg) throws Exception {
-        MqttDisconnect mqttDisconnect = (MqttDisconnect) msg;
+        MqttDisconnect mqttDisconnect = msg;
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
         if (channelSession != null) {
             mqttBizService.disconnect(channelSession.getUserId(), channelSession.getCid(),

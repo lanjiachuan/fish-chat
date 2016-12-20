@@ -29,7 +29,6 @@
         <json-lib-version>2.3</json-lib-version>
         <javax.servlet-version>3.1.0</javax.servlet-version>
         <quartz-version>2.1.7</quartz-version>
-        <techwolf-common-version>0.1.5</techwolf-common-version>
         <gson-version>2.2.4</gson-version>
         <techwolf-perf4j-version>1.0</techwolf-perf4j-version>
         <perf4j-version>0.9.16</perf4j-version>

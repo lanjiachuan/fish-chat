@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.mqtt.handler;
 
 
@@ -9,6 +6,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.fish.chat.chat.model.UserSession;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
 import org.fish.chat.mqtt.protocol.wire.MqttConnack;
@@ -17,9 +15,8 @@ import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
  * Comments for MqttConnectHandler.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 上午10:19:05
+ *
+ * user connect mqtt check uid and pwd
  */
 public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
 
@@ -28,7 +25,7 @@ public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
      */
     @Override
     public void channelRead(final ChannelHandlerContext ctx, MqttConnect msg) throws Exception {
-        MqttConnect mqttConnect = (MqttConnect) msg;
+        MqttConnect mqttConnect = msg;
         final String mqttClientId = mqttConnect.getClientId();
         final String userName = mqttConnect.getUserName();
         final String password = mqttConnect.getPassword();
@@ -52,21 +49,13 @@ public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
 
         //userName and Password
         int userId = 0;
-        int type = 0;
-        boolean rightful = false;
         if (StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password)) {
-            int index = StringUtils.indexOf(userName, "-");
-            if (index > 0) {
-                String[] arr = userName.split("-");
-                userId = NumberUtils.toInt(arr[0]);
-                type = NumberUtils.toInt(arr[1], -1);
-                rightful = true;
-            }
+            userId = NumberUtils.toInt(userName, 0);
         }
 
         RequestIdUtil.setRequestId(userId);
 
-        if (!rightful && userId == 0 && (type != 0 || type != 1)) {
+        if (userId == 0) {
             MqttConnack connack = new MqttConnack(MqttConnack.REFUSED_BAD_USERNAME_PASSWORD);
             final ChannelFuture future = ctx.writeAndFlush(connack);
             future.addListener(new ChannelFutureListener() {
@@ -82,7 +71,7 @@ public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
             return;
         }
 
-        ChannelSession channelSession = channelSessionManager.createChannelSession(userId, type,
+        ChannelSession channelSession = channelSessionManager.createChannelSession(userId, UserSession.USER_TYPE_DEFAULT,
                 mqttConnect, ctx.channel());
 
         LoggerManager.info("==>connect params--mqttClientId:" + mqttClientId + " uname:" + userName
@@ -90,7 +79,7 @@ public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
         
         MqttConnack mqttConnack = mqttBizService.connect(channelSession.getUserId(),
                 channelSession.getCid(), mqttConnect, ctx.channel().remoteAddress().toString(),
-                type);
+                UserSession.USER_TYPE_DEFAULT);
         if (mqttConnack == null) {
             LoggerManager.error("MqttConnectHandler connect return null");
             mqttConnack = new MqttConnack(MqttConnack.REFUSED_SERVER_UNAVAILABLE);

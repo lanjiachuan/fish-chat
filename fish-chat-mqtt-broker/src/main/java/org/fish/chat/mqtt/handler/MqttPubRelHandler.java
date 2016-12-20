@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.mqtt.handler;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -11,9 +8,7 @@ import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
  * Comments for MqttPubRelHandler.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月11日 上午10:59:49
+ *
  */
 public class MqttPubRelHandler extends AbstractMqttHandler<MqttPubRel> {
 
@@ -23,7 +18,7 @@ public class MqttPubRelHandler extends AbstractMqttHandler<MqttPubRel> {
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttPubRel msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
-        MqttPubRel mqttPubRel = (MqttPubRel) msg;
+        MqttPubRel mqttPubRel = msg;
 
         MqttPubComp mqttPubComp = new MqttPubComp(mqttPubRel.getMessageId());
         LoggerManager.info(channelSession == null ? "" : channelSession.toString() + "send "

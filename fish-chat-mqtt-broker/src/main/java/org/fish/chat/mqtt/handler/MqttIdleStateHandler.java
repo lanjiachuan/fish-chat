@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.mqtt.handler;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -14,9 +11,8 @@ import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 
 /**
  * Comments for IdleStateHandler.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月9日 下午2:40:59
+ *
+ * netty session changed idle, so check channel session?
  */
 public class MqttIdleStateHandler extends IdleStateHandler {
 

@@ -1,6 +1,4 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.chat.model;
 
 
@@ -14,8 +12,6 @@ import java.util.Map;
 /**
  * Comments for UserSession.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月11日 上午11:51:35
  */
 public class UserSession implements Serializable {
 
@@ -30,12 +26,13 @@ public class UserSession implements Serializable {
     public static int USER_SESSION_TYPE_WEB = 1;
     public static int USER_SESSION_CLIENT_STATUS_FRONT = 1;
     public static int USER_SESSION_CLIENT_STATUS_BACK = 2;
+    public static int USER_TYPE_DEFAULT = 0; // 用户类型
 
     private long userId;
     private long cid;
     private int status;
     private int type;
-    private int identity;
+    private int usetType = USER_TYPE_DEFAULT;
     private String ip;
     private Date createTime;
     private long lastHeartBeat;
@@ -67,7 +64,6 @@ public class UserSession implements Serializable {
         this.ip = userSession.getIp();
         this.createTime = userSession.getCreateTime();
         this.clientVersion = userSession.getClientVersion();
-        this.identity = userSession.getIdentity();
         this.clientId = userSession.getClientId();
         this.lastHeartBeat = userSession.getLastHeartBeat();
         this.type = userSession.getType();
@@ -78,7 +74,6 @@ public class UserSession implements Serializable {
         this.userId = userId;
         this.cid = cid;
         this.ip = ip;
-        this.identity = identity;
         this.clientId = clientId;
         lastHeartBeat = System.currentTimeMillis();
     }
@@ -169,16 +164,8 @@ public class UserSession implements Serializable {
 
     @Override
     public String toString() {
-        return "[userId:" + userId + ",identity:" + identity + ",cid:" + cid + ",ip:" + ip
+        return "[userId:" + userId + ",cid:" + cid + ",ip:" + ip
                 + ",status:" + status + ",clientId:" + clientId + ",type:" + type + ",clientVersion:" + clientVersion + "]";
-    }
-
-    public int getIdentity() {
-        return identity;
-    }
-
-    public void setIdentity(int identity) {
-        this.identity = identity;
     }
 
     public boolean isTemp() {

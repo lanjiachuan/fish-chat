@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.mqtt.handler;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -13,9 +10,7 @@ import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
  * Comments for MqttPublishHandler.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午4:07:24
+ *
  */
 public class MqttPublishHandler extends AbstractMqttHandler<MqttPublish> {
 

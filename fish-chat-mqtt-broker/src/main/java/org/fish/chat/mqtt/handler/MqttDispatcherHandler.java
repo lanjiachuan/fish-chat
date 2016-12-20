@@ -1,6 +1,3 @@
-/**
- * techwolf.cn All rights reserved.
- */
 package org.fish.chat.mqtt.handler;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -20,8 +17,7 @@ import org.springframework.util.Assert;
 /**
  * Comments for MqttHandler.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月9日 上午9:52:41
+ * dispatch message
  */
 @Sharable
 public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implements InitializingBean {

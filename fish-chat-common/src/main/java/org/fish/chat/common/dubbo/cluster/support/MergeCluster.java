@@ -5,9 +5,6 @@ import com.alibaba.dubbo.rpc.RpcException;
 import com.alibaba.dubbo.rpc.cluster.Cluster;
 import com.alibaba.dubbo.rpc.cluster.Directory;
 
-/**
- * Created by liujun on 15/3/5.
- */
 public class MergeCluster implements Cluster {
 
     public static final String NAME = "forking";

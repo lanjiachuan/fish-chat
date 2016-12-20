@@ -1,13 +1,11 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.chat.model;
 
 import org.fish.chat.common.log.LoggerManager;
 import com.google.gson.annotations.Expose;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.fish.chat.common.constants.ProtocalConstants;
+import org.fish.chat.common.constants.ProtocolConstants;
 
 import java.io.Serializable;
 
@@ -184,7 +182,7 @@ public class ActionMessage extends Message implements Serializable {
 
     @Override
     public String getPushUrl() {
-        return ProtocalConstants.URL_PATH + "?type=f2";
+        return ProtocolConstants.URL_PATH + "?type=f2";
     }
 
     /* (non-Javadoc)

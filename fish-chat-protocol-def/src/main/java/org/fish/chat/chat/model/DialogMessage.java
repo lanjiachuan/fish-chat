@@ -1,11 +1,9 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.fish.chat.common.constants.ProtocalConstants;
+import org.fish.chat.common.constants.ProtocolConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +111,7 @@ public class DialogMessage extends Message {
 
     @Override
     public String getPushUrl() {
-        return ProtocalConstants.URL_PATH + "?type=f2";
+        return ProtocolConstants.URL_PATH + "?type=f2";
     }
 
     /**

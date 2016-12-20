@@ -1,8 +1,6 @@
 package org.fish.chat.mqtt.service.impl;
 
-/**
- * techwolf.cn All rights reserved.
- */
+
 
 
 import org.fish.chat.common.log.LoggerManager;

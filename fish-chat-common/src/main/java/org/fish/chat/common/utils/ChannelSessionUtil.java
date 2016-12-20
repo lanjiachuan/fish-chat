@@ -1,6 +1,4 @@
-/**
- * techwolf.cn All rights reserved.
- */
+
 package org.fish.chat.common.utils;
 
 import cn.techwolf.common.location.utils.IpUtil;
