@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.service;
 
 
@@ -9,9 +8,7 @@ import java.util.List;
 
 /**
  * Comments for UserSessionService.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月19日 下午3:24:58
+ *
  */
 public interface UserSessionService {
 

@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.service;
 
 
@@ -10,9 +9,7 @@ import java.util.List;
 
 /**
  * 用户聊天服务
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月14日 下午7:46:15
+ *
  */
 public interface UserChatService {
 

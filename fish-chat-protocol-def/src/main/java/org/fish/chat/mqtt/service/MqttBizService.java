@@ -1,4 +1,3 @@
-
 package org.fish.chat.mqtt.service;
 
 
@@ -6,9 +5,7 @@ import org.fish.chat.mqtt.protocol.wire.*;
 
 /**
  * Comments for MqttBizService.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午2:56:00
+ *
  */
 public interface MqttBizService {
 

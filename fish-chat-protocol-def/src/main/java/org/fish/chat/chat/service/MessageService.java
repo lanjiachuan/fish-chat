@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.service;
 
 
@@ -13,9 +12,7 @@ import java.util.Map;
 
 /**
  * Comments for MessageService.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月15日 下午4:09:52
+ *
  */
 public interface MessageService {
 

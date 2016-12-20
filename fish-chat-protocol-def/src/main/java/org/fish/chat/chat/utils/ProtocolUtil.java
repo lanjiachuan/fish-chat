@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.utils;
 
 
@@ -14,8 +13,6 @@ import java.util.List;
 /**
  * Comments for ProtocolUtil.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月18日 上午10:22:29
  */
 public class ProtocolUtil {
 

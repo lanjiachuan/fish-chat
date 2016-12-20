@@ -1,4 +1,3 @@
-
 package org.fish.chat.mqtt.qos;
 
 
@@ -8,9 +7,7 @@ import org.fish.chat.mqtt.protocol.wire.MqttPublish;
 
 /**
  * Comments for QosService.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月11日 上午11:58:32
+ *
  */
 public interface QosService {
 

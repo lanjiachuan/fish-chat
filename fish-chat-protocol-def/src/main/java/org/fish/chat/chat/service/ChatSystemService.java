@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.service;
 
 
@@ -8,9 +7,7 @@ import java.util.List;
 
 /**
  * Comments for ChatSystemService.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年5月15日 上午10:40:25
+ *
  */
 public interface ChatSystemService {
 

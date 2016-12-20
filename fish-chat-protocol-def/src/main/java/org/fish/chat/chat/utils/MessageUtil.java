@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.utils;
 
 import org.fish.chat.chat.model.*;
@@ -8,9 +7,7 @@ import java.util.Date;
 
 /**
  * Comments for MessageUtil.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月25日 上午11:22:21
+ *
  */
 public class MessageUtil {
 
