@@ -1,4 +1,3 @@
-
 package org.fish.chat.mqtt.service.impl;
 
 
@@ -36,8 +35,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Comments for MqttBizServiceImpl.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午3:13:54
  */
 public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
 

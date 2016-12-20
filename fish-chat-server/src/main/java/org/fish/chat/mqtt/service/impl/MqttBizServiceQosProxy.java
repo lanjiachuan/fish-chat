@@ -1,8 +1,5 @@
 package org.fish.chat.mqtt.service.impl;
 
-
-
-
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
 import org.fish.chat.mqtt.protocol.MqttMessage;
@@ -15,8 +12,6 @@ import org.springframework.util.Assert;
 /**
  * Comments for MqttBizServiceQosProxy.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月11日 上午11:23:46
  */
 public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean {
 

@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.filter.impl;
 
 
@@ -11,9 +10,7 @@ import org.springframework.util.Assert;
 
 /**
  * Comments for PersistenceFilter.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月24日 下午1:34:30
+ *
  */
 public class PersistenceFilter extends ChatFilterAdapter implements InitializingBean {
 

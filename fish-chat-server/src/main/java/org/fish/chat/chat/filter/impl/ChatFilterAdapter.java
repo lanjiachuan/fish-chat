@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.filter.impl;
 
 
@@ -8,9 +7,7 @@ import org.fish.chat.chat.model.UserSession;
 
 /**
  * Comments for ChatFilterAdapter.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月24日 下午1:23:45
+ *
  */
 public class ChatFilterAdapter implements ChatFilter {
 

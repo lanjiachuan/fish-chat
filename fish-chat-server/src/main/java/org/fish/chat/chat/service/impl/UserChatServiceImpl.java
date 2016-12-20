@@ -76,7 +76,7 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Ini
             return;
         }
         RequestIdUtil.setRequestId(fromUserSession.getUserId());
-        LoggerManager.info("userId=" + fromUserSession.getUserId() + ", identity=" + fromUserSession.getIdentity() + ", dispatch message=" + message);
+        LoggerManager.info("userId=" + fromUserSession.getUserId() + ", dispatch message=" + message);
         if (!chatFilter.beforeDeliver(fromUserSession, message)) {
             LoggerManager.info("filter return false, shop dispatch message = " + message);
             return;
@@ -189,9 +189,7 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Ini
                     if (toUserSessionList != null && toUserSessionList.size() > 0) {
                         for (UserSession toUserSession : toUserSessionList) {
                             if (toUserSession != null) {
-                                if (toUserSession.getStatus() != UserSession.USER_SESSION_STATUS_WAIT
-                                        && toUserSession.getStatus() != UserSession.USER_SESSION_STATUS_DIE
-                                        && message.getTo().getIdentity() == toUserSession.getIdentity()) {
+                                if (toUserSession.getStatus() != UserSession.USER_SESSION_STATUS_WAIT) {
                                     LoggerManager.info("find userSession=" + toUserSession + " to send message = " + message);
                                     //发送消息前过滤
                                     if (!chatFilter.beforeSendMessage(toUserSession, message)) {
@@ -211,7 +209,7 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Ini
                                     //用户类型一致
                                     LoggerManager.warn("message=" + message + " will not send , the resson is one of below, to = " + toUserSession);
                                     LoggerManager.warn("1、user was unavailable status = " + toUserSession.getStatus());
-                                    LoggerManager.warn("2、user type is same, fromUserType=" + message.getFrom().getIdentity() + ", toUserType=" + toUserSession.getIdentity());
+                                    LoggerManager.warn("2、user type is same, fromUserType=" + message.getFrom().getIdentity());
                                 }
                             }
                         }

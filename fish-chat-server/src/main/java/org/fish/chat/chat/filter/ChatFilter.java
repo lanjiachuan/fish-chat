@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.filter;
 
 
@@ -8,8 +7,6 @@ import org.fish.chat.chat.model.UserSession;
 /**
  * Comments for CharFilter.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月24日 下午12:34:48
  */
 public interface ChatFilter {
 

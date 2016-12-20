@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.filter.impl;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -12,8 +11,6 @@ import org.springframework.util.Assert;
 /**
  * Comments for SyncMessageFilter.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年8月18日 下午7:01:21
  */
 public class SyncMessageFilter extends ChatFilterAdapter implements InitializingBean {
 

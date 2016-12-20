@@ -1,10 +1,5 @@
 //package org.fish.chat.mqtt.service.impl;
-//
-///**
-// * techwolf.cn All rights reserved.
-// */
-//
-//
+
 //import org.fish.chat.common.log.LoggerManager;
 //import org.fish.chat.common.utils.RequestIdUtil;
 //import com.google.protobuf.InvalidProtocolBufferException;
@@ -29,8 +24,6 @@
 ///**
 // * Comments for MqttServiceQosProxy.java
 // *
-// * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
-// * @createTime 2014年4月11日 上午11:25:50
 // */
 //public class MqttServiceQosProxy implements MqttService, MessageAckCallback, InitializingBean,
 //        RemovalListener<Long, MqttPersistableWireMessage> {

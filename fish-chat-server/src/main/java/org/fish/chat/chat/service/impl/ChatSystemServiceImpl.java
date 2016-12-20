@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.service.impl;
 
 
@@ -27,8 +26,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * 对外提供的发消息接口
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年5月15日 上午10:43:34
  */
 public class ChatSystemServiceImpl implements ChatSystemService, InitializingBean {
 

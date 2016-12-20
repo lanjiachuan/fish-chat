@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.server;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -7,9 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Comments for ChatBootstrap.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年5月1日 下午5:52:30
+ *
  */
 public class ChatServerBootstrap {
 
