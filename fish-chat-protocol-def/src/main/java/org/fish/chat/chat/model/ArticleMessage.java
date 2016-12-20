@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONArray;
@@ -12,8 +11,6 @@ import java.util.List;
 /**
  * Comments for ArticleMessage.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年9月11日 下午4:16:57
  */
 public class ArticleMessage extends Message {
 

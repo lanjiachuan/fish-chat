@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONObject;
@@ -7,8 +6,6 @@ import org.fish.chat.common.constants.ProtocolConstants;
 /**
  * Comments for NotifyMessage.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年9月4日 下午6:55:35
  */
 public class NotifyMessage extends Message {
 

@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONArray;
@@ -11,9 +10,7 @@ import java.util.List;
 
 /**
  * Comments for ResumeMessage.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年11月14日 下午4:51:53
+ *
  */
 public class ResumeMessage extends Message {
 

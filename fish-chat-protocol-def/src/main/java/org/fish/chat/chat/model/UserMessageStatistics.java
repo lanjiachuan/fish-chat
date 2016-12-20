@@ -1,13 +1,10 @@
-
 package org.fish.chat.chat.model;
 
 import java.util.Date;
 
 /**
  * Comments for MessageStatistics.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年6月26日 下午5:19:41
+ *
  */
 public class UserMessageStatistics {
 

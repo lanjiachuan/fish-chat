@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONObject;
@@ -8,8 +7,6 @@ import org.fish.chat.common.constants.ProtocolConstants;
 /**
  * Comments for JobDescMessage.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年9月13日 下午3:03:50
  */
 public class JobDescMessage extends Message {
 

@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import com.google.gson.annotations.Expose;
@@ -8,9 +7,7 @@ import java.io.Serializable;
 
 /**
  * Comments for SoundMessage.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月14日 下午7:30:22
+ *
  */
 public class SoundMessage extends Message implements Serializable {
 

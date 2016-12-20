@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -15,8 +14,6 @@ import java.util.Map;
 /**
  * Comments for Message.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月14日 下午7:22:08
  */
 public abstract class Message implements Serializable {
 

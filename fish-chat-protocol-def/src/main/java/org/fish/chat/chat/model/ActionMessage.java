@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import org.fish.chat.common.log.LoggerManager;
@@ -11,9 +10,7 @@ import java.io.Serializable;
 
 /**
  * Comments for ActionMessage.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月24日 上午11:19:35
+ *
  */
 public class ActionMessage extends Message implements Serializable {
 
@@ -141,16 +138,6 @@ public class ActionMessage extends Message implements Serializable {
             case REMIND_REPLY:
                 sb.append("提醒您回复");
                 break;
-            case REQUEST_REVIEW:
-            case REQUEST_REVIEW3:
-                sb.append("邀请您参加面试");
-                break;
-            case REVIEW_ACCEPT:
-                sb.append("接受了您的面试请求");
-                break;
-            case REVIEW_REJECT:
-                sb.append("拒绝了您的面试请求");
-                break;
             case EXCHANGE_CONTACT:
                 sb.append("想要和你交换电话，是否同意");
                 break;
@@ -158,8 +145,7 @@ public class ActionMessage extends Message implements Serializable {
                 sb.append("接受与您交换联系方式");
                 break;
             case CONTACT_REJECT:
-                //拒绝后会发送提示文案，所以会重复，取消此处
-                //sb.append("拒绝与您交换联系方式");
+                sb.append("拒绝与您交换联系方式");
                 return "";
             case EXCHANGE_WEIXIN:
                 sb.append("请求与您交换微信");
@@ -168,8 +154,7 @@ public class ActionMessage extends Message implements Serializable {
                 sb.append("接受与您交换微信");
                 break;
             case WEIXIN_REJECT:
-                //拒绝后会发送提示文案，所以会重复，取消此处
-                //sb.append("拒绝与您交换微信");
+                sb.append("拒绝与您交换微信");
                 return "";
             case REQUEST_RESUME:
                 sb.append("请求下载您的简历");

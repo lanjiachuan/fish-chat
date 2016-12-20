@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 
@@ -10,9 +9,7 @@ import java.io.Serializable;
 
 /**
  * Comments for ChatUser.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月18日 下午5:40:16
+ *
  */
 public class ChatUser implements Serializable {
 
@@ -40,7 +37,6 @@ public class ChatUser implements Serializable {
     private String content = "";
     private long distance;
     private String distanceDesc = "";
-    private ChatUserBoss chatUserBoss;
     private int gender;
 
     public ChatUser(long uid) {
@@ -92,7 +88,6 @@ public class ChatUser implements Serializable {
         jsonObject.put(JSON_PROPERTIES_AVATAR, StringUtils.defaultString(avatar));
         jsonObject.put(JSON_PROPERTIES_IDENTITY, identity);
         jsonObject.put(JSON_PROPERTIES_GENDER, gender);
-        jsonObject.put(JSON_PROPERTIES_BOSS, chatUserBoss.toJsonObject());
         jsonObject.put(JSON_PROPERTIES_DISTANCE, distance);
         jsonObject.put(JSON_PROPERTIES_DISTANCE_DESC, distanceDesc);
         return jsonObject;
@@ -106,11 +101,6 @@ public class ChatUser implements Serializable {
             chatUser.setAvatar(jsonObject.optString(JSON_PROPERTIES_AVATAR));
             chatUser.setIdentity(jsonObject.optInt(JSON_PROPERTIES_IDENTITY));
             chatUser.setGender(jsonObject.optInt(JSON_PROPERTIES_GENDER));
-            JSONObject bossObject = jsonObject.optJSONObject(JSON_PROPERTIES_BOSS);
-            if (bossObject != null) {
-                ChatUserBoss boss = ChatUserBoss.fromJson(bossObject);
-                chatUser.setChatUserBoss(boss);
-            }
             chatUser.setDistance(jsonObject.optLong(JSON_PROPERTIES_DISTANCE));
             chatUser.setDistanceDesc(jsonObject.optString(JSON_PROPERTIES_DISTANCE_DESC));
             return chatUser;
@@ -156,14 +146,6 @@ public class ChatUser implements Serializable {
 
     public void setDistanceDesc(String distanceDesc) {
         this.distanceDesc = distanceDesc;
-    }
-
-    public ChatUserBoss getChatUserBoss() {
-        return chatUserBoss;
-    }
-
-    public void setChatUserBoss(ChatUserBoss chatUserBoss) {
-        this.chatUserBoss = chatUserBoss;
     }
 
     public int getGender() {

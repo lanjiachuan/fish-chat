@@ -1,11 +1,8 @@
-
 package org.fish.chat.chat.model;
 
 /**
  * Comments for TaskReceiveCount.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年9月22日 上午11:44:21
+ *
  */
 public class TaskReceiveCount {
 

@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 
@@ -15,8 +14,6 @@ import java.io.Serializable;
 /**
  * Comments for TextMessage.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月14日 下午7:23:02
  */
 public class TextMessage extends Message implements Serializable {
 

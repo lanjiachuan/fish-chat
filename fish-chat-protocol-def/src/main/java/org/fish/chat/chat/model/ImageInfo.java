@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import com.google.gson.annotations.Expose;
@@ -8,9 +7,7 @@ import java.io.Serializable;
 
 /**
  * Comments for ImageInfo.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月24日 上午10:49:11
+ *
  */
 public class ImageInfo implements Serializable {
 

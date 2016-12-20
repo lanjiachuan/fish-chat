@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONArray;
@@ -11,8 +10,6 @@ import java.util.List;
 /**
  * Comments for DialogMessage.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年9月11日 下午4:17:21
  */
 public class DialogMessage extends Message {
 

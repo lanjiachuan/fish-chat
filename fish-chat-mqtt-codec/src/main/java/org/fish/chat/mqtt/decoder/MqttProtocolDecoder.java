@@ -1,4 +1,3 @@
-
 package org.fish.chat.mqtt.decoder;
 
 import io.netty.buffer.ByteBuf;
@@ -11,9 +10,7 @@ import java.util.List;
 
 /**
  * Comments for MqttProtocolDecoderDispatcher.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月8日 下午5:37:02
+ *
  */
 public class MqttProtocolDecoder extends ReplayingDecoder<Void> {
 

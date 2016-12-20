@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import net.sf.json.JSONObject;
@@ -7,9 +6,7 @@ import java.io.Serializable;
 
 /**
  * Comments for DialogButton.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年9月11日 下午4:51:39
+ *
  */
 public class DialogButton implements Serializable {
 

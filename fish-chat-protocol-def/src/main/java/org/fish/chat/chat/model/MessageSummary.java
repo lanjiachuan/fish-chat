@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 import java.util.Date;
@@ -6,8 +5,6 @@ import java.util.Date;
 /**
  * Comments for MessageSummary.java
  *
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月18日 下午8:08:37
  */
 public class MessageSummary {
 

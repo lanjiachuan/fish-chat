@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 
@@ -8,9 +7,7 @@ import java.io.Serializable;
 
 /**
  * Comments for ArticleItem.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年9月11日 下午4:24:42
+ *
  */
 public class ArticleItem implements Serializable {
 
