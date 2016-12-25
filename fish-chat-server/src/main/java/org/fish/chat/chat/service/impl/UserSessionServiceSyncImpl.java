@@ -33,8 +33,8 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     private static final int IOS_APPID = 1002;
     private static final int WAIT_RECONNECT_EXPIRE_TIME = ChatConstant.HEART_BEAT_INTERVAL * 3;
     private FishCacheRedis fishCacheRedis;
-    private Map<Long, UserSession> userSessionMap = new ConcurrentHashMap<Long, UserSession>();
-    private Map<Long, UserSession> userWebSessionMap = new ConcurrentHashMap<Long, UserSession>();
+    private Map<Long, UserSession> userSessionMap = new ConcurrentHashMap<>();
+    private Map<Long, UserSession> userWebSessionMap = new ConcurrentHashMap<>();
 
     private List<UserSessionListener> listeners;
     private final Cache<Long, UserSession> cache = CacheBuilder.newBuilder()

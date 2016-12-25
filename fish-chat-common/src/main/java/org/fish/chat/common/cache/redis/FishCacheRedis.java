@@ -208,6 +208,10 @@ public class FishCacheRedis implements InitializingBean {
         this.redisAddress = redisAddress;
     }
 
+    public void setDbSize(int dbSize) {
+        this.dbSize = dbSize;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(redisAddress, "redisAddress is required!");

@@ -13,22 +13,20 @@
         <property name="mqttService" ref="mqttServiceQosProxy"/>
     </bean>
 
-
     <bean id="userChatService" class="org.fish.chat.chat.service.impl.UserChatServiceImpl">
         <property name="userSessionService" ref="userSessionService" />
         <property name="mqttService" ref="mqttServiceQosProxy" />
-        <property name="messageApi" ref="messageApi" />
         <property name="chatFilter" ref="chatFilterChain" />
         <property name="deliverService" ref="deliverService"/>
     </bean>
 
-
-
-
-
     <bean id="chatSystemService" class="org.fish.chat.chat.service.impl.ChatSystemServiceImpl">
         <property name="userChatService" ref="userChatService" />
         <property name="messageService" ref="messageService"/>
+    </bean>
+
+    <bean id="userSessionServiceSync" class="org.fish.chat.chat.service.impl.UserSessionServiceSyncImpl">
+        <property name="fishCacheRedis" ref="fishCacheRedis"/>
     </bean>
 
 </beans>
