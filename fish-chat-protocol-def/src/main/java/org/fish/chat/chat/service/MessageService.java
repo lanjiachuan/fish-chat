@@ -42,17 +42,11 @@ public interface MessageService {
      */
     public List<Message> getMessageAfterMaxId(long userId, int userType, long maxId);
 
-    /**
-     * @param userId
-     * @param idList
-     * @return
-     */
-    public boolean receiveMessage(long userId, int identity, List<Long> idList);
 
     /**
      * 已读消息
      * */
-    public boolean readUserMessage(long userId, int identity, long friendId, long lastMessageId);
+    public boolean readUserMessage(long userId, long friendId, long lastMessageId);
 
     /**
      * @param userId

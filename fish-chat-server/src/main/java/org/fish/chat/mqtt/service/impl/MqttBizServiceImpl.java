@@ -137,7 +137,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
                                                     params.put(entry.getKey(), entry.getValue());
                                                 }
                                             }
-                                            ChatProtocol.FishChatProtocol response = iqHandler.handle(userId, userSession.getIdentity(), fishIq.getQid(),
+                                            ChatProtocol.FishChatProtocol response = iqHandler.handle(userId, fishIq.getQid(),
                                                     fishIq.getQuery(), params);
                                             if (response != null) {
                                                 userChatService.sendProtocol(userSession, response, (int) fishIq.getQid());
@@ -160,7 +160,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
                                         if (userSession != null) {
                                             for (ChatProtocol.FishMessageRead techwolfMessageRead : messageReadList) {
                                                 if (techwolfMessageRead != null) {
-                                                    messageService.readUserMessage(userId, userSession.getIdentity(), techwolfMessageRead.getUserId(), techwolfMessageRead.getMessageId());
+                                                    messageService.readUserMessage(userId, techwolfMessageRead.getUserId(), techwolfMessageRead.getMessageId());
                                                 } else {
                                                     LoggerManager.warn("MqttBizServiceImpl.publish techwolfMessageRead is null!!!, " + JsonFormat.printToString(protocol));
                                                 }

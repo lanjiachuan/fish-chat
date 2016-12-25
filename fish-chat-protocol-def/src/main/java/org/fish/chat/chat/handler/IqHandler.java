@@ -11,6 +11,6 @@ import java.util.Map;
  */
 public interface IqHandler {
 
-    public ChatProtocol.FishChatProtocol handle(long userId, int identity, long qid, String query,
+    public ChatProtocol.FishChatProtocol handle(long userId, long qid, String query,
                                                     Map<String, String> params);
 }
