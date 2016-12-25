@@ -1,4 +1,3 @@
-
 package org.fish.chat.chat.model;
 
 
