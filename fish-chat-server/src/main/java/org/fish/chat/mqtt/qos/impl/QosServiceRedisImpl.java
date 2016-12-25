@@ -1,20 +1,26 @@
 package org.fish.chat.mqtt.qos.impl;
 
 
+import org.fish.chat.chat.listener.impl.UserSessionListenerAdapter;
+import org.fish.chat.chat.model.UserSession;
 import org.fish.chat.common.cache.redis.FishCacheRedis;
 import org.fish.chat.common.log.LoggerManager;
 import org.apache.commons.codec.binary.Base64;
+import org.fish.chat.mqtt.protocol.MqttException;
+import org.fish.chat.mqtt.protocol.wire.MqttPersistableWireMessage;
+import org.fish.chat.mqtt.protocol.wire.MqttPubRel;
 import org.fish.chat.mqtt.protocol.wire.MqttPublish;
 import org.fish.chat.mqtt.protocol.wire.MqttWireMessage;
 import org.fish.chat.mqtt.qos.QosService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 
 /**
  * Comments for QosServiceRedisImpl.java
- * **/
+ **/
 
-public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements QosService,
+public class QosServiceRedisImpl extends UserSessionListenerAdapter implements QosService,
         InitializingBean {
 
     private static final int DEFAULT_EXPIRE_TIME = 60;
@@ -53,7 +59,7 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
     @Override
     public boolean setExactlyOnceMessage(long userId, MqttPublish mqttPublish) {
         try {
-            cacheService.set(getExactlyOnceKey(userId),
+            fishCacheRedis.saveToRedis(getExactlyOnceKey(userId),
                     Base64.encodeBase64String(mqttPublish.getBytes()), DEFAULT_EXPIRE_TIME);
             return true;
         } catch (MqttException e) {
@@ -66,8 +72,8 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
     public int setClientFlightQueueMessage(long userId, MqttPublish message) {
         String key = getClientFlightQueueKey(userId);
         try {
-            int pos = cacheService.rpush(key, Base64.encodeBase64String(message.getBytes()));
-            cacheService.expire(key, DEFAULT_EXPIRE_TIME);
+            int pos = (int) fishCacheRedis.rpush(key, Base64.encodeBase64String(message.getBytes()));
+            fishCacheRedis.expire(key, DEFAULT_EXPIRE_TIME);
             System.out.println("push client publish" + message + " to queue " + key + " pos = " + pos);
             return pos;
         } catch (MqttException e) {
@@ -81,9 +87,9 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
         String key = getClientFlightQueueKey(userId);
         String value;
         if (pop) {
-            value = cacheService.lpop(key);
+            value = fishCacheRedis.lpop(key);
         } else {
-            value = cacheService.lpeek(key);
+            value = fishCacheRedis.lpeek(key);
         }
         if (value != null) {
             try {
@@ -103,7 +109,7 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
     public Long getClinetFlightQueueLen(long userId) {
         Long len = 0L;
         try {
-            len = cacheService.llen(getClientFlightQueueKey(userId));
+            len = fishCacheRedis.llen(getClientFlightQueueKey(userId));
         } catch (Exception e) {
             LoggerManager.error("the key:" + getClientFlightQueueKey(userId) + " value maybe not a collection", e);
         }
@@ -113,14 +119,14 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
     @Override
     public MqttPublish getExactlyOnceMessage(long userId, boolean clean) {
         String key = getExactlyOnceKey(userId);
-        String value = cacheService.get(key);
+        String value = fishCacheRedis.getFromRedis(key, String.class);
         if (value != null) {
             try {
                 MqttWireMessage wireMessage = MqttWireMessage.createWireMessage(Base64
                         .decodeBase64(value));
                 if (wireMessage instanceof MqttPublish) {
                     if (clean) {
-                        cacheService.del(key);
+                        fishCacheRedis.del(key);
                     }
                     return (MqttPublish) wireMessage;
                 }
@@ -135,13 +141,13 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
     @Override
     public MqttPersistableWireMessage getInFlightMessage(long userId) {
         String key = getFlightQueueKey(userId);
-        String value = cacheService.lpeek(key);
+        String value = fishCacheRedis.lpeek(key);
         if (value != null) {
             try {
                 MqttWireMessage wireMessage = MqttWireMessage.createWireMessage(Base64
                         .decodeBase64(value));
                 if (wireMessage instanceof MqttPersistableWireMessage) {
-                    cacheService.expire(key, DEFAULT_EXPIRE_TIME);
+                    fishCacheRedis.expire(key, DEFAULT_EXPIRE_TIME);
                     return (MqttPersistableWireMessage) wireMessage;
                 } else {
                     LoggerManager.warn(wireMessage
@@ -158,7 +164,7 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
     @Override
     public MqttPersistableWireMessage getNextMessage(long userId) {
         String key = getFlightQueueKey(userId);
-        String value = cacheService.lpop(key);
+        String value = fishCacheRedis.lpop(key);
         if (value != null) {
             return getInFlightMessage(userId);
         }
@@ -170,8 +176,8 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
     public int addMessage(long userId, MqttPersistableWireMessage message) {
         String key = getFlightQueueKey(userId);
         try {
-            int pos = cacheService.rpush(key, Base64.encodeBase64String(message.getBytes()));
-            cacheService.expire(key, DEFAULT_EXPIRE_TIME);
+            int pos = (int) fishCacheRedis.rpush(key, Base64.encodeBase64String(message.getBytes()));
+            fishCacheRedis.expire(key, DEFAULT_EXPIRE_TIME);
             System.out.println("push" + message + " to queue " + key + " pos = " + pos);
             return pos;
         } catch (MqttException e) {
@@ -187,11 +193,11 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
         String flightPublishKey = getFlightPublishKey(userId);
         MqttPersistableWireMessage publishMessage = getInFlightMessage(userId);
         if (publishMessage instanceof MqttPublish) {
-            String flightPublish = cacheService.lpop(key);
+            String flightPublish = fishCacheRedis.lpop(key);
             try {
-                cacheService.set(flightPublishKey, flightPublish, DEFAULT_EXPIRE_TIME);
-                cacheService.lpush(key, Base64.encodeBase64String(message.getBytes()));
-                cacheService.expire(key, DEFAULT_EXPIRE_TIME);
+                fishCacheRedis.saveToRedis(flightPublishKey, flightPublish, DEFAULT_EXPIRE_TIME);
+                fishCacheRedis.lpush(key, Base64.encodeBase64String(message.getBytes()));
+                fishCacheRedis.expire(key, DEFAULT_EXPIRE_TIME);
                 return true;
             } catch (MqttException e) {
                 LoggerManager.error("", e);
@@ -208,16 +214,16 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
 
         String key = getFlightPublishKey(userId);
 
-        String value = cacheService.get(key);
+        String value = fishCacheRedis.getFromRedis(key, String.class);
         if (value != null) {
             try {
                 MqttWireMessage wireMessage = MqttWireMessage.createWireMessage(Base64
                         .decodeBase64(value));
                 if (wireMessage instanceof MqttPublish) {
                     if (clean) {
-                        cacheService.del(key);
+                        fishCacheRedis.del(key);
                     } else {
-                        cacheService.expire(key, DEFAULT_EXPIRE_TIME);
+                        fishCacheRedis.expire(key, DEFAULT_EXPIRE_TIME);
                     }
                     return (MqttPublish) wireMessage;
                 } else {
@@ -236,24 +242,21 @@ public class QosServiceRedisImpl extends UserSessionLinstenerAdapter implements 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(cacheService, "cacheService must not null!");
+        Assert.notNull(fishCacheRedis, "fishCacheRedis must not null!");
     }
 
 
-    public void setCacheService(ICacheService cacheService) {
-        this.cacheService = cacheService;
-    }
 
     private void cleanup(long userId) {
-        cacheService.del(getFlightQueueKey(userId));
-        cacheService.del(getExactlyOnceKey(userId));
-        cacheService.del(getFlightPublishKey(userId));
+        fishCacheRedis.del(getFlightQueueKey(userId));
+        fishCacheRedis.del(getExactlyOnceKey(userId));
+        fishCacheRedis.del(getFlightPublishKey(userId));
     }
 
 
 
     @Override
-    public void onSessionDestory(UserSession userSession) {
+    public void onSessionDestroy(UserSession userSession) {
         cleanup(userSession.getUserId());
     }
 
