@@ -12,6 +12,23 @@
     <artifactId>fish-chat-mqtt-client</artifactId>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.fish</groupId>
+            <artifactId>fish-chat-protocol-def</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 </project>

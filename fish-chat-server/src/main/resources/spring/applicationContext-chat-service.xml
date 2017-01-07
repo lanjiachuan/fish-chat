@@ -19,7 +19,7 @@
     <bean id="mqttServiceQosProxy" class="org.fish.chat.mqtt.service.impl.MqttServiceQosProxy">
         <property name="qosService" ref="qosService"/>
         <property name="messageFinishCallback" ref="userChatService"/>
-        <property name="mqttService" ref="mqttService"/>
+        <property name="mqttService" ref="mqttClientService"/>
         <property name="userSessionService" ref="userSessionService"/>
     </bean>
 
@@ -46,6 +46,18 @@
 
     <bean id="userSessionService" class="org.fish.chat.chat.service.impl.UserSessionServiceSyncImpl">
         <property name="fishCacheRedis" ref="fishCacheRedis"/>
+    </bean>
+
+    <!--iq handler-->
+    <bean id="messageHistoryIqHandler" class="org.fish.chat.chat.impl.MessageHistoryIqHandler">
+        <property name="userSessionService" ref="userSessionService"/>
+    </bean>
+    <bean id="dispatcherIqHandler" class="org.fish.chat.chat.impl.DispatcherIqHandler">
+        <property name="handlerMap">
+            <map>
+                <entry key="/message/history" value-ref="messageHistoryIqHandler"/>
+            </map>
+        </property>
     </bean>
 
 </beans>
