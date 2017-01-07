@@ -4,6 +4,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="messageService" class="org.fish.chat.chat.service.impl.MessageServiceImpl">
+    </bean>
+
+    <bean id="mqttServiceQosProxy" class="org.fish.chat.mqtt.service.impl.MqttServiceQosProxy">
+        <property name="qosService" ref="qosService"/>
+        <property name="messageFinishCallback" ref="userChatService"/>
+        <property name="mqttService" ref="mqttService"/>
+        <property name="userSessionService" ref="userSessionService"/>
+    </bean>
+
     <bean id="mqttBizService" class="org.fish.chat.mqtt.service.impl.MqttBizServiceImpl">
         <property name="messageAckCallback" ref="mqttServiceQosProxy" />
         <property name="userSessionService" ref="userSessionService" />
@@ -25,7 +35,7 @@
         <property name="messageService" ref="messageService"/>
     </bean>
 
-    <bean id="userSessionServiceSync" class="org.fish.chat.chat.service.impl.UserSessionServiceSyncImpl">
+    <bean id="userSessionService" class="org.fish.chat.chat.service.impl.UserSessionServiceSyncImpl">
         <property name="fishCacheRedis" ref="fishCacheRedis"/>
     </bean>
 

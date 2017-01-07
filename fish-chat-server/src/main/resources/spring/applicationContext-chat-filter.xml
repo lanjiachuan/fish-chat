@@ -22,7 +22,6 @@
     </bean>
 
     <bean id="persistenceFilter" class="org.fish.chat.chat.filter.impl.PersistenceFilter">
-        <property name="messageService" ref="messageService" />
     </bean>
 
 </beans>

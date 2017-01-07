@@ -14,7 +14,6 @@ import org.springframework.util.Assert;
  */
 public class PersistenceFilter extends ChatFilterAdapter implements InitializingBean {
 
-    private MessageService messageService;
 
     @Override
     public boolean beforeDeliver(UserSession fromUserSession, Message message) {
@@ -26,11 +25,6 @@ public class PersistenceFilter extends ChatFilterAdapter implements Initializing
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(messageService, "messageService must not null");
-    }
-
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
     }
 
 }

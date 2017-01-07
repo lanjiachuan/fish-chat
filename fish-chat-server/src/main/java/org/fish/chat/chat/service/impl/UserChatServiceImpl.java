@@ -1,5 +1,6 @@
 package org.fish.chat.chat.service.impl;
 
+import org.fish.chat.chat.callback.MessageFinishCallback;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
 import com.googlecode.protobuf.format.JsonFormat;
@@ -22,7 +23,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -34,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  * Date: 11/12/15
  * Time: 16:34
  */
-public class UserChatServiceImpl implements UserChatService, DeliverService, InitializingBean {
+public class UserChatServiceImpl implements UserChatService, DeliverService, MessageFinishCallback, InitializingBean {
 
     private UserSessionService userSessionService;
     private ChatFilter chatFilter;
@@ -224,6 +227,28 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Ini
         });
     }
 
+    /**
+     * set message status received
+     * @param userId
+     * @param messageList
+     */
+    @Override
+    public void messageFinish(long userId, List<Message> messageList) {
+        UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
+        if (userSession != null) {
+            Set<Long> idSet = new HashSet<>();
+            for (Message message : messageList) {
+                if (message != null && message.getTo().getUid() == userId && !message.isReceived()) {
+                    idSet.add(message.getId());
+                }
+            }
+            if (idSet.size() > 0) {
+                // TODO: 2017/1/7 set message status 
+//                messageApi.receiveMessage(userId, userSession.getIdentity(), new ArrayList<Long>(idSet));
+            }
+        }
+    }
+
     public void setUserSessionService(UserSessionService userSessionService) {
         this.userSessionService = userSessionService;
     }
@@ -239,4 +264,5 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Ini
     public void setMqttService(MqttService mqttService) {
         this.mqttService = mqttService;
     }
+    
 }
