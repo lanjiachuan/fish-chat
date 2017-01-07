@@ -17,11 +17,13 @@ import org.springframework.util.Assert;
 
 
 /**
+ * mqtt服务质量
+ * redis实现重发?
+ *
  * Comments for QosServiceRedisImpl.java
  **/
 
-public class QosServiceRedisImpl extends UserSessionListenerAdapter implements QosService,
-        InitializingBean {
+public class QosServiceRedisImpl extends UserSessionListenerAdapter implements QosService, InitializingBean {
 
     private static final int DEFAULT_EXPIRE_TIME = 60;
 
@@ -106,7 +108,7 @@ public class QosServiceRedisImpl extends UserSessionListenerAdapter implements Q
     }
 
     @Override
-    public Long getClinetFlightQueueLen(long userId) {
+    public Long getClientFlightQueueLen(long userId) {
         Long len = 0L;
         try {
             len = fishCacheRedis.llen(getClientFlightQueueKey(userId));
@@ -238,22 +240,11 @@ public class QosServiceRedisImpl extends UserSessionListenerAdapter implements Q
 
     }
 
-
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(fishCacheRedis, "fishCacheRedis must not null!");
-    }
-
-
-
     private void cleanup(long userId) {
         fishCacheRedis.del(getFlightQueueKey(userId));
         fishCacheRedis.del(getExactlyOnceKey(userId));
         fishCacheRedis.del(getFlightPublishKey(userId));
     }
-
-
 
     @Override
     public void onSessionDestroy(UserSession userSession) {
@@ -265,5 +256,13 @@ public class QosServiceRedisImpl extends UserSessionListenerAdapter implements Q
         cleanup(userSession.getUserId());
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(fishCacheRedis, "fishCacheRedis must not null!");
+    }
+
+    public void setFishCacheRedis(FishCacheRedis fishCacheRedis) {
+        this.fishCacheRedis = fishCacheRedis;
+    }
 }
 

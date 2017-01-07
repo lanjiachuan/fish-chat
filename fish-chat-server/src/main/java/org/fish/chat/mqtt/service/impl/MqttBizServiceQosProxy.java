@@ -10,6 +10,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 /**
+ * 代理模式
+ *
+ * mqtt层通过dubbo调用此方法
+ *
  * Comments for MqttBizServiceQosProxy.java
  *
  */
@@ -58,8 +62,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
                 LoggerManager
                         .info("==>MqttBizServiceQosProxy : message not send , wait pubrel to send msgId="
                                 + mqttPublish.getMessageId());
-                // zyl modify 2015 06 09
-//                return qosService.setExactlyOnceMessage(userId, mqttPublish);
                 int index = qosService.setClientFlightQueueMessage(userId, mqttPublish);
                 return index > -1;
             } else {

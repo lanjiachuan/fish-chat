@@ -87,6 +87,6 @@ public interface QosService {
      * @param userId
      * @return
      */
-    public Long getClinetFlightQueueLen(long userId);
+    public Long getClientFlightQueueLen(long userId);
 
 }

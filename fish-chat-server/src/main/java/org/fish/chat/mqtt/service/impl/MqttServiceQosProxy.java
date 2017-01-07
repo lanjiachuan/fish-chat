@@ -58,8 +58,7 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
         if (qos > 0) {
             int pos = qosService.addMessage(userId, publish);
             if (pos == 1) {
-                LoggerManager
-                        .info("<==puslish: qos queue is empty, immediately send 。 messageId = "
+                LoggerManager.info("<==puslish: qos queue is empty, immediately send 。 messageId = "
                                 + publish.getMessageId());
                 //当前队列没有消息， 可以直接发送消息
                 writeAndRetry(userId, publish);

@@ -1,6 +1,8 @@
 package org.fish.chat.mqtt.service.impl;
 
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -48,23 +50,32 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
     private ExecutorService executorService = new ThreadPoolExecutor(4, 8, 60, TimeUnit.SECONDS,
             new LinkedBlockingQueue<Runnable>(10000));
 
+    /**
+     * 建立连接 创建session
+     * @param userId
+     * @param cid
+     * @param mqttConnect
+     * @param ip
+     * @param type
+     * @return
+     */
     @Override
     public MqttConnack connect(long userId, long cid, MqttConnect mqttConnect, String ip, int type) {
         String password = mqttConnect.getPassword();
-//        if (StringUtils.length(password) > 16) {
+        if (StringUtils.length(password) > 16) {
             //TODO check user
-//            String secretKey = passportResponse.getResData().getUserSecretKey();
-//            String random = StringUtils.substring(password, 16);
-//            String checksum = DigestUtils.md5Hex(secretKey + random).substring(8, 24) + random;
-//            if (!StringUtils.equalsIgnoreCase(password, checksum)) {
-//                LoggerManager.warn("MqttBizService.connect check failed. secretKey="
-//                        + secretKey + ", random" + random + ", checksum = " + checksum + ", password=" + password);
-//                return new MqttConnack(MqttConnack.REFUSED_BAD_USERNAME_PASSWORD);
-//            }
-//        } else {
-//            LoggerManager.warn("MqttBizService.connect password is too short . password = " + password);
-//            return new MqttConnack(MqttConnack.REFUSED_BAD_USERNAME_PASSWORD);
-//        }
+            String secretKey = "test";
+            String random = StringUtils.substring(password, 16);
+            String checksum = DigestUtils.md5Hex(secretKey + random).substring(8, 24) + random;
+            if (!StringUtils.equalsIgnoreCase(password, checksum)) {
+                LoggerManager.warn("MqttBizService.connect check failed. secretKey="
+                        + secretKey + ", random" + random + ", checksum = " + checksum + ", password=" + password);
+                return new MqttConnack(MqttConnack.REFUSED_BAD_USERNAME_PASSWORD);
+            }
+        } else {
+            LoggerManager.warn("MqttBizService.connect password is too short . password = " + password);
+            return new MqttConnack(MqttConnack.REFUSED_BAD_USERNAME_PASSWORD);
+        }
 
         float protocolVersion = 1.0f;
 
@@ -97,6 +108,13 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         });
     }
 
+    /**
+     * 发布消息
+     * @param userId
+     * @param cid
+     * @param mqttPublish
+     * @return
+     */
     @Override
     public boolean publish(final long userId, long cid, MqttPublish mqttPublish) {
         try {
