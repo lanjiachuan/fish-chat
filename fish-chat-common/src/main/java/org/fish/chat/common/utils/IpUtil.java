@@ -1,10 +1,59 @@
 package org.fish.chat.common.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+
 /**
  * @author adre
  * @date 2018/1/30
  */
 public class IpUtil {
+
+    private static long innerIp = 0;
+    private static long outerIp = 0;
+
+    static {
+        Enumeration netInterfaces = null;
+
+        try {
+            netInterfaces = NetworkInterface.getNetworkInterfaces();
+
+            label44:
+            while(netInterfaces.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface)netInterfaces.nextElement();
+                Enumeration ips = ni.getInetAddresses();
+
+                while(true) {
+                    while(true) {
+                        String ip;
+                        do {
+                            if (!ips.hasMoreElements()) {
+                                continue label44;
+                            }
+
+                            ip = ((InetAddress)ips.nextElement()).getHostAddress();
+                        } while(StringUtils.equals(ip, "127.0.0.1"));
+
+                        if (!StringUtils.startsWith(ip, "192.168.") && !StringUtils.startsWith(ip, "10.")) {
+                            outerIp = ipToLong(ip);
+                        } else {
+                            innerIp = ipToLong(ip);
+                        }
+                    }
+                }
+            }
+        } catch (Exception var4) {
+            var4.printStackTrace();
+        }
+
+        if (innerIp == 0) {
+            innerIp = ipToLong("127.0.0.1");
+        }
+
+    }
 
     /**
      * 将127.0.0.1形式的IP地址转换成十进制整数，这里没有进行任何错误处理
@@ -44,5 +93,13 @@ public class IpUtil {
         //将高24位置0
         sb.append(String.valueOf((longIp & 0x000000FF)));
         return sb.toString();
+    }
+
+    public static long getLocalInnerIp() {
+        return innerIp;
+    }
+
+    public static long getLocalOuterIp() {
+        return outerIp;
     }
 }

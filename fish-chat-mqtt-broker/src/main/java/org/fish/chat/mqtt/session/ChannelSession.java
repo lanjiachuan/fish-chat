@@ -2,12 +2,14 @@ package org.fish.chat.mqtt.session;
 
 import io.netty.channel.Channel;
 import org.fish.chat.common.utils.ChannelSessionUtil;
+import org.fish.chat.common.utils.IpUtil;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Comments for ChannelSession.java
+ * mqtt 层缓存对象
  *
+ * @author adre
  */
 public class ChannelSession {
 
@@ -33,7 +35,7 @@ public class ChannelSession {
             sender.set(1);
             id = 1;
         }
-        long cid = (IpUtil.getLocalInnerIp() + (1l << 32)) << 28 | id;
+        long cid = (IpUtil.getLocalInnerIp() + (1L << 32)) << 28 | id;
         return cid;
     }
 
@@ -90,9 +92,7 @@ public class ChannelSession {
                 sender.set(1);
                 id = 1;
             }
-//            System.out.println((1l << 32));
-//            System.out.println(IpUtil.getLocalInnerIp() + (1l << 32));
-            long cid = (IpUtil.getLocalInnerIp() + (1l << 32)) << 28 | id;
+            long cid = (IpUtil.getLocalInnerIp() + (1L << 32)) << 28 | id;
             System.out.println(cid);
             String ip = ChannelSessionUtil.getIpByChannelId(cid);
             System.out.println(ip);
