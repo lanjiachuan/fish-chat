@@ -11,9 +11,6 @@ import org.fish.chat.mqtt.session.ChannelSession;
  */
 public class MqttSubscribeHandler extends AbstractMqttHandler<MqttSubscribe> {
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.handler.AbstracMqttHandler#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttSubscribe msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());

@@ -1,7 +1,5 @@
 package org.fish.chat.common.utils;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -13,12 +11,9 @@ import java.util.UUID;
 /**
  * 加密工具类
  *
- * @author wwj <wangweijie@techwolf.cn>
- * @ClassName: SecurityUtils
- * @date 2014年2月10日 下午2:59:26
  */
 public class SecurityUtils {
-    private static Logger logger = Logger.getLogger(SecurityUtils.class);
+
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final String RC4_DEFAULT_PASSWORD = "3984aF333#@213";
 

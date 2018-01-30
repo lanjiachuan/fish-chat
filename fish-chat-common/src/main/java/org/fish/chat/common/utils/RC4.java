@@ -2,9 +2,7 @@ package org.fish.chat.common.utils;
 
 /**
  * RC4加密算法
- * @ClassName: RC4 
- * @author wwj <wangweijie@techwolf.cn>
- * @date 2014年2月26日 下午2:21:47 
+ * @ClassName: RC4
  *
  */
 public class RC4 {

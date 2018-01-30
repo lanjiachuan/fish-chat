@@ -2,9 +2,7 @@ package org.fish.chat.common.utils;
 
 /**
  * BASE64
- * @ClassName: Base64 
- * @author wwj <wangweijie@techwolf.cn>
- * @date 2014年2月10日 下午3:20:27 
+ * @ClassName: Base64
  *
  */
 public final class Base64 {

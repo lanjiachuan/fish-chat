@@ -9,9 +9,7 @@ import org.springframework.util.Assert;
 
 /**
  * Comments for AbstracMqttHandler.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午8:31:21
+ *
  */
 public abstract class AbstractMqttHandler<T> implements InitializingBean {
 

@@ -26,9 +26,6 @@ public class SoundMessage extends Message implements Serializable {
     @Expose
     private int duration;
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.chat.protocol.message.AbstractMessage#getMessageMediaType()
-     */
     @Override
     public int getMediaType() {
         return MESSAGE_MEDIA_TYPE_SOUND;
@@ -62,9 +59,6 @@ public class SoundMessage extends Message implements Serializable {
         this.duration = duration;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.chat.protocol.message.Message#getMediaJsonBody()
-     */
     @Override
     public String getMediaBody() {
         JSONObject object = new JSONObject();
@@ -73,9 +67,6 @@ public class SoundMessage extends Message implements Serializable {
         return object.toString();
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.chat.protocol.message.Message#setMediaJsonBody(java.lang.String)
-     */
     @Override
     public boolean setMediaBody(String json) {
         JSONObject object = JSONObject.fromObject(json);
@@ -84,9 +75,6 @@ public class SoundMessage extends Message implements Serializable {
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getPushMessage()
-     */
     @Override
     public String getPushMessage() {
         StringBuffer sb = new StringBuffer();

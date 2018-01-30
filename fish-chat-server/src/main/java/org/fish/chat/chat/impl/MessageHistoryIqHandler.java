@@ -1,12 +1,12 @@
 package org.fish.chat.chat.impl;
 
-import cn.techwolf.common.log.LoggerManager;
 import org.apache.commons.lang.math.NumberUtils;
 import org.fish.chat.chat.ChatProtocol;
 import org.fish.chat.chat.handler.IqHandler;
 import org.fish.chat.chat.model.UserSession;
 import org.fish.chat.chat.service.UserSessionService;
 import org.fish.chat.common.constants.ChatConstant;
+import org.fish.chat.common.log.LoggerManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 

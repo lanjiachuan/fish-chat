@@ -22,24 +22,21 @@ public class ChatServerBootstrap {
         context = new ClassPathXmlApplicationContext(CONFIG_FILES);
         context.start();
         RequestIdUtil.setRequestId();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                try {
-                    context.stop();
-                    LoggerManager.info(" App [ChatServerBootstrap] stopped!");
-                } catch (Throwable t) {
-                    LoggerManager.error(t.getMessage(), t);
-                } finally {
-                    LoggerManager.info("shutdown [ ChatServerBootstrap] success, running time:"
-                            + ((System.currentTimeMillis() - start) / 60000) + " m");
-                }
-                synchronized (ChatServerBootstrap.class) {
-                    running = false;
-                    ChatServerBootstrap.class.notify();
-                }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                context.stop();
+                LoggerManager.info(" App [ChatServerBootstrap] stopped!");
+            } catch (Throwable t) {
+                LoggerManager.error(t.getMessage(), t);
+            } finally {
+                LoggerManager.info("shutdown [ ChatServerBootstrap] success, running time:"
+                        + ((System.currentTimeMillis() - start) / 60000) + " m");
             }
-        });
+            synchronized (ChatServerBootstrap.class) {
+                running = false;
+                ChatServerBootstrap.class.notify();
+            }
+        }));
 
         LoggerManager.info("start up [ChatServerBootstrap] success, time used:" + (System.currentTimeMillis() - start) + " ms");
 

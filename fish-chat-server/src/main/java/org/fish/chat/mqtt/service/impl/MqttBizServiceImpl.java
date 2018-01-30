@@ -124,76 +124,73 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
             } else {
                 final ChatProtocol.FishChatProtocol protocol = ChatProtocol.FishChatProtocol.parseFrom(mqttPublish.getPayload());
                 LoggerManager.info("==>publish:" + JsonFormat.printToString(protocol));
-                executorService.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        RequestIdUtil.setRequestId(userId);
-                        try {
-                            switch (protocol.getType()) {
-                                case ChatConstant.PROTOCOL_TYPE_MESSAGE:
-                                    int count = protocol.getMessagesCount();
-                                    for (int i = 0; i < count; i++) {
-                                        ChatProtocol.FishMessage techwolfMessage = protocol.getMessages(i);
-                                        if (techwolfMessage != null) {
-                                            Message message = ProtocolUtil.convertMessage(techwolfMessage);
-                                            userChatService.dispatchMessage(userId, message, UserSession.USER_SESSION_TYPE_CLIENT);
-                                        }
+                executorService.submit(() -> {
+                    RequestIdUtil.setRequestId(userId);
+                    try {
+                        switch (protocol.getType()) {
+                            case ChatConstant.PROTOCOL_TYPE_MESSAGE:
+                                int count = protocol.getMessagesCount();
+                                for (int i = 0; i < count; i++) {
+                                    ChatProtocol.FishMessage fishMessage = protocol.getMessages(i);
+                                    if (fishMessage != null) {
+                                        Message message = ProtocolUtil.convertMessage(fishMessage);
+                                        userChatService.dispatchMessage(userId, message, UserSession.USER_SESSION_TYPE_CLIENT);
                                     }
-                                    break;
-                                case ChatConstant.PROTOCOL_TYPE_PRESENCE:
-                                    userSessionService.presence(userId, protocol.getPresence(), UserSession.USER_SESSION_TYPE_CLIENT);
-                                    break;
-                                case ChatConstant.PROTOCOL_TYPE_IQ:
-                                    ChatProtocol.FishIq fishIq = protocol.getIq();
-                                    if (fishIq != null) {
-                                        UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
-                                        if (userSession != null) {
-                                            Map<String, String> params = new HashMap<String, String>();
-                                            List<ChatProtocol.FishKVEntry> entryList = fishIq.getParamsList();
-                                            if (entryList != null && entryList.size() > 0) {
-                                                for (ChatProtocol.FishKVEntry entry : entryList) {
-                                                    params.put(entry.getKey(), entry.getValue());
-                                                }
+                                }
+                                break;
+                            case ChatConstant.PROTOCOL_TYPE_PRESENCE:
+                                userSessionService.presence(userId, protocol.getPresence(), UserSession.USER_SESSION_TYPE_CLIENT);
+                                break;
+                            case ChatConstant.PROTOCOL_TYPE_IQ:
+                                ChatProtocol.FishIq fishIq = protocol.getIq();
+                                if (fishIq != null) {
+                                    UserSession userSession1 = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
+                                    if (userSession1 != null) {
+                                        Map<String, String> params = new HashMap<String, String>();
+                                        List<ChatProtocol.FishKVEntry> entryList = fishIq.getParamsList();
+                                        if (entryList != null && entryList.size() > 0) {
+                                            for (ChatProtocol.FishKVEntry entry : entryList) {
+                                                params.put(entry.getKey(), entry.getValue());
                                             }
-                                            ChatProtocol.FishChatProtocol response = iqHandler.handle(userId, fishIq.getQid(),
-                                                    fishIq.getQuery(), params);
-                                            if (response != null) {
-                                                userChatService.sendProtocol(userSession, response, (int) fishIq.getQid());
+                                        }
+                                        ChatProtocol.FishChatProtocol response = iqHandler.handle(userId, fishIq.getQid(),
+                                                fishIq.getQuery(), params);
+                                        if (response != null) {
+                                            userChatService.sendProtocol(userSession1, response, (int) fishIq.getQid());
+                                        } else {
+                                            LoggerManager.warn("qid =" + fishIq.getQid() + ",query=" + fishIq.getQuery() + ", return null");
+                                        }
+                                    } else {
+                                        LoggerManager.warn("userSession was null!");
+                                    }
+                                }
+                                break;
+                            case ChatConstant.PROTOCOL_TYPE_IQ_RESPONSE:
+                                break;
+                            case ChatConstant.PROTOCOL_TYPE_IQ_MESSAGE_SYNC:
+                                break;
+                            case ChatConstant.PROTOCOL_TYPE_MESSAGE_READ:
+                                List<ChatProtocol.FishMessageRead> messageReadList = protocol.getMessageReadList();
+                                if (CollectionUtils.isNotEmpty(messageReadList)) {
+                                    UserSession userSession1 = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
+                                    if (userSession1 != null) {
+                                        for (ChatProtocol.FishMessageRead fishMessageRead : messageReadList) {
+                                            if (fishMessageRead != null) {
+                                                messageService.readUserMessage(userId, fishMessageRead.getUserId(), fishMessageRead.getMessageId());
                                             } else {
-                                                LoggerManager.warn("qid =" + fishIq.getQid() + ",query=" + fishIq.getQuery() + ", return null");
+                                                LoggerManager.warn("MqttBizServiceImpl.publish fishMessageRead is null!!!, " + JsonFormat.printToString(protocol));
                                             }
-                                        } else {
-                                            LoggerManager.warn("userSession was null!");
                                         }
+                                    } else {
+                                        LoggerManager.warn("MqttBizServiceImpl.publish userSession is null when received message read!");
                                     }
-                                    break;
-                                case ChatConstant.PROTOCOL_TYPE_IQ_RESPONSE:
-                                    break;
-                                case ChatConstant.PROTOCOL_TYPE_IQ_MESSAGE_SYNC:
-                                    break;
-                                case ChatConstant.PROTOCOL_TYPE_MESSAGE_READ:
-                                    List<ChatProtocol.FishMessageRead> messageReadList = protocol.getMessageReadList();
-                                    if (CollectionUtils.isNotEmpty(messageReadList)) {
-                                        UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
-                                        if (userSession != null) {
-                                            for (ChatProtocol.FishMessageRead techwolfMessageRead : messageReadList) {
-                                                if (techwolfMessageRead != null) {
-                                                    messageService.readUserMessage(userId, techwolfMessageRead.getUserId(), techwolfMessageRead.getMessageId());
-                                                } else {
-                                                    LoggerManager.warn("MqttBizServiceImpl.publish techwolfMessageRead is null!!!, " + JsonFormat.printToString(protocol));
-                                                }
-                                            }
-                                        } else {
-                                            LoggerManager.warn("MqttBizServiceImpl.publish userSession is null when received message read!");
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    LoggerManager.warn("undefined protocol type :" + protocol.getType());
-                            }
-                        } catch (Exception e) {
-                            LoggerManager.error("", e);
+                                }
+                                break;
+                            default:
+                                LoggerManager.warn("undefined protocol type :" + protocol.getType());
                         }
+                    } catch (Exception e) {
+                        LoggerManager.error("", e);
                     }
                 });
 

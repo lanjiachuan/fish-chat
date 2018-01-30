@@ -79,17 +79,11 @@ public class ActionMessage extends Message implements Serializable {
         this.actionType = actionType;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getMediaType()
-     */
     @Override
     public int getMediaType() {
         return Message.MESSAGE_MEDIA_TYPE_ACTION;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getMediaBody()
-     */
     @Override
     public String getMediaBody() {
         JSONObject object = new JSONObject();
@@ -98,9 +92,6 @@ public class ActionMessage extends Message implements Serializable {
         return object.toString();
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#setMediaBody(java.lang.String)
-     */
     @Override
     public boolean setMediaBody(String json) {
         JSONObject object = JSONObject.fromObject(json);
@@ -127,9 +118,6 @@ public class ActionMessage extends Message implements Serializable {
         return actionType;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getPushMessage()
-     */
     @Override
     public String getPushMessage() {
         StringBuffer sb = new StringBuffer();
@@ -170,9 +158,6 @@ public class ActionMessage extends Message implements Serializable {
         return ProtocolConstants.URL_PATH + "?type=f2";
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return "[messageId=" + id + ", type=" + type + ",mediaType=" + MESSAGE_MEDIA_TYPE_ACTION

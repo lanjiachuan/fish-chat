@@ -23,9 +23,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
 
     private QosService qosService;
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#connect(long, long, cn.techwolf.mqtt.protocol.wire.MqttConnect)
-     */
     @Override
     public MqttConnack connect(long userId, long cid, MqttConnect mqttConnect, String ip, int type) {
         RequestIdUtil.setRequestId(userId);
@@ -37,9 +34,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         }
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#disconnect(long, cn.techwolf.mqtt.protocol.wire.MqttDisconnect)
-     */
     @Override
     public void disconnect(long userId, long cid, MqttDisconnect mqttDisconnect) {
         RequestIdUtil.setRequestId(userId);
@@ -50,9 +44,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         }
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#publish(long, cn.techwolf.mqtt.protocol.wire.MqttPublish)
-     */
     @Override
     public boolean publish(long userId, long cid, MqttPublish mqttPublish) {
         RequestIdUtil.setRequestId(userId);
@@ -76,9 +67,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
 
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#pubAck(long, cn.techwolf.mqtt.protocol.wire.MqttPubAck)
-     */
     @Override
     public boolean pubAck(long userId, long cid, MqttPubAck mqttPuback) {
         RequestIdUtil.setRequestId(userId);
@@ -90,9 +78,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#pubRec(long, cn.techwolf.mqtt.protocol.wire.MqttPubRec)
-     */
     @Override
     public boolean pubRec(long userId, long cid, MqttPubRec mqttPubRec) {
         RequestIdUtil.setRequestId(userId);
@@ -104,16 +89,13 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#pubRel(long, cn.techwolf.mqtt.protocol.wire.MqttPubRel)
-     */
     @Override
     public boolean pubRel(long userId, long cid, MqttPubRel mqttPubRel) {
         RequestIdUtil.setRequestId(userId);
         try {
             int messageId = mqttPubRel.getMessageId();
             //取list直到满足否则抛弃
-            while (qosService.getClinetFlightQueueLen(userId) > 0) {
+            while (qosService.getClientFlightQueueLen(userId) > 0) {
                 MqttPublish mqttPublish = qosService.getClientFlightQueueMessage(userId,true);
                 LoggerManager.info("==>loop mqttPubRel = " + mqttPubRel + ", publish = " + mqttPublish
                         + ", userId " + userId);
@@ -139,9 +121,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#pubComp(long, cn.techwolf.mqtt.protocol.wire.MqttPubComp)
-     */
     @Override
     public boolean pubComp(long userId, long cid, MqttPubComp mqttPubComp) {
         RequestIdUtil.setRequestId(userId);
@@ -153,9 +132,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#subscribe(long, cn.techwolf.mqtt.protocol.wire.MqttSubscribe)
-     */
     @Override
     public boolean subscribe(long userId, long cid, MqttSubscribe mqttSubscribe) {
         RequestIdUtil.setRequestId(userId);
@@ -167,9 +143,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#unsubscribe(long, cn.techwolf.mqtt.protocol.wire.MqttUnsubscribe)
-     */
     @Override
     public boolean unsubscribe(long userId, long cid, MqttUnsubscribe mqttUnubscribe) {
         RequestIdUtil.setRequestId(userId);
@@ -181,9 +154,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(mqttBizService, "mqttBizService must not null!");
@@ -204,17 +174,11 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
         this.qosService = qosService;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#channelInactive(long)
-     */
     @Override
     public void channelInactive(long userId, long cid) {
         mqttBizService.channelInactive(userId, cid);
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttBizService#ping(long)
-     */
     @Override
     public void ping(long userId, long cid) {
         mqttBizService.ping(userId, cid);

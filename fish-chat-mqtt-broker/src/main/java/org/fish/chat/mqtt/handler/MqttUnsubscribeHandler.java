@@ -11,9 +11,6 @@ import org.fish.chat.mqtt.session.ChannelSession;
  */
 public class MqttUnsubscribeHandler extends AbstractMqttHandler<MqttUnsubscribe> {
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.handler.AbstracMqttHandler#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttUnsubscribe msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());

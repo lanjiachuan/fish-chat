@@ -48,9 +48,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
 
     private final static ScheduledThreadPoolExecutor scheduled = new ScheduledThreadPoolExecutor(5);
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttService#publish(long, cn.techwolf.mqtt.protocol.wire.MqttPublish)
-     */
     @Override
     public boolean publish(long userId, long cid, MqttPublish publish) {
         RequestIdUtil.setRequestId(userId);
@@ -75,9 +72,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttService#pubRel(long, cn.techwolf.mqtt.protocol.wire.MqttPubRel)
-     */
     @Override
     public boolean pubRel(long userId, long cid, MqttPubRel mqttPubRel) {
         RequestIdUtil.setRequestId(userId);
@@ -94,18 +88,12 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.service.MessageAckCallback#notifyPubRec(long, long, cn.techwolf.boss.mqtt.protocol.wire.MqttPubRec)
-     */
     @Override
     public boolean notifyPubRec(long userId, long cid, MqttPubRec mqttPubRec) {
         RequestIdUtil.setRequestId(userId);
         return pubRel(userId, cid, new MqttPubRel(mqttPubRec));
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.mqtt.service.MqttService#notifyPubAck(long, long, cn.techwolf.boss.mqtt.protocol.wire.MqttPubAck)
-     */
     @Override
     public boolean notifyPubAck(long userId, long cid, MqttPubAck mqttPubAck) {
         RequestIdUtil.setRequestId(userId);
@@ -190,25 +178,18 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(mqttService, "mqttService must not null!");
         Assert.notNull(qosService, "qosService must not null!");
-        scheduled.scheduleWithFixedDelay(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    cache.cleanUp();
-                    //LoggerManager.debug("clean up guava Cache , current guava size: " + cache.size());
-                } catch (Exception e) {
-                    LoggerManager.error("clean up guava Cache error! ", e);
-                }
-
+        scheduled.scheduleWithFixedDelay(() -> {
+            try {
+                cache.cleanUp();
+                LoggerManager.debug("clean up guava Cache , current guava size: " + cache.size());
+            } catch (Exception e) {
+                LoggerManager.error("clean up guava Cache error! ", e);
             }
+
         }, 2, 1, TimeUnit.SECONDS);
     }
 
@@ -253,9 +234,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.google.common.cache.RemovalListener#onRemoval(com.google.common.cache.RemovalNotification)
-     */
     @Override
     public void onRemoval(RemovalNotification<Long, MqttPersistableWireMessage> notification) {
         if (notification.getCause() == RemovalCause.EXPIRED) {
@@ -289,9 +267,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
         this.messageFinishCallback = messageFinishCallback;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.mqtt.service.MqttService#publishAndClose(long, long, cn.techwolf.boss.mqtt.protocol.wire.MqttPublish)
-     */
     @Override
     public boolean publishAndClose(long userId, long cid, MqttPublish publish) {
         publish.getMessage().setQos(0);

@@ -17,11 +17,13 @@ import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Comments for MqttServer.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月8日 下午8:15:13
+ *
+ * @author adre
  */
 public class MqttServer implements InitializingBean {
 
@@ -31,57 +33,49 @@ public class MqttServer implements InitializingBean {
 
     private ChannelSessionManager channelSessionManager;
 
-    public MqttServer(int port) {
-        this.port = port;
-    }
-
     public boolean start() throws InterruptedException {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                LoggerManager.info("MqttServer start ");
-                EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
-                EventLoopGroup workerGroup = new NioEventLoopGroup();
-                try {
-                    ServerBootstrap b = new ServerBootstrap(); // (2)
-                    b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class) // (3)
-                            .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
-
-                                        @Override
-                                        public void initChannel(SocketChannel ch) throws Exception {
-                                            MqttIdleStateHandler idleStateHandler = new MqttIdleStateHandler(
-                                                    180, 200, 200);
-                                            idleStateHandler
-                                                    .setChannelSessionManager(channelSessionManager);
-                                            ch.pipeline().addLast(idleStateHandler);
-                                            ch.pipeline().addLast(new MqttProtocolDecoder());
-                                            ch.pipeline().addLast(new MqttProtocolEncoder());
-                                            ch.pipeline().addLast(mqttDispatcherHandler);
-                                        }
-                                    }).option(ChannelOption.SO_BACKLOG, 128) // (5)
-                            .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
-
-                    // Bind and start to accept incoming connections.
-                    ChannelFuture f = b.bind(port).sync(); // (7)
-
-                    f.channel().closeFuture().sync();
-                } catch (InterruptedException e) {
-                    LoggerManager.error("", e);
-                } finally {
-                    workerGroup.shutdownGracefully();
-                    bossGroup.shutdownGracefully();
-                }
-            }
-        }).start();
+        new Thread(this::run).start();
 
         return true;
     }
 
-    /**
-     * @param port the port to set
-     */
-    public void setPort(int port) {
+    private void run() {
+        LoggerManager.info("MqttServer start ");
+        // boss group 只暴露一个端口 所以只配置一个线程
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            MqttIdleStateHandler idleStateHandler = new MqttIdleStateHandler(
+                                    180, 200, 200);
+                            idleStateHandler
+                                    .setChannelSessionManager(channelSessionManager);
+                            ch.pipeline().addLast(idleStateHandler);
+                            ch.pipeline().addLast(new MqttProtocolDecoder());
+                            ch.pipeline().addLast(new MqttProtocolEncoder());
+                            ch.pipeline().addLast(mqttDispatcherHandler);
+                        }
+                    }).option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true);
+
+            // Bind and start to accept incoming connections.
+            ChannelFuture f = b.bind(port).sync();
+
+            f.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            LoggerManager.error("", e);
+        } finally {
+            workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+        }
+    }
+
+    public MqttServer(int port) {
         this.port = port;
     }
 
@@ -107,5 +101,4 @@ public class MqttServer implements InitializingBean {
     public void setChannelSessionManager(ChannelSessionManager channelSessionManager) {
         this.channelSessionManager = channelSessionManager;
     }
-
 }

@@ -8,9 +8,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * AES加密 
- * @ClassName: AES 
- * @author wwj <wangweijie@techwolf.cn>
- * @date 2014年2月10日 下午6:15:27 
+ * @ClassName: AES
  *
  */
 public class AES {  

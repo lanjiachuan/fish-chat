@@ -18,17 +18,11 @@ public class ArticleMessage extends Message {
 
     private List<ArticleItem> articleItemList;
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getMediaType()
-     */
     @Override
     public int getMediaType() {
         return MESSAGE_MEDIA_TYPE_ARTICLE;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getMediaBody()
-     */
     @Override
     public String getMediaBody() {
         JSONArray jsonArray = new JSONArray();
@@ -38,9 +32,6 @@ public class ArticleMessage extends Message {
         return jsonArray.toString();
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#setMediaBody(java.lang.String)
-     */
     @Override
     public boolean setMediaBody(String json) {
         JSONArray jsonArray = JSONArray.fromObject(json);
@@ -55,9 +46,6 @@ public class ArticleMessage extends Message {
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getPushMessage()
-     */
     @Override
     public String getPushMessage() {
         if (CollectionUtils.isNotEmpty(articleItemList)) {

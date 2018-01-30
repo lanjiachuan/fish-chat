@@ -25,13 +25,11 @@ public class ChannelSessionManagerImpl implements ChannelSessionManager, Initial
 
     private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
 
+    @Override
     public ChannelSession getChannelSession(long id) {
         return channelSessionMap.get(id);
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.session.manager.ChannelSessionManager#createChannelSession(cn.techwolf.mqtt.protocol.wire.MqttConnect, io.netty.channel.Channel)
-     */
     @Override
     public ChannelSession createChannelSession(long userId, int userType, MqttConnect connect,
             Channel channel) {
@@ -47,9 +45,6 @@ public class ChannelSessionManagerImpl implements ChannelSessionManager, Initial
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.session.manager.ChannelSessionManager#getChannelSession(io.netty.channel.Channel)
-     */
     @Override
     public ChannelSession getChannelSession(Channel channel) {
         long cid = NumberUtils.toLong(channel.attr(ATTR_KEY_CONNECTION_ID).get());
@@ -59,9 +54,6 @@ public class ChannelSessionManagerImpl implements ChannelSessionManager, Initial
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
     @Override
     public void afterPropertiesSet() throws Exception {
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
@@ -85,9 +77,6 @@ public class ChannelSessionManagerImpl implements ChannelSessionManager, Initial
         }, 20, 60, TimeUnit.SECONDS);
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.mqtt.session.manager.ChannelSessionManager#destroyChannelSession(io.netty.channel.Channel)
-     */
     @Override
     public void destroyChannelSession(ChannelSession channelSession) {
         if (channelSession != null) {

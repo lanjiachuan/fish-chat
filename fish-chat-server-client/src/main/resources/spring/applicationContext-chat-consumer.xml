@@ -28,12 +28,5 @@
 
     </dubbo:reference>
 
-    <!--<dubbo:reference id="cometChatService"-->
-    <!--interface="cn.techwolf.boss.chat.service.CometChatService" version="1.0.0"-->
-    <!--check="false" registry="chatRegistry" loadbalance="uidlb" async="true" />-->
-
-    <!--<dubbo:reference id="onlineStatusService"-->
-    <!--interface="cn.techwolf.boss.chat.service.OnlineStatusService" version="1.0.0"-->
-    <!--check="false" registry="chatRegistry" cluster="merge" async="true" />-->
 
 </beans>

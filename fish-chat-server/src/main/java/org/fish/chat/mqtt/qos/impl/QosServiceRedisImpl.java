@@ -53,11 +53,6 @@ public class QosServiceRedisImpl extends UserSessionListenerAdapter implements Q
         return FLIGHT_PUBLISH_KEY_PREFIX + userId;
     }
 
-
-/* (non-Javadoc)
-     * @see cn.techwolf.boss.mqtt.qos.QosService#setExactlyOnceMessage(long, cn.techwolf.boss.mqtt.protocol.wire.MqttPublish)
-     */
-
     @Override
     public boolean setExactlyOnceMessage(long userId, MqttPublish mqttPublish) {
         try {

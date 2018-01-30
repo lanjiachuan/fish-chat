@@ -43,17 +43,11 @@ public class DialogMessage extends Message {
 
     private boolean clickMore = false;
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getMediaType()
-     */
     @Override
     public int getMediaType() {
         return MESSAGE_MEDIA_TYPE_DIALOG;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getMediaBody()
-     */
     @Override
     public String getMediaBody() {
         JSONObject jsonObject = new JSONObject();
@@ -73,9 +67,6 @@ public class DialogMessage extends Message {
         return jsonObject.toString();
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#setMediaBody(java.lang.String)
-     */
     @Override
     public boolean setMediaBody(String json) {
         JSONObject jsonObject = JSONObject.fromObject(json);
@@ -98,9 +89,6 @@ public class DialogMessage extends Message {
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getPushMessage()
-     */
     @Override
     public String getPushMessage() {
         return from.getName() + ":" + getText();

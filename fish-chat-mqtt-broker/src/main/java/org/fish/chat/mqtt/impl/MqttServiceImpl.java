@@ -22,9 +22,6 @@ public class MqttServiceImpl implements MqttService, InitializingBean {
 
     private ChannelSessionManager channelSessionManager;
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttService#publish(long, cn.techwolf.mqtt.protocol.wire.MqttPublish)
-     */
     @Override
     public boolean publish(long userId, long cid, MqttPublish publish) {
         RequestIdUtil.setRequestId(userId);
@@ -48,9 +45,6 @@ public class MqttServiceImpl implements MqttService, InitializingBean {
         this.channelSessionManager = channelSessionManager;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.mqtt.service.MqttService#pubRel(long, cn.techwolf.mqtt.protocol.wire.MqttPubRel)
-     */
     @Override
     public boolean pubRel(long userId, long cid, MqttPubRel mqttPubRel) {
         RequestIdUtil.setRequestId(userId);
@@ -67,17 +61,11 @@ public class MqttServiceImpl implements MqttService, InitializingBean {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.mqtt.service.MqttService#publishAndClose(long, long, cn.techwolf.boss.mqtt.protocol.wire.MqttPublish)
-     */
     @Override
     public boolean publishAndClose(final long userId, final long cid, final MqttPublish publish) {
         RequestIdUtil.setRequestId(userId);
@@ -88,15 +76,11 @@ public class MqttServiceImpl implements MqttService, InitializingBean {
             final Channel channel = channelSession.getChannel();
 
             ChannelFuture f = channelSession.getChannel().writeAndFlush(publish);
-            f.addListener(new ChannelFutureListener() {
-
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    RequestIdUtil.setRequestId(userId);
-                    LoggerManager.info("channel will close after publish, uid" + userId + ",cid="
-                            + cid);
-                    channel.close();
-                }
+            f.addListener((ChannelFutureListener) future -> {
+                RequestIdUtil.setRequestId(userId);
+                LoggerManager.info("channel will close after publish, uid" + userId + ",cid="
+                        + cid);
+                channel.close();
             });
             return true;
         } else {

@@ -27,17 +27,11 @@ public class ImageMessage extends Message implements Serializable{
     @Expose
     private ImageInfo originImage;
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.chat.protocol.message.AbstractMessage#getMessageMediaType()
-     */
     @Override
     public int getMediaType() {
         return MESSAGE_MEDIA_TYPE_IMAGE;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.chat.protocol.message.Message#getMediaJsonBody()
-     */
     @Override
     public String getMediaBody() {
         JSONObject object = new JSONObject();
@@ -46,9 +40,6 @@ public class ImageMessage extends Message implements Serializable{
         return object.toString();
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.chat.protocol.message.Message#setMediaJsonBody(java.lang.String)
-     */
     @Override
     public boolean setMediaBody(String json) {
         JSONObject object = JSONObject.fromObject(json);
@@ -85,9 +76,6 @@ public class ImageMessage extends Message implements Serializable{
         this.originImage = originImage;
     }
 
-    /* (non-Javadoc)
-     * @see cn.techwolf.boss.chat.model.Message#getPushMessage()
-     */
     @Override
     public String getPushMessage() {
         StringBuffer sb = new StringBuffer();

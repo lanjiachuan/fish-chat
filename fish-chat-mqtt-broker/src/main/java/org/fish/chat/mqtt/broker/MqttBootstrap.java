@@ -6,9 +6,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Comments for MqttBootstrap.java
- * 
- * @author <a href="mailto:liujun@techwolf.cn">刘军</a>
- * @createTime 2014年4月10日 下午3:20:57
+ *
+ * @author adre
  */
 public class MqttBootstrap {
 

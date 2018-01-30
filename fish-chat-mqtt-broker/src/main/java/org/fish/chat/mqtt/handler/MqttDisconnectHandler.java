@@ -23,7 +23,7 @@ public class MqttDisconnectHandler extends AbstractMqttHandler<MqttDisconnect> {
             mqttBizService.disconnect(channelSession.getUserId(), channelSession.getCid(),
                     mqttDisconnect);
             channelSessionManager.destroyChannelSession(channelSession);
-            LoggerManager.info("destory channelSession successful,uid="
+            LoggerManager.info("destroy channelSession successful,uid="
                     + channelSession.getUserId() + ", cid=" + channelSession.getCid());
         } else {
             LoggerManager.warn("not found channelSession!");
