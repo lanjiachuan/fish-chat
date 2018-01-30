@@ -65,7 +65,7 @@
         </filter>
     </appender>
 
-    <logger name="cn.techwolf" additivity="true">
+    <logger name="org.fish" additivity="true">
         <level value="info" />
         <appender-ref ref="infoFishAppender" />
     </logger>

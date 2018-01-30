@@ -45,11 +45,6 @@
         </dependency>
 
         <dependency>
-            <groupId>cn.techwolf</groupId>
-            <artifactId>techwolf-common</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
         </dependency>
