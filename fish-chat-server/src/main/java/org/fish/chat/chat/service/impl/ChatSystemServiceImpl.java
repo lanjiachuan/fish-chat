@@ -10,7 +10,6 @@ import org.fish.chat.chat.service.MessageService;
 import org.fish.chat.chat.service.UserChatService;
 import org.fish.chat.chat.utils.MessageUtil;
 import org.fish.chat.common.constants.ChatConstant;
-import org.fish.chat.common.utils.JsonReader;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
