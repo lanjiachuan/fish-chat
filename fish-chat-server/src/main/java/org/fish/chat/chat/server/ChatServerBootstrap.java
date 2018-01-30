@@ -23,7 +23,7 @@ public class ChatServerBootstrap {
         context.start();
         RequestIdUtil.setRequestId();
         Runtime.getRuntime().addShutdownHook(new Thread() {
-
+            @Override
             public void run() {
                 try {
                     context.stop();
