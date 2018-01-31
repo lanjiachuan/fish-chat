@@ -74,9 +74,6 @@ public class ChannelSession {
         return userId;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return "[cid=" + cid + ", userId=" + userId + "]";

@@ -21,8 +21,7 @@
 
     <properties>
         <xmemcached-version>2.0.0</xmemcached-version>
-        <solr-solrj-version>4.7.1</solr-solrj-version>
-        <dubbo-version>2.5.3</dubbo-version>
+        <dubbo-version>2.6</dubbo-version>
         <jedis-version>2.4.0</jedis-version>
         <junit-version>4.10</junit-version>
         <json-lib-version>2.3</json-lib-version>
@@ -31,13 +30,13 @@
         <gson-version>2.8.2</gson-version>
         <perf4j-version>0.9.16</perf4j-version>
         <netty-all-version>4.0.13.Final</netty-all-version>
-        <protobuf-version>2.6.0</protobuf-version>
-        <protobuf-java-format>1.2</protobuf-java-format>
+        <protobuf-version>3.5.1</protobuf-version>
+        <protobuf-java-format>1.4</protobuf-java-format>
         <kanzhun-version>1.2.2</kanzhun-version>
         <org.springframework-version>4.3.14.RELEASE</org.springframework-version>
         <joda.time-version>2.9.9</joda.time-version>
         <xmemcached-version>2.0.0</xmemcached-version>
-        <guava-version>11.0</guava-version>
+        <guava-version>23.6-jre</guava-version>
 
         <zkclient-version>0.1</zkclient-version>
         <apns-version>1.0.0.Beta6</apns-version>
@@ -165,16 +164,17 @@
             </dependency>
 
             <dependency>
+                <groupId>com.googlecode.protobuf-java-format</groupId>
+                <artifactId>protobuf-java-format</artifactId>
+                <version>${protobuf-java-format}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava-version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.googlecode.protobuf-java-format</groupId>
-                <artifactId>protobuf-java-format</artifactId>
-                <version>${protobuf-java-format}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
