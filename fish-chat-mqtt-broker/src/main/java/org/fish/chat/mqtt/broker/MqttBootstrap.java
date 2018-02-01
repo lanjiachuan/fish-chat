@@ -5,7 +5,9 @@ import org.fish.chat.common.utils.RequestIdUtil;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Comments for MqttBootstrap.java
+ * 入口
+ *
+ * 加载spring 唤起MqttServer
  *
  * @author adre
  */
@@ -28,24 +30,21 @@ public class MqttBootstrap {
         MqttServer mqttServer = context.getBean(MqttServer.class);
         mqttServer.start();
         RequestIdUtil.setRequestId();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-
-            public void run() {
-                try {
-                    context.stop();
-                    LoggerManager.info(" App [MqttBootstrap] stopped!");
-                } catch (Throwable t) {
-                    LoggerManager.error(t.getMessage(), t);
-                } finally {
-                    LoggerManager.info("shutdown [ MqttBootstrap] sucess, running time:"
-                            + ((System.currentTimeMillis() - start) / 60000) + " m");
-                }
-                synchronized (MqttBootstrap.class) {
-                    running = false;
-                    MqttBootstrap.class.notify();
-                }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                context.stop();
+                LoggerManager.info(" App [MqttBootstrap] stopped!");
+            } catch (Throwable t) {
+                LoggerManager.error(t.getMessage(), t);
+            } finally {
+                LoggerManager.info("shutdown [ MqttBootstrap] sucess, running time:"
+                        + ((System.currentTimeMillis() - start) / 60000) + " m");
             }
-        });
+            synchronized (MqttBootstrap.class) {
+                running = false;
+                MqttBootstrap.class.notify();
+            }
+        }));
 
         LoggerManager.info("start up [MqttBootstrap] sucess, time used:"
                 + (System.currentTimeMillis() - start) + " ms");

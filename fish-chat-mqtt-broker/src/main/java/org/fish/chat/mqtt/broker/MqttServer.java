@@ -15,6 +15,8 @@ import org.fish.chat.mqtt.handler.MqttDispatcherHandler;
 import org.fish.chat.mqtt.handler.MqttIdleStateHandler;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.concurrent.ExecutorService;
@@ -25,15 +27,16 @@ import java.util.concurrent.Executors;
  *
  * @author adre
  */
+@Component
 public class MqttServer implements InitializingBean {
 
     private int port;
-
+    @Autowired
     private MqttDispatcherHandler mqttDispatcherHandler;
-
+    @Autowired
     private ChannelSessionManager channelSessionManager;
 
-    public boolean start() throws InterruptedException {
+    public boolean start() {
         new Thread(this::run).start();
 
         return true;
@@ -50,7 +53,7 @@ public class MqttServer implements InitializingBean {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
 
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        public void initChannel(SocketChannel ch) {
                             MqttIdleStateHandler idleStateHandler = new MqttIdleStateHandler(
                                     180, 200, 200);
                             idleStateHandler
@@ -79,26 +82,10 @@ public class MqttServer implements InitializingBean {
         this.port = port;
     }
 
-    /**
-     * @param mqttDispatcherHandler the mqttDispatcherHandler to set
-     */
-    public void setMqttDispatcherHandler(MqttDispatcherHandler mqttDispatcherHandler) {
-        this.mqttDispatcherHandler = mqttDispatcherHandler;
-    }
-
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(mqttDispatcherHandler, "mqttDispatcherHandler must not null!");
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
     }
 
-    /**
-     * @param channelSessionManager the channelSessionManager to set
-     */
-    public void setChannelSessionManager(ChannelSessionManager channelSessionManager) {
-        this.channelSessionManager = channelSessionManager;
-    }
 }
