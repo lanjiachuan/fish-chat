@@ -10,9 +10,11 @@ import org.fish.chat.mqtt.session.ChannelSession;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 
 /**
- * Comments for IdleStateHandler.java
+ * channel 处于idle状态触发
  *
- * netty session changed idle, so check channel session?
+ * 待测试 是否需要关闭上下文？
+ *
+ * @author adre
  */
 public class MqttIdleStateHandler extends IdleStateHandler {
 
@@ -28,11 +30,8 @@ public class MqttIdleStateHandler extends IdleStateHandler {
         super(readerIdleTimeSeconds, writerIdleTimeSeconds, allIdleTimeSeconds);
     }
 
-    /* (non-Javadoc)
-     * @see io.netty.handler.timeout.IdleStateHandler#channelIdle(io.netty.channel.ChannelHandlerContext, io.netty.handler.timeout.IdleStateEvent)
-     */
     @Override
-    protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
+    protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) {
         if (evt.state() == IdleState.READER_IDLE || evt.state() == IdleState.ALL_IDLE) {
             if (channelSessionManager != null) {
                 ChannelSession channelSession = channelSessionManager.getChannelSession(ctx
@@ -46,6 +45,8 @@ public class MqttIdleStateHandler extends IdleStateHandler {
                     LoggerManager.warn("MqttIdleStateHandler idle:" + evt.state());
                 }
             }
+
+            //todo 测试是否需要关闭上下文
 
             ctx.close();
         }

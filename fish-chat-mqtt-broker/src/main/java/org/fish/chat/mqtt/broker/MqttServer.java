@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Comments for MqttServer.java
+ * mqtt服务器 netty初始化类
  *
  * @author adre
  */
@@ -83,7 +83,7 @@ public class MqttServer implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Assert.notNull(mqttDispatcherHandler, "mqttDispatcherHandler must not null!");
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
     }

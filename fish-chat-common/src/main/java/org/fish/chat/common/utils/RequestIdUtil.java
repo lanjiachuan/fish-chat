@@ -3,14 +3,15 @@ package org.fish.chat.common.utils;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Comments for RequestIdUtil.java
+ * 日志追踪工具
  *
+ * @author adre
  */
 public class RequestIdUtil {
 
     private static AtomicLong sender = new AtomicLong(1);
 
-    private static ThreadLocal<Long> requestId = new ThreadLocal<Long>();
+    private static ThreadLocal<Long> requestId = new ThreadLocal<>();
 
     public static long getRequestId() {
         Long value = requestId.get();

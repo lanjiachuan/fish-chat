@@ -16,12 +16,15 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Comments for ChannelSessionManagerImpl.java
+ * 对新创建的channel缓存相关信息
  *
+ * 定时清理处于非active状态的缓存信息
+ *
+ * @author adre
  */
 public class ChannelSessionManagerImpl implements ChannelSessionManager, InitializingBean {
 
-    private Map<Long, ChannelSession> channelSessionMap = new ConcurrentHashMap<Long, ChannelSession>();
+    private Map<Long, ChannelSession> channelSessionMap = new ConcurrentHashMap<>();
 
     private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
 
@@ -55,22 +58,18 @@ public class ChannelSessionManagerImpl implements ChannelSessionManager, Initial
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-
-            @Override
-            public void run() {
-                LoggerManager.info("current ChannelSessionMap size = " + channelSessionMap.size());
-                for (ChannelSession channelSession : channelSessionMap.values()) {
-                    if (!channelSession.getChannel().isActive()) {
-                        try {
-                            LoggerManager.warn("channelSession is not active , uid ="
-                                    + channelSession.getUserId() + ", cid="
-                                    + channelSession.getCid());
-                            destroyChannelSession(channelSession);
-                        } catch (Exception e) {
-                            LoggerManager.error("", e);
-                        }
+    public void afterPropertiesSet() {
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            LoggerManager.info("current ChannelSessionMap size = " + channelSessionMap.size());
+            for (ChannelSession channelSession : channelSessionMap.values()) {
+                if (!channelSession.getChannel().isActive()) {
+                    try {
+                        LoggerManager.warn("channelSession is not active , uid ="
+                                + channelSession.getUserId() + ", cid="
+                                + channelSession.getCid());
+                        destroyChannelSession(channelSession);
+                    } catch (Exception e) {
+                        LoggerManager.error("", e);
                     }
                 }
             }
