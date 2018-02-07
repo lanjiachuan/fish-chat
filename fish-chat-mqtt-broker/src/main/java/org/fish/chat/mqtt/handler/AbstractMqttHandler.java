@@ -18,10 +18,7 @@ public abstract class AbstractMqttHandler<T> implements InitializingBean {
     protected MqttBizService mqttBizService;
 
     public abstract void channelRead(ChannelHandlerContext ctx, T msg) throws Exception;
-    
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
+
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");

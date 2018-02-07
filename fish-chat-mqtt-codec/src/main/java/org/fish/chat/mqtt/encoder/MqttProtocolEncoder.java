@@ -5,11 +5,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import org.fish.chat.mqtt.protocol.wire.MqttWireMessage;
 
+/**
+ * @author adre
+ */
 public class MqttProtocolEncoder extends MessageToByteEncoder<MqttWireMessage> {
 
-    /* (non-Javadoc)
-     * @see io.netty.handler.codec.MessageToByteEncoder#encode(io.netty.channel.ChannelHandlerContext, java.lang.Object, io.netty.buffer.ByteBuf)
-     */
     @Override
     protected void encode(ChannelHandlerContext ctx, MqttWireMessage msg, ByteBuf out)
             throws Exception {

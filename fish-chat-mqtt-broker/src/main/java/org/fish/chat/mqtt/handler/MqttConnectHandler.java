@@ -20,9 +20,6 @@ import org.fish.chat.mqtt.session.ChannelSession;
  */
 public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(final ChannelHandlerContext ctx, MqttConnect msg) throws Exception {
         MqttConnect mqttConnect = msg;

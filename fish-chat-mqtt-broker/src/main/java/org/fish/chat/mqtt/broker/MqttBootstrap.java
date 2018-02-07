@@ -21,9 +21,8 @@ public class MqttBootstrap {
 
     /**
      * @param args
-     * @throws InterruptedException
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         final long start = System.currentTimeMillis();
 
         context = new ClassPathXmlApplicationContext(CONFIG_FILES);

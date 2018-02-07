@@ -8,14 +8,17 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.fish.chat.mqtt.session.ChannelSession;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
- * channel 处于idle状态触发
+ * channel 处于idle状态触发IdleStateEvent
  *
- * 待测试 是否需要关闭上下文？
+ * 心跳检测 当读写时间超过设定的超时时间
  *
  * @author adre
  */
+@Component
 public class MqttIdleStateHandler extends IdleStateHandler {
 
     private ChannelSessionManager channelSessionManager;
@@ -26,13 +29,15 @@ public class MqttIdleStateHandler extends IdleStateHandler {
      * @param allIdleTimeSeconds
      */
     public MqttIdleStateHandler(int readerIdleTimeSeconds, int writerIdleTimeSeconds,
-            int allIdleTimeSeconds) {
+            int allIdleTimeSeconds, ChannelSessionManager channelSessionManager) {
         super(readerIdleTimeSeconds, writerIdleTimeSeconds, allIdleTimeSeconds);
+        this.channelSessionManager = channelSessionManager;
     }
 
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) {
-        if (evt.state() == IdleState.READER_IDLE || evt.state() == IdleState.ALL_IDLE) {
+        // channel 没有从peer读操作 关闭ctx
+        if (evt.state() == IdleState.READER_IDLE) {
             if (channelSessionManager != null) {
                 ChannelSession channelSession = channelSessionManager.getChannelSession(ctx
                         .channel());
@@ -46,17 +51,10 @@ public class MqttIdleStateHandler extends IdleStateHandler {
                 }
             }
 
-            //todo 测试是否需要关闭上下文
-
+            // 关闭连接
             ctx.close();
         }
-    }
-
-    /**
-     * @param channelSessionManager the channelSessionManager to set
-     */
-    public void setChannelSessionManager(ChannelSessionManager channelSessionManager) {
-        this.channelSessionManager = channelSessionManager;
+        // WRITER_IDLE 暂时不发送消息 由客户端发送ping 把持心跳
     }
 
 }

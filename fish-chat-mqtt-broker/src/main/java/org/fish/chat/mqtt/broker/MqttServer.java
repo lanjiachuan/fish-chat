@@ -51,19 +51,16 @@ public class MqttServer implements InitializingBean {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
-
                         @Override
                         public void initChannel(SocketChannel ch) {
-                            MqttIdleStateHandler idleStateHandler = new MqttIdleStateHandler(
-                                    180, 200, 200);
-                            idleStateHandler
-                                    .setChannelSessionManager(channelSessionManager);
-                            ch.pipeline().addLast(idleStateHandler);
+                            ch.pipeline().addLast(new MqttIdleStateHandler(
+                                    180, 200, 200, channelSessionManager));
                             ch.pipeline().addLast(new MqttProtocolDecoder());
                             ch.pipeline().addLast(new MqttProtocolEncoder());
                             ch.pipeline().addLast(mqttDispatcherHandler);
                         }
-                    }).option(ChannelOption.SO_BACKLOG, 128)
+                    })
+                    .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             // Bind and start to accept incoming connections.
