@@ -5,8 +5,10 @@ import org.fish.chat.mqtt.protocol.wire.MqttPubComp;
 import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
- * Comments for MqttPubCompHandler.java
+ * 发布完成消息
+ * Qos=2
  *
+ * @author adre
  */
 public class MqttPubCompHandler extends AbstractMqttHandler<MqttPubComp> {
 

@@ -7,20 +7,21 @@ import org.fish.chat.mqtt.protocol.wire.*;
 import org.fish.chat.mqtt.qos.QosService;
 import org.fish.chat.mqtt.service.MqttBizService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
  * 代理模式
  *
- * mqtt层通过dubbo调用此方法
- *
- * Comments for MqttBizServiceQosProxy.java
- *
+ * @author adre
  */
+@Service
 public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean {
 
+    @Autowired
     private MqttBizService mqttBizService;
-
+    @Autowired
     private QosService qosService;
 
     @Override
@@ -155,26 +156,6 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(mqttBizService, "mqttBizService must not null!");
-        Assert.notNull(qosService, "qosService must not null!");
-    }
-
-    /**
-     * @param mqttBizService the mqttBizService to set
-     */
-    public void setMqttBizService(MqttBizService mqttBizService) {
-        this.mqttBizService = mqttBizService;
-    }
-
-    /**
-     * @param qosService the qosService to set
-     */
-    public void setQosService(QosService qosService) {
-        this.qosService = qosService;
-    }
-
-    @Override
     public void channelInactive(long userId, long cid) {
         mqttBizService.channelInactive(userId, cid);
     }
@@ -182,6 +163,12 @@ public class MqttBizServiceQosProxy implements MqttBizService, InitializingBean 
     @Override
     public void ping(long userId, long cid) {
         mqttBizService.ping(userId, cid);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(mqttBizService, "mqttBizService must not null!");
+        Assert.notNull(qosService, "qosService must not null!");
     }
 
 }

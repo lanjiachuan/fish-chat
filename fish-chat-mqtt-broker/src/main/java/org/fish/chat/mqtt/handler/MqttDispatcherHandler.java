@@ -12,43 +12,39 @@ import org.fish.chat.mqtt.service.MqttBizService;
 import org.fish.chat.mqtt.session.ChannelSession;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
- * Comments for MqttHandler.java
- *
  * dispatch message
+ * @author adre
  */
+@Component
 @Sharable
 public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implements InitializingBean {
 
+    @Autowired
     private MqttConnectHandler mqttConnectHandler;
-
+    @Autowired
     private MqttPublishHandler mqttPublishHandler;
-
+    @Autowired
     private MqttPingReqHandler mqttPingReqHandler;
-
+    @Autowired
     private MqttPubAckHandler mqttPubAckHandler;
-
-    private MqttSubscribeHandler mqttSubscribeHandler;
-
-    private MqttUnsubscribeHandler mqttUnsubscribeHandler;
-
+    @Autowired
     private MqttPubRecHandler mqttPubRecHandler;
-
+    @Autowired
     private MqttPubRelHandler mqttPubRelHandler;
-
+    @Autowired
     private MqttPubCompHandler mqttPubCompHandler;
-
+    @Autowired
     private MqttDisconnectHandler mqttDisconnectHandler;
-
+    @Autowired
     private ChannelSessionManager channelSessionManager;
-
+    @Autowired
     private MqttBizService mqttBizService;
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
@@ -71,19 +67,12 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
                 mqttPubRelHandler.channelRead(ctx, (MqttPubRel) msg);
             } else if (msg instanceof MqttPubComp) {
                 mqttPubCompHandler.channelRead(ctx, (MqttPubComp) msg);
-            } else if (msg instanceof MqttSubscribe) {
-                mqttSubscribeHandler.channelRead(ctx, (MqttSubscribe) msg);
-            } else if (msg instanceof MqttUnsubscribe) {
-                mqttUnsubscribeHandler.channelRead(ctx, (MqttUnsubscribe) msg);
             } else if (msg instanceof MqttDisconnect) {
                 mqttDisconnectHandler.channelRead(ctx, (MqttDisconnect) msg);
             }
         }
     }
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#channelInactive(io.netty.channel.ChannelHandlerContext)
-     */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
@@ -97,9 +86,6 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
         LoggerManager.info(ctx.channel().remoteAddress() + " was closed!");
     }
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#exceptionCaught(io.netty.channel.ChannelHandlerContext, java.lang.Throwable)
-     */
     @Override
     public void exceptionCaught(final ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
@@ -114,117 +100,25 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
         LoggerManager.error("userId=" + userId + ", cid=" + cid + " caught an exception ", cause);
 
         final ChannelFuture f = ctx.writeAndFlush("close");
-        f.addListener(new ChannelFutureListener() {
-
-            @Override
-            public void operationComplete(ChannelFuture future) {
-                assert f == future;
-                ctx.close();
-            }
+        f.addListener((ChannelFutureListener) future -> {
+            assert f == future;
+            ctx.close();
         });
 
     }
 
-    /**
-     * @param mqttConnectHandler the mqttConnectHandler to set
-     */
-    public void setMqttConnectHandler(MqttConnectHandler mqttConnectHandler) {
-        this.mqttConnectHandler = mqttConnectHandler;
-    }
-
-    /**
-     * @param mqttPublishHandler the mqttPublishHandler to set
-     */
-    public void setMqttPublishHandler(MqttPublishHandler mqttPublishHandler) {
-        this.mqttPublishHandler = mqttPublishHandler;
-    }
-
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-     */
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(mqttConnectHandler, "mqttConnectHandler must not null!");
         Assert.notNull(mqttPublishHandler, "mqttPublishHandler must not null!");
         Assert.notNull(mqttPubAckHandler, "mqttPubAckHandler must not null!");
         Assert.notNull(mqttPingReqHandler, "mqttPingReqHandler must not null!");
-        Assert.notNull(mqttSubscribeHandler, "mqttSubscribeHandler must not null!");
         Assert.notNull(mqttPubRecHandler, "mqttPubRecHandler must not null!");
         Assert.notNull(mqttPubRelHandler, "mqttPubRecHandler must not null!");
         Assert.notNull(mqttPubCompHandler, "mqttPubCompHandler must not null!");
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
         Assert.notNull(mqttBizService, "mqttBizService must not null!");
         Assert.notNull(mqttDisconnectHandler, "mqttDisconnectHandler must not null!");
-    }
-
-    /**
-     * @param mqttPingReqHandler the mqttPingReqHandler to set
-     */
-    public void setMqttPingReqHandler(MqttPingReqHandler mqttPingReqHandler) {
-        this.mqttPingReqHandler = mqttPingReqHandler;
-    }
-
-    /**
-     * @param mqttPubAckHandler the mqttPubAckHandler to set
-     */
-    public void setMqttPubAckHandler(MqttPubAckHandler mqttPubAckHandler) {
-        this.mqttPubAckHandler = mqttPubAckHandler;
-    }
-
-    /**
-     * @param mqttSubscribeHandler the mqttSubscribeHandler to set
-     */
-    public void setMqttSubscribeHandler(MqttSubscribeHandler mqttSubscribeHandler) {
-        this.mqttSubscribeHandler = mqttSubscribeHandler;
-    }
-
-    /**
-     * @param mqttUnsubscribeHandler the mqttUnsubscribeHandler to set
-     */
-    public void setMqttUnsubscribeHandler(MqttUnsubscribeHandler mqttUnsubscribeHandler) {
-        this.mqttUnsubscribeHandler = mqttUnsubscribeHandler;
-    }
-
-    /**
-     * @param mqttPubRecHandler the mqttPubRecHandler to set
-     */
-    public void setMqttPubRecHandler(MqttPubRecHandler mqttPubRecHandler) {
-        this.mqttPubRecHandler = mqttPubRecHandler;
-    }
-
-    /**
-     * @param mqttPubRelHandler the mqttPubRelHandler to set
-     */
-    public void setMqttPubRelHandler(MqttPubRelHandler mqttPubRelHandler) {
-        this.mqttPubRelHandler = mqttPubRelHandler;
-    }
-
-    /**
-     * @param mqttPubCompHandler the mqttPubCompHandler to set
-     */
-    public void setMqttPubCompHandler(MqttPubCompHandler mqttPubCompHandler) {
-        this.mqttPubCompHandler = mqttPubCompHandler;
-    }
-
-    /**
-     * @param channelSessionManager the channelSessionManager to set
-     */
-    public void setChannelSessionManager(ChannelSessionManager channelSessionManager) {
-        this.channelSessionManager = channelSessionManager;
-    }
-
-    /**
-     * @param mqttBizService the mqttBizService to set
-     */
-    public void setMqttBizService(MqttBizService mqttBizService) {
-        this.mqttBizService = mqttBizService;
-    }
-
-    /**
-     * @param mqttDisconnectHandler the mqttDisconnectHandler to set
-     */
-    public void setMqttDisconnectHandler(MqttDisconnectHandler mqttDisconnectHandler) {
-        this.mqttDisconnectHandler = mqttDisconnectHandler;
     }
 
 }

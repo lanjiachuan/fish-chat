@@ -19,36 +19,45 @@ import org.fish.chat.chat.service.UserChatService;
 import org.fish.chat.chat.service.UserSessionService;
 import org.fish.chat.chat.utils.ProtocolUtil;
 import org.fish.chat.common.constants.ChatConstant;
+import org.fish.chat.common.utils.ThreadUtils;
 import org.fish.chat.mqtt.protocol.MqttException;
 import org.fish.chat.mqtt.protocol.wire.*;
 import org.fish.chat.mqtt.service.MqttBizService;
 import org.fish.chat.mqtt.service.MqttService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
- * Comments for MqttBizServiceImpl.java
+ * mqtt业务处理
  *
+ * @author adre
  */
+@Service
 public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
 
+    @Autowired
     private UserSessionService userSessionService;
+    @Autowired
     private UserChatService userChatService;
+    @Autowired
     private MessageAckCallback messageAckCallback;
+    @Autowired
     private IqHandler iqHandler;
+    @Autowired
     private MessageService messageService;
+    @Autowired
     private MqttService mqttService;
 
-    private ExecutorService executorService = new ThreadPoolExecutor(4, 8, 60, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<Runnable>(10000));
+    private JsonFormat pbJsonFormat;
+
+    private ExecutorService executorService = ThreadUtils.newUnthrowThreadPool(4, 8, 10, TimeUnit.MINUTES, 10000, "mqtt-biz-service");
 
     /**
      * 建立连接 创建session
@@ -96,14 +105,11 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
 
     @Override
     public void disconnect(final long userId, final long cid, MqttDisconnect mqttDisconnect) {
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    userSessionService.destroyUserSession(userId, cid, UserSession.USER_SESSION_TYPE_CLIENT);
-                } catch (Exception e) {
-                    LoggerManager.error("MqttBizServiceImpl.disconnect", e);
-                }
+        executorService.submit(() -> {
+            try {
+                userSessionService.destroyUserSession(userId, cid, UserSession.USER_SESSION_TYPE_CLIENT);
+            } catch (Exception e) {
+                LoggerManager.error("MqttBizServiceImpl.disconnect", e);
             }
         });
     }
@@ -123,7 +129,8 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
                 mqttService.close(userId, cid);
             } else {
                 final ChatProtocol.FishChatProtocol protocol = ChatProtocol.FishChatProtocol.parseFrom(mqttPublish.getPayload());
-                LoggerManager.info("==>publish:" + JsonFormat.printToString(protocol));
+
+                LoggerManager.info("==>publish:" + pbJsonFormat.printToString(protocol));
                 executorService.submit(() -> {
                     RequestIdUtil.setRequestId(userId);
                     try {
@@ -178,7 +185,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
                                             if (fishMessageRead != null) {
                                                 messageService.readUserMessage(userId, fishMessageRead.getUserId(), fishMessageRead.getMessageId());
                                             } else {
-                                                LoggerManager.warn("MqttBizServiceImpl.publish fishMessageRead is null!!!, " + JsonFormat.printToString(protocol));
+                                                LoggerManager.warn("MqttBizServiceImpl.publish fishMessageRead is null!!!, " + pbJsonFormat.printToString(protocol));
                                             }
                                         }
                                     } else {
@@ -219,17 +226,12 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
     public boolean pubAck(final long userId, final long cid, final MqttPubAck mqttPuback) {
         UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
         if (userSession != null) {
-            executorService.submit(new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        messageAckCallback.notifyPubAck(userId, cid, mqttPuback);
-                    } catch (Exception e) {
-                        LoggerManager.error("MqttBizServiceImpl.disconnect", e);
-                    }
+            executorService.submit(() -> {
+                try {
+                    messageAckCallback.notifyPubAck(userId, cid, mqttPuback);
+                } catch (Exception e) {
+                    LoggerManager.error("MqttBizServiceImpl.disconnect", e);
                 }
-
             });
             return true;
         } else {
@@ -243,17 +245,12 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
     public boolean pubRec(final long userId, final long cid, final MqttPubRec mqttPubRec) {
         UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
         if (userSession != null) {
-            executorService.submit(new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        messageAckCallback.notifyPubRec(userId, cid, mqttPubRec);
-                    } catch (Exception e) {
-                        LoggerManager.error("MqttBizServiceImpl.disconnect", e);
-                    }
+            executorService.submit(() -> {
+                try {
+                    messageAckCallback.notifyPubRec(userId, cid, mqttPubRec);
+                } catch (Exception e) {
+                    LoggerManager.error("MqttBizServiceImpl.disconnect", e);
                 }
-
             });
         } else {
             mqttService.close(userId, cid);
@@ -271,17 +268,12 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
     public boolean pubComp(final long userId, final long cid, final MqttPubComp mqttPubComp) {
         UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
         if (userSession != null) {
-            executorService.submit(new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        messageAckCallback.notifyPubComp(userId, cid, mqttPubComp);
-                    } catch (Exception e) {
-                        LoggerManager.error("MqttBizServiceImpl.disconnect", e);
-                    }
+            executorService.submit(() -> {
+                try {
+                    messageAckCallback.notifyPubComp(userId, cid, mqttPubComp);
+                } catch (Exception e) {
+                    LoggerManager.error("MqttBizServiceImpl.disconnect", e);
                 }
-
             });
             return true;
         } else {
@@ -311,30 +303,5 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         Assert.notNull(userChatService, "userChatService must not null!");
         Assert.notNull(messageAckCallback, "messageAckCallback must not null!");
         Assert.notNull(mqttService, "mqttService must not null!");
-    }
-
-    public void setUserSessionService(UserSessionService userSessionService) {
-        this.userSessionService = userSessionService;
-    }
-
-    public void setUserChatService(UserChatService userChatService) {
-        this.userChatService = userChatService;
-    }
-
-    public void setMessageAckCallback(MessageAckCallback messageAckCallback) {
-        this.messageAckCallback = messageAckCallback;
-    }
-
-
-    public void setIqHandler(IqHandler iqHandler) {
-        this.iqHandler = iqHandler;
-    }
-
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    public void setMqttService(MqttService mqttService) {
-        this.mqttService = mqttService;
     }
 }

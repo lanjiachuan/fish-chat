@@ -5,18 +5,25 @@ import io.netty.channel.ChannelHandlerContext;
 import org.fish.chat.mqtt.service.MqttBizService;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 /**
- * Comments for AbstracMqttHandler.java
- *
+ * @author adre
  */
 public abstract class AbstractMqttHandler<T> implements InitializingBean {
 
+    @Autowired
     protected ChannelSessionManager channelSessionManager;
-
+    @Autowired
     protected MqttBizService mqttBizService;
 
+    /**
+     * channel read
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
     public abstract void channelRead(ChannelHandlerContext ctx, T msg) throws Exception;
 
     @Override
@@ -24,19 +31,4 @@ public abstract class AbstractMqttHandler<T> implements InitializingBean {
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
         Assert.notNull(mqttBizService, "mqttBizService must not null!");
     }
-
-    /**
-     * @param channelSessionManager the channelSessionManager to set
-     */
-    public void setChannelSessionManager(ChannelSessionManager channelSessionManager) {
-        this.channelSessionManager = channelSessionManager;
-    }
-
-    /**
-     * @param mqttBizService the mqttBizService to set
-     */
-    public void setMqttBizService(MqttBizService mqttBizService) {
-        this.mqttBizService = mqttBizService;
-    }
-
 }

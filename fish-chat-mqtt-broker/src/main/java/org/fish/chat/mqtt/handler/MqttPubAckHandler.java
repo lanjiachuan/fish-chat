@@ -6,14 +6,13 @@ import org.fish.chat.mqtt.protocol.wire.MqttPubAck;
 import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
- * Comments for MqttPubackHandler.java
+ * 发布确认
+ * Qos=1
  *
+ * @author adre
  */
 public class MqttPubAckHandler extends AbstractMqttHandler<MqttPubAck> {
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttPubAck msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());

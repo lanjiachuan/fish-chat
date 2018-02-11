@@ -7,8 +7,10 @@ import org.fish.chat.mqtt.protocol.wire.MqttPubRel;
 import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
- * Comments for MqttPubRelHandler.java
+ * 发布信息分发
+ * Qos=2
  *
+ * @author adre
  */
 public class MqttPubRelHandler extends AbstractMqttHandler<MqttPubRel> {
 

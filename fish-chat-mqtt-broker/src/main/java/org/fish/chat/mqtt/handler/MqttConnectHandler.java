@@ -12,12 +12,13 @@ import org.fish.chat.common.utils.RequestIdUtil;
 import org.fish.chat.mqtt.protocol.wire.MqttConnack;
 import org.fish.chat.mqtt.protocol.wire.MqttConnect;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
- * Comments for MqttConnectHandler.java
- *
  * user connect mqtt check uid and pwd
+ * @author adre
  */
+@Component
 public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
 
     @Override
@@ -31,15 +32,11 @@ public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
         if (StringUtils.isEmpty(mqttClientId) || mqttClientId.length() > 23) {
             MqttConnack connack = new MqttConnack(MqttConnack.REFUSED_IDENTIFIER_REJECTED);
             final ChannelFuture future = ctx.writeAndFlush(connack);
-            future.addListener(new ChannelFutureListener() {
+            future.addListener((ChannelFutureListener) future1 -> {
+                ctx.close();
+                LoggerManager.info("MqttConnectHandler - REFUSED_IDENTIFIER_REJECTED:"
+                        + mqttClientId);
 
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    ctx.close();
-                    LoggerManager.info("MqttConnectHandler - REFUSED_IDENTIFIER_REJECTED:"
-                            + mqttClientId);
-
-                }
             });
             return;
         }
@@ -55,15 +52,11 @@ public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
         if (userId == 0) {
             MqttConnack connack = new MqttConnack(MqttConnack.REFUSED_BAD_USERNAME_PASSWORD);
             final ChannelFuture future = ctx.writeAndFlush(connack);
-            future.addListener(new ChannelFutureListener() {
+            future.addListener((ChannelFutureListener) future12 -> {
+                ctx.close();
+                LoggerManager.info("<==MqttConnectHandler - REFUSED_BAD_USERNAME_PASSWORD:"
+                        + userName + " " + password);
 
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    ctx.close();
-                    LoggerManager.info("<==MqttConnectHandler - REFUSED_BAD_USERNAME_PASSWORD:"
-                            + userName + " " + password);
-
-                }
             });
             return;
         }

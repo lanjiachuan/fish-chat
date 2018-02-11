@@ -7,15 +7,11 @@ import org.fish.chat.mqtt.protocol.wire.MqttPingResp;
 import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
- * Comments for MqttPingReqHandler.java
- *
  * ping pong heart beat
+ * @author adre
  */
 public class MqttPingReqHandler extends AbstractMqttHandler<MqttPingReq> {
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttPingReq msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
