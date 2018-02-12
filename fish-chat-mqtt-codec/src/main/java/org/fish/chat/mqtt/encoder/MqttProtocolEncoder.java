@@ -6,6 +6,8 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.fish.chat.mqtt.protocol.wire.MqttWireMessage;
 
 /**
+ * mqtt消息编码
+ *
  * @author adre
  */
 public class MqttProtocolEncoder extends MessageToByteEncoder<MqttWireMessage> {

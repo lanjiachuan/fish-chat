@@ -1,5 +1,10 @@
 package org.fish.chat.mqtt.utils;
 
+/**
+ * bit计算
+ *
+ * @author adre
+ */
 public class BitUtil {
 
     /**
