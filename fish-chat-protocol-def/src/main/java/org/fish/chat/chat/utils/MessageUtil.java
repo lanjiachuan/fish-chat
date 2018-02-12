@@ -6,8 +6,9 @@ import org.fish.chat.common.constants.ChatConstant;
 import java.util.Date;
 
 /**
- * Comments for MessageUtil.java
+ * 消息工具类
  *
+ * @author adre
  */
 public class MessageUtil {
 

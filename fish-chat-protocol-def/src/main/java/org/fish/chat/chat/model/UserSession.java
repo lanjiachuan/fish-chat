@@ -9,8 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Comments for UserSession.java
+ * chat server session
  *
+ * @author adre
  */
 public class UserSession implements Serializable {
 

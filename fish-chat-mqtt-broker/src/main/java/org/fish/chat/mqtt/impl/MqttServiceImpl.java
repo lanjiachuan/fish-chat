@@ -12,14 +12,19 @@ import org.fish.chat.mqtt.service.MqttService;
 import org.fish.chat.mqtt.session.ChannelSession;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
  * Comments for MqttServiceImpl.java
  *
+ * @author adre
  */
+@Service
 public class MqttServiceImpl implements MqttService, InitializingBean {
 
+    @Autowired
     private ChannelSessionManager channelSessionManager;
 
     @Override
@@ -38,12 +43,6 @@ public class MqttServiceImpl implements MqttService, InitializingBean {
         return false;
     }
 
-    /**
-     * @param channelSessionManager the channelSessionManager to set
-     */
-    public void setChannelSessionManager(ChannelSessionManager channelSessionManager) {
-        this.channelSessionManager = channelSessionManager;
-    }
 
     @Override
     public boolean pubRel(long userId, long cid, MqttPubRel mqttPubRel) {
@@ -59,11 +58,6 @@ public class MqttServiceImpl implements MqttService, InitializingBean {
                     + ", cid=" + cid);
         }
         return false;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
     }
 
     @Override
@@ -106,5 +100,11 @@ public class MqttServiceImpl implements MqttService, InitializingBean {
         }
         return false;
     }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
+    }
+
 
 }

@@ -8,6 +8,7 @@ import org.fish.chat.mqtt.protocol.wire.MqttConnect;
 import org.fish.chat.mqtt.session.ChannelSession;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,10 +23,17 @@ import java.util.concurrent.TimeUnit;
  *
  * @author adre
  */
+@Service
 public class ChannelSessionManagerImpl implements ChannelSessionManager, InitializingBean {
 
+    /**
+     * 单点上所有session 都存在这里 分布式负载均衡必须保证同一个channel始终落在同一个节点上
+     */
     private Map<Long, ChannelSession> channelSessionMap = new ConcurrentHashMap<>();
 
+    /**
+     * 起一个线程 定时检查channel是否active  清理channelSessionMap
+     */
     private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
 
     @Override

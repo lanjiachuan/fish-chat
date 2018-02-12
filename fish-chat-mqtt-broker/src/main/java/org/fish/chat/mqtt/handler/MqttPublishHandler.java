@@ -7,6 +7,7 @@ import org.fish.chat.mqtt.protocol.wire.MqttPubAck;
 import org.fish.chat.mqtt.protocol.wire.MqttPubRec;
 import org.fish.chat.mqtt.protocol.wire.MqttPublish;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
  * 发布消息
@@ -14,6 +15,7 @@ import org.fish.chat.mqtt.session.ChannelSession;
  *
  * @author adre
  */
+@Component
 public class MqttPublishHandler extends AbstractMqttHandler<MqttPublish> {
 
     @Override

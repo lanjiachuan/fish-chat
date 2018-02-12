@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Comments for DialogMessage.java
+ * 对话框消息
  *
+ * @author adre
  */
 public class DialogMessage extends Message {
 

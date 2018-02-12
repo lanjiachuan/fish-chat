@@ -8,8 +8,9 @@ import org.fish.chat.common.utils.IdSecurityUtils;
 import java.io.Serializable;
 
 /**
- * Comments for ChatUser.java
+ * user
  *
+ * @author adre
  */
 public class ChatUser implements Serializable {
 
@@ -23,9 +24,7 @@ public class ChatUser implements Serializable {
     private static final String JSON_PROPERTIES_AVATAR = "avatar";
     private static final String JSON_PROPERTIES_HEAD_IMG = "head_img";
     private static final String JSON_PROPERTIES_IDENTITY = "identity";
-    private static final String JSON_PROPERTIES_VERIFY = "verify";
     private static final String JSON_PROPERTIES_GENDER = "gender";
-    private static final String JSON_PROPERTIES_BOSS = "boss";
     private static final String JSON_PROPERTIES_DISTANCE = "distance";
     private static final String JSON_PROPERTIES_DISTANCE_DESC = "distanceDesc";
 

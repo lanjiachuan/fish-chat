@@ -6,8 +6,9 @@ import net.sf.json.JSONObject;
 import java.io.Serializable;
 
 /**
- * Comments for ImageInfo.java
+ * 图片消息详情
  *
+ * @author adre
  */
 public class ImageInfo implements Serializable {
 

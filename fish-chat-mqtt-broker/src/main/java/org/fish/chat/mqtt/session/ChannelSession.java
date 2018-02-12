@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * mqtt 层缓存对象
  *
+ * 缓存channel uid
+ *
  * @author adre
  */
 public class ChannelSession {

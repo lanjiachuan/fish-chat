@@ -3,7 +3,7 @@ package org.fish.chat.mqtt.qos.impl;
 
 import org.fish.chat.chat.listener.impl.UserSessionListenerAdapter;
 import org.fish.chat.chat.model.UserSession;
-import org.fish.chat.common.cache.redis.FishCacheRedis;
+import org.fish.chat.mqtt.redis.FishCacheRedis;
 import org.fish.chat.common.log.LoggerManager;
 import org.apache.commons.codec.binary.Base64;
 import org.fish.chat.mqtt.protocol.MqttException;
@@ -13,16 +13,17 @@ import org.fish.chat.mqtt.protocol.wire.MqttPublish;
 import org.fish.chat.mqtt.protocol.wire.MqttWireMessage;
 import org.fish.chat.mqtt.qos.QosService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 
 /**
  * mqtt服务质量
- * redis实现重发?
+ * redis缓存消息
  *
- * Comments for QosServiceRedisImpl.java
- **/
-
+ * @author adre
+ */
+@Service
 public class QosServiceRedisImpl extends UserSessionListenerAdapter implements QosService, InitializingBean {
 
     private static final int DEFAULT_EXPIRE_TIME = 60;

@@ -4,11 +4,17 @@ package org.fish.chat.chat.service;
 import org.fish.chat.chat.model.Message;
 
 /**
- * Comments for DeliverService.java
+ * 发布消息到mqtt server
  *
+ * @author adre
  */
 public interface DeliverService {
 
-    public void deliverMessage(long toUserId, Message message);
+    /**
+     * 发布消息
+     * @param toUserId
+     * @param message
+     */
+    void deliverMessage(long toUserId, Message message);
 
 }

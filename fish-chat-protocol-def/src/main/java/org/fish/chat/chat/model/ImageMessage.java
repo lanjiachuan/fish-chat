@@ -7,14 +7,12 @@ import org.fish.chat.common.constants.ProtocolConstants;
 import java.io.Serializable;
 
 /**
- * Comments for ImageMessage.java
+ * 图片消息
  *
+ * @author adre
  */
 public class ImageMessage extends Message implements Serializable{
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8717449128122017015L;
 
     private static final String JSON_KEY_TINY_URL = "tinyImage";

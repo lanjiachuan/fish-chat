@@ -5,11 +5,13 @@ import io.netty.channel.ChannelHandlerContext;
 import org.fish.chat.mqtt.protocol.wire.MqttPingReq;
 import org.fish.chat.mqtt.protocol.wire.MqttPingResp;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
  * ping pong heart beat
  * @author adre
  */
+@Component
 public class MqttPingReqHandler extends AbstractMqttHandler<MqttPingReq> {
 
     @Override

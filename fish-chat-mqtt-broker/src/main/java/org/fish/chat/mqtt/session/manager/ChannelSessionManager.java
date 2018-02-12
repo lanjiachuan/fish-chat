@@ -6,9 +6,10 @@ import org.fish.chat.mqtt.protocol.wire.MqttConnect;
 import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
- * Comments for ChannelSessionManager.java
+ * channel缓存
  *
  *
+ * @author adre
  */
 public interface ChannelSessionManager {
 
@@ -22,20 +23,20 @@ public interface ChannelSessionManager {
 
     /**
      * 为channel创建session
-     * 
+     * @param userId
+     * @param userType
+     * @param connect
      * @param channel
      * @return
      */
-    public ChannelSession createChannelSession(long userId, int userType, MqttConnect connect,
-                                               Channel channel);
+    ChannelSession createChannelSession(long userId, int userType, MqttConnect connect, Channel channel);
 
     /**
      * 根据cid 获取channelSession
-     * 
      * @param id
      * @return
      */
-    public ChannelSession getChannelSession(long id);
+    ChannelSession getChannelSession(long id);
 
     /**
      * 根据channel 获取channelSession
@@ -43,10 +44,12 @@ public interface ChannelSessionManager {
      * @param channel
      * @return
      */
-    public ChannelSession getChannelSession(Channel channel);
+    ChannelSession getChannelSession(Channel channel);
 
     /**
+     * 清理channel
+     *
      * @param session
      */
-    public void destroyChannelSession(ChannelSession session);
+    void destroyChannelSession(ChannelSession session);
 }

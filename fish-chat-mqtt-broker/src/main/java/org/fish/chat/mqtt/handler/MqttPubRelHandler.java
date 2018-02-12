@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import org.fish.chat.mqtt.protocol.wire.MqttPubComp;
 import org.fish.chat.mqtt.protocol.wire.MqttPubRel;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
  * 发布信息分发
@@ -12,6 +13,7 @@ import org.fish.chat.mqtt.session.ChannelSession;
  *
  * @author adre
  */
+@Component
 public class MqttPubRelHandler extends AbstractMqttHandler<MqttPubRel> {
 
     @Override

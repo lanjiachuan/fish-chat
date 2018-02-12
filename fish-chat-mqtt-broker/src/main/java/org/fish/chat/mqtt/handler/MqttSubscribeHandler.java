@@ -4,11 +4,14 @@ import io.netty.channel.ChannelHandlerContext;
 import org.fish.chat.mqtt.protocol.wire.MqttSuback;
 import org.fish.chat.mqtt.protocol.wire.MqttSubscribe;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
  * Comments for MqttSubscribeHandler.java
  *
+ * @author adre
  */
+@Component
 public class MqttSubscribeHandler extends AbstractMqttHandler<MqttSubscribe> {
 
     @Override

@@ -3,6 +3,7 @@ package org.fish.chat.mqtt.handler;
 import io.netty.channel.ChannelHandlerContext;
 import org.fish.chat.mqtt.protocol.wire.MqttPubComp;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
  * 发布完成消息
@@ -10,6 +11,7 @@ import org.fish.chat.mqtt.session.ChannelSession;
  *
  * @author adre
  */
+@Component
 public class MqttPubCompHandler extends AbstractMqttHandler<MqttPubComp> {
 
     @Override

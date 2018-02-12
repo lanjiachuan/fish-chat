@@ -12,8 +12,9 @@ import org.fish.chat.common.utils.SecurityUtils;
 import java.io.Serializable;
 
 /**
- * Comments for TextMessage.java
+ * 文本消息
  *
+ * @author adre
  */
 public class TextMessage extends Message implements Serializable {
 

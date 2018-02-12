@@ -12,15 +12,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Comments for Message.java
+ * 抽象消息类
  *
+ * @author adre
  */
 public abstract class Message implements Serializable {
 
     private static final long serialVersionUID = -3714721708175778717L;
-    public static final int MESSAGE_CHAT_TYPE_NIU = 1;//牛人发的消息
-    public static final int MESSAGE_CHAT_TYPE_BOSS = 2;//BOSS发的消息
-    public static final int MESSAGE_CHAT_TYPE_C2C = 3;//牛人对牛人的消息
+
     public static final int MESSAGE_TYPE_SINGLE = 1;
     public static final int MESSAGE_TYPE_GROUP = 2;
     public static final int MESSAGE_TYPE_SYSTEM = 3;
@@ -37,9 +36,11 @@ public abstract class Message implements Serializable {
     public static final int MESSAGE_TEMPLATE_CENTER = 2;
     public static final int MESSAGE_TEMPLATE_CENTER_GRAY = 3;
     public static final int MESSAGE_TEMPLATE_SKILL = 4;
-    public static final int MESSAGE_TEMPLATE_MARK = 5;//解析标签
-    public static final int MESSAGE_TEMPLATE_CENTER_GRAY_NEW = 6;
-    public static final int MESSAGE_TEMPLATE_CENTER_GRAY_NEW_2 = 7;// 两行
+    /**
+     * 解析标签
+     */
+    public static final int MESSAGE_TEMPLATE_MARK = 5;
+
     protected static final String JSON_PROPERTY_SINCE_VERSION = "since_version";
     public static final String JSON_KEY_CLIENT_INFO = "client_info";
 
@@ -276,6 +277,7 @@ public abstract class Message implements Serializable {
         }
     }
 
+    @Override
     public Message clone() {
         try {
             return (Message) super.clone();

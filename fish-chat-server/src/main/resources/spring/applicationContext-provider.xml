@@ -12,7 +12,7 @@
     <dubbo:service interface="org.fish.chat.mqtt.service.MqttBizService"
                    ref="mqttBizServiceQosProxy" registry="chatRegistry" version="1.0.0" />
 
-    <dubbo:service interface="org.fish.chat.chat.service.ChatSystemService"
+    <dubbo:service interface="org.fish.chat.chat.service.SystemChatService"
                    ref="chatSystemService" registry="chatRegistry" version="1.0.0" />
 
     <dubbo:service interface="org.fish.chat.chat.service.DeliverService"

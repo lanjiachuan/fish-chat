@@ -1,11 +1,12 @@
 package org.fish.chat.chat.service.impl;
 
 
+import com.google.gson.stream.JsonReader;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.chat.model.ActionMessage;
 import org.fish.chat.chat.model.Message;
 import org.fish.chat.chat.model.UserSession;
-import org.fish.chat.chat.service.ChatSystemService;
+import org.fish.chat.chat.service.SystemChatService;
 import org.fish.chat.chat.service.MessageService;
 import org.fish.chat.chat.service.UserChatService;
 import org.fish.chat.chat.utils.MessageUtil;
@@ -26,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * 对外提供的发消息接口
  *
  */
-public class ChatSystemServiceImpl implements ChatSystemService, InitializingBean {
+public class SystemChatServiceImpl implements SystemChatService, InitializingBean {
 
     private MessageService messageService;
     private UserChatService userChatService;

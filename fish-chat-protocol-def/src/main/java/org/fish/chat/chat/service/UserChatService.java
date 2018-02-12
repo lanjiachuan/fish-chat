@@ -10,54 +10,63 @@ import java.util.List;
 /**
  * 用户聊天服务
  *
+ * @author adre
  */
 public interface UserChatService {
 
     /**
      * 下发未读消息
+     * @param userSession
      */
-    public void sendUnreadMessage(UserSession userSession);
+    void sendUnreadMessage(UserSession userSession);
 
 
     /**
      * 上行
-     * 
      * @param userId
      * @param message
+     * @param sessionType
      */
-    public void dispatchMessage(long userId, Message message, int sessionType);
+    void dispatchMessage(long userId, Message message, int sessionType);
 
     /**
      * 上行
-     * 
      * @param userId
+     * @param identity
      * @param message
      */
-    public void dispatchSystemMessage(long userId, int identity, Message message);
+    void dispatchSystemMessage(long userId, int identity, Message message);
 
     /**
      * 下行
-     * 
      * @param userId
      * @param message
+     * @param sessionType
      */
-    public void sendMessage(long userId, Message message, int sessionType);
+    void sendMessage(long userId, Message message, int sessionType);
 
     /**
      * 下行
-     * 
      * @param userId
+     * @param messageList
+     * @param sessionType
      */
-    public void sendMessage(long userId, List<Message> messageList, int sessionType);
+    void sendMessage(long userId, List<Message> messageList, int sessionType);
 
     /**
      * 下行报文
+     * @param userSession
+     * @param protocol
+     * @param msgId
      */
-    public void sendProtocol(UserSession userSession, ChatProtocol.FishChatProtocol protocol, int msgId);
+    void sendProtocol(UserSession userSession, ChatProtocol.FishChatProtocol protocol, int msgId);
 
     /**
      * 下行
+     * @param userSession
+     * @param clientMsgId
+     * @param msgId
      */
-    public void syncMessageId(UserSession userSession, long clientMsgId, long msgId);
+    void syncMessageId(UserSession userSession, long clientMsgId, long msgId);
 
 }

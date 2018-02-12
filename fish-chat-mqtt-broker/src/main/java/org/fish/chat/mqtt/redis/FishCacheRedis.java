@@ -1,6 +1,5 @@
-package org.fish.chat.common.cache.redis;
+package org.fish.chat.mqtt.redis;
 
-import com.alibaba.dubbo.common.utils.Assert;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.fish.chat.common.utils.ThreadUtils;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  * @author adre
  * @date 2016/12/25
  */
+@Service
 public class FishCacheRedis implements InitializingBean {
 
     private static final Logger logger = Logger.getLogger(FishCacheRedis.class);
@@ -32,8 +34,8 @@ public class FishCacheRedis implements InitializingBean {
     /**
      * 连接地址
      */
-    private String redisAddress;
-    private int dbSize;
+    private String redisAddress = "127.0.0.1:63790";
+    private int dbSize = 10;
     private List<JedisPool> dupRedis;
 
 

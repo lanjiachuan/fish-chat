@@ -6,8 +6,9 @@ import net.sf.json.JSONObject;
 import java.io.Serializable;
 
 /**
- * Comments for SoundMessage.java
+ * 声音消息
  *
+ * @author adre
  */
 public class SoundMessage extends Message implements Serializable {
 

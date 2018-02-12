@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Comments for ArticleMessage.java
+ * 图文消息
  *
+ * @author adre
  */
 public class ArticleMessage extends Message {
 

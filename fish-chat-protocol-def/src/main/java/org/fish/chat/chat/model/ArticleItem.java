@@ -6,8 +6,9 @@ import net.sf.json.JSONObject;
 import java.io.Serializable;
 
 /**
- * Comments for ArticleItem.java
+ * 图文消息item
  *
+ * @author adre
  */
 public class ArticleItem implements Serializable {
 
@@ -22,19 +23,19 @@ public class ArticleItem implements Serializable {
 
     public static final int TYPE_FULLSCREEN = 2;
 
-    private static final String JSON_PROPERTIE_TITLE = "title";
+    private static final String JSON_PROPERTY_TITLE = "title";
 
-    private static final String JSON_PROPERTIE_URL = "url";
+    private static final String JSON_PROPERTY_URL = "url";
 
-    private static final String JSON_PROPERTIE_DESC = "description";
+    private static final String JSON_PROPERTY_DESC = "description";
 
-    private static final String JSON_PROPERTIE_PIC_URL = "pic_url";
+    private static final String JSON_PROPERTY_PIC_URL = "pic_url";
 
-    private static final String JSON_PROPERTIE_TEMPLATE_ID = "template_id";
+    private static final String JSON_PROPERTY_TEMPLATE_ID = "template_id";
 
-    private static final String JSON_PROPERTIE_BOTTOM_TEXT = "bottom_text";
+    private static final String JSON_PROPERTY_BOTTOM_TEXT = "bottom_text";
 
-    private static final String JSON_PROPERTIE_TIMEOUT = "timeout";
+    private static final String JSON_PROPERTY_TIMEOUT = "timeout";
 
     private String title;
 
@@ -52,25 +53,25 @@ public class ArticleItem implements Serializable {
 
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(JSON_PROPERTIE_TITLE, title);
-        jsonObject.put(JSON_PROPERTIE_URL, url);
-        jsonObject.put(JSON_PROPERTIE_DESC, description);
-        jsonObject.put(JSON_PROPERTIE_PIC_URL, picUrl);
-        jsonObject.put(JSON_PROPERTIE_TEMPLATE_ID, templateId);
-        jsonObject.put(JSON_PROPERTIE_BOTTOM_TEXT, bottomText);
-        jsonObject.put(JSON_PROPERTIE_TIMEOUT, timeout);
+        jsonObject.put(JSON_PROPERTY_TITLE, title);
+        jsonObject.put(JSON_PROPERTY_URL, url);
+        jsonObject.put(JSON_PROPERTY_DESC, description);
+        jsonObject.put(JSON_PROPERTY_PIC_URL, picUrl);
+        jsonObject.put(JSON_PROPERTY_TEMPLATE_ID, templateId);
+        jsonObject.put(JSON_PROPERTY_BOTTOM_TEXT, bottomText);
+        jsonObject.put(JSON_PROPERTY_TIMEOUT, timeout);
         return jsonObject;
     }
     
     public static ArticleItem parseFrom(JSONObject jsonObject) {
         ArticleItem articleItem = new ArticleItem();
-        articleItem.setTitle(jsonObject.optString(JSON_PROPERTIE_TITLE));
-        articleItem.setDescription(jsonObject.optString(JSON_PROPERTIE_DESC));
-        articleItem.setUrl(jsonObject.optString(JSON_PROPERTIE_URL));
-        articleItem.setPicUrl(jsonObject.optString(JSON_PROPERTIE_PIC_URL));
-        articleItem.setTemplateId(jsonObject.optInt(JSON_PROPERTIE_TEMPLATE_ID));
-        articleItem.setBottomText(jsonObject.optString(JSON_PROPERTIE_BOTTOM_TEXT));
-        articleItem.setTimeout(jsonObject.optLong(JSON_PROPERTIE_TIMEOUT));
+        articleItem.setTitle(jsonObject.optString(JSON_PROPERTY_TITLE));
+        articleItem.setDescription(jsonObject.optString(JSON_PROPERTY_DESC));
+        articleItem.setUrl(jsonObject.optString(JSON_PROPERTY_URL));
+        articleItem.setPicUrl(jsonObject.optString(JSON_PROPERTY_PIC_URL));
+        articleItem.setTemplateId(jsonObject.optInt(JSON_PROPERTY_TEMPLATE_ID));
+        articleItem.setBottomText(jsonObject.optString(JSON_PROPERTY_BOTTOM_TEXT));
+        articleItem.setTimeout(jsonObject.optLong(JSON_PROPERTY_TIMEOUT));
         return articleItem;
     }
     

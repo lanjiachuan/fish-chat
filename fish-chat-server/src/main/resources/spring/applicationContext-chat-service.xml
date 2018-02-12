@@ -7,10 +7,6 @@
     <bean id="messageService" class="org.fish.chat.chat.service.impl.MessageServiceImpl">
     </bean>
 
-    <bean id="qosService" class="org.fish.chat.mqtt.qos.impl.QosServiceRedisImpl">
-        <property name="fishCacheRedis" ref="fishCacheRedis"/>
-    </bean>
-
     <bean id="userChatService" class="org.fish.chat.chat.service.impl.UserChatServiceImpl">
         <property name="userSessionService" ref="userSessionService" />
         <property name="mqttService" ref="mqttServiceQosProxy" />
@@ -18,7 +14,7 @@
         <property name="deliverService" ref="mqttDeliverService"/>
     </bean>
 
-    <bean id="chatSystemService" class="org.fish.chat.chat.service.impl.ChatSystemServiceImpl">
+    <bean id="chatSystemService" class="org.fish.chat.chat.service.impl.SystemChatServiceImpl">
         <property name="userChatService" ref="userChatService" />
         <property name="messageService" ref="messageService"/>
     </bean>

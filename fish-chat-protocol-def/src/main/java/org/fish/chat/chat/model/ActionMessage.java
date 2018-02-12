@@ -9,8 +9,9 @@ import org.fish.chat.common.constants.ProtocolConstants;
 import java.io.Serializable;
 
 /**
- * Comments for ActionMessage.java
+ * 动作消息
  *
+ * @author adre
  */
 public class ActionMessage extends Message implements Serializable {
 
@@ -24,18 +25,16 @@ public class ActionMessage extends Message implements Serializable {
     private static final String JSON_KEY_EXTEND = "extend";
 
     public enum ActionType {
-        UNDEFINED(0), REMIND_REPLY(1), INSTERESTED(2), NOTINSTERESTED(3), REQUEST_REVIEW(4), //NL
-        REVIEW_ACCEPT(5), REVIEW_REJECT(6),
-        EXCHANGE_CONTACT(7), CONTACT_ACCEPT(8), CONTACT_REJECT(9),
-        KICK_OFF(10), CANCEL_SAY_HELLO(11), CAN_PHONE_CALL_GRAY(12), //NL
-        CAN_PHONE_CALL(13), PHONE_INTERVIEW(14), ANSWER_QUESTION(15), READ_ANSWER(16), //NL
-        ACCEPT_ANSWER(17), REJECT_ANSWER(18), BOSS_DIRECT_CHAT(19), DIALOG_ACTION(20), //NL
-        REQUEST_RESUME(21), RESUME_ACCEPT(22), RESUME_REJECT(23), //NL
-        REQUEST_REVIEW3(24), SOMEBODY_VIEW(30), SOMEBODY_INSTEREST(31),//NL
-        EXCHANGE_WEIXIN(32), WEIXIN_ACCEPT(33) , WEIXIN_REJECT(34), SOMEBODY_NEW_GEEK_OR_JOB(35),
-        CHOICE_QUESTION_ITEM(36),
-        REQUEST_GET_RESUME(37),GET_RESUME_ACCEPT(38),GET_RESUME_REJECT(39),
-        REQUEST_SEND_RESUME(40),SEND_RESUME_ACCEPT(41),SEND_RESUME_REJECT(42), MATE_SHARE_GEEK(43), IDENTITY_FREEZE(44), BOSS_NOTICE(45), GEEK_NOTICE(46);
+        UNDEFINED(0),
+        REMIND_REPLY(1),
+        EXCHANGE_CONTACT(2),
+        CONTACT_ACCEPT(3),
+        CONTACT_REJECT(4),
+        KICK_OFF(5),
+        EXCHANGE_WEIXIN(6),
+        WEIXIN_ACCEPT(7),
+        WEIXIN_REJECT(8),
+        IDENTITY_FREEZE(9);
 
         ActionType(int type) {
             this.type = type;
@@ -144,9 +143,6 @@ public class ActionMessage extends Message implements Serializable {
             case WEIXIN_REJECT:
                 sb.append("拒绝与您交换微信");
                 return "";
-            case REQUEST_RESUME:
-                sb.append("请求下载您的简历");
-                break;
             default:
                 return "";
         }

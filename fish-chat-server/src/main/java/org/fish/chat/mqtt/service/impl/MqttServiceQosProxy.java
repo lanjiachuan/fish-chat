@@ -17,6 +17,8 @@ import org.fish.chat.mqtt.protocol.wire.*;
 import org.fish.chat.mqtt.qos.QosService;
 import org.fish.chat.mqtt.service.MqttService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -25,9 +27,11 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Comments for MqttServiceQosProxy.java
+ * Qos代理
  *
+ * @author adre
  */
+@Service
 public class MqttServiceQosProxy implements MqttService, MessageAckCallback, InitializingBean,
         RemovalListener<Long, MqttPersistableWireMessage> {
 
@@ -35,12 +39,13 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
 
     private static final int EXPIRE_TIME = 10;
 
+    @Autowired
     private UserSessionService userSessionService;
-
+    @Autowired
     private MessageFinishCallback messageFinishCallback;
-
+    @Autowired
     private MqttService mqttService;
-
+    @Autowired
     private QosService qosService;
 
     private final Cache<Long, MqttPersistableWireMessage> cache = CacheBuilder.newBuilder()

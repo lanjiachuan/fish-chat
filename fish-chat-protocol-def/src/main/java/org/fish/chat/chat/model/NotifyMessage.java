@@ -4,8 +4,9 @@ import net.sf.json.JSONObject;
 import org.fish.chat.common.constants.ProtocolConstants;
 
 /**
- * Comments for NotifyMessage.java
+ * 通知消息
  *
+ * @author adre
  */
 public class NotifyMessage extends Message {
 
@@ -47,7 +48,7 @@ public class NotifyMessage extends Message {
 
     @Override
     public String getPushUrl() {
-        return ProtocolConstants.URL_PATH + "?type=f2";
+        return ProtocolConstants.URL_PATH + "?type=1";
     }
 
     public String getText() {

@@ -11,8 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Comments for ProtocolUtil.java
+ * pb消息工具类
  *
+ * @author adre
  */
 public class ProtocolUtil {
 

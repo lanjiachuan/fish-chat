@@ -7,23 +7,72 @@ import org.fish.chat.chat.model.UserSession;
 import java.util.List;
 
 /**
- * Comments for UserSessionService.java
+ * chat server session
  *
+ * @author adre
  */
 public interface UserSessionService {
 
-    public UserSession connect(long userId, long cid, String ip, int identity, String clientId, int type, float protocolVersion);
+    /**
+     * 连接创建
+     * @param userId
+     * @param cid
+     * @param ip
+     * @param identity
+     * @param clientId
+     * @param type
+     * @param protocolVersion
+     * @return
+     */
+    UserSession connect(long userId, long cid, String ip, int identity, String clientId, int type, float protocolVersion);
 
-    public boolean disconnect(long userId, long cid, int type);
+    /**
+     * 断开
+     * @param userId
+     * @param cid
+     * @param type
+     * @return
+     */
+    boolean disconnect(long userId, long cid, int type);
 
-    public List<UserSession> getAllUserSession(long userId);
+    /**
+     * 获取所有在线session
+     * @param userId
+     * @return
+     */
+    List<UserSession> getAllUserSession(long userId);
 
-    public UserSession getUserSession(long userId, int type);
+    /**
+     * 获取session
+     * @param userId
+     * @param type
+     * @return
+     */
+    UserSession getUserSession(long userId, int type);
 
-    public boolean destroyUserSession(long userId, long cid, int type);
+    /**
+     * 清理session
+     * @param userId
+     * @param cid
+     * @param type
+     * @return
+     */
+    boolean destroyUserSession(long userId, long cid, int type);
 
-    public boolean heartBeat(long userId, int type);
+    /**
+     * 心跳
+     * @param userId
+     * @param type
+     * @return
+     */
+    boolean heartBeat(long userId, int type);
 
-    public void presence(long userId, ChatProtocol.FishPresence presence, int type);
+    /**
+     * 出席消息
+     * @param userId
+     * @param presence
+     * @param type
+     */
+    void presence(long userId, ChatProtocol.FishPresence presence, int type);
 
 }

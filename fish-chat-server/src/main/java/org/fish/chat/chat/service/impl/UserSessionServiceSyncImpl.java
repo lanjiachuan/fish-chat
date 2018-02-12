@@ -5,7 +5,7 @@ import org.fish.chat.chat.listener.UserSessionListener;
 import org.fish.chat.chat.model.UserSession;
 import org.fish.chat.chat.service.OnlineStatusService;
 import org.fish.chat.chat.service.UserSessionService;
-import org.fish.chat.common.cache.redis.FishCacheRedis;
+import org.fish.chat.mqtt.redis.FishCacheRedis;
 import org.fish.chat.common.constants.ChatConstant;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
@@ -414,6 +414,7 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
         ), "", ChatConstant.HEART_BEAT_INTERVAL * 3);
     }
 
+    @Override
     public void presence(long userId, ChatProtocol.FishPresence presence, int type) {
         UserSession userSession = getUserSession(userId, type);
         if (userSession != null) {

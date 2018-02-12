@@ -4,11 +4,14 @@ import io.netty.channel.ChannelHandlerContext;
 import org.fish.chat.mqtt.protocol.wire.MqttUnsubAck;
 import org.fish.chat.mqtt.protocol.wire.MqttUnsubscribe;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
  * Comments for MqttUnsubscribeHandler.java
  *
+ * @author adre
  */
+@Component
 public class MqttUnsubscribeHandler extends AbstractMqttHandler<MqttUnsubscribe> {
 
     @Override

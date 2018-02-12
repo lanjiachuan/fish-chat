@@ -5,8 +5,9 @@ import net.sf.json.JSONObject;
 import java.io.Serializable;
 
 /**
- * Comments for DialogButton.java
+ * 对话框button
  *
+ * @author adre
  */
 public class DialogButton implements Serializable {
 
