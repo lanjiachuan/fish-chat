@@ -5,7 +5,7 @@ import org.fish.chat.chat.listener.UserSessionListener;
 import org.fish.chat.chat.model.UserSession;
 import org.fish.chat.chat.service.OnlineStatusService;
 import org.fish.chat.chat.service.UserSessionService;
-import org.fish.chat.mqtt.redis.FishCacheRedis;
+import org.fish.chat.common.cache.redis.FishCacheRedis;
 import org.fish.chat.common.constants.ChatConstant;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
@@ -32,7 +32,6 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     private static final int ANDROID_APPID = 1001;
     private static final int IOS_APPID = 1002;
     private static final int WAIT_RECONNECT_EXPIRE_TIME = ChatConstant.HEART_BEAT_INTERVAL * 3;
-    private FishCacheRedis fishCacheRedis;
     private Map<Long, UserSession> userSessionMap = new ConcurrentHashMap<>();
     private Map<Long, UserSession> userWebSessionMap = new ConcurrentHashMap<>();
 
@@ -231,25 +230,26 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
         if (userSession.getType() == UserSession.USER_SESSION_TYPE_CLIENT) {
             userSessionMap.put(userSession.getUserId(), userSession);
             userSession.setLastSyncTime(System.currentTimeMillis());
-            fishCacheRedis.saveToRedis(getKey(userSession.getUserId()), userSession, ChatConstant.HEART_BEAT_INTERVAL * 3);
-            fishCacheRedis.saveToRedis(getOnlineKey(userSession.getUserId()), "", ChatConstant.HEART_BEAT_INTERVAL * 3);
+
+            FishCacheRedis.saveToRedis(getKey(userSession.getUserId()), userSession, ChatConstant.HEART_BEAT_INTERVAL * 3);
+            FishCacheRedis.saveToRedis(getOnlineKey(userSession.getUserId()), "", ChatConstant.HEART_BEAT_INTERVAL * 3);
         } else if (userSession.getType() == UserSession.USER_SESSION_TYPE_WEB) {
             userWebSessionMap.put(userSession.getUserId(), userSession);
             userSession.setLastSyncTime(System.currentTimeMillis());
-            fishCacheRedis.saveToRedis(getWebKey(userSession.getUserId()), userSession, ChatConstant.HEART_BEAT_INTERVAL * 3);
+            FishCacheRedis.saveToRedis(getWebKey(userSession.getUserId()), userSession, ChatConstant.HEART_BEAT_INTERVAL * 3);
         }
     }
 
     private void deleteUserSession(long userId, int type) {
         if (type == UserSession.USER_SESSION_TYPE_CLIENT) {
             UserSession userSession = userSessionMap.remove(userId);
-            fishCacheRedis.del(getKey(userId));
+            FishCacheRedis.del(getKey(userId));
             if (userSession != null) {
-                fishCacheRedis.del(getOnlineKey(userSession.getUserId()));
+                FishCacheRedis.del(getOnlineKey(userSession.getUserId()));
             }
         } else if (type == UserSession.USER_SESSION_TYPE_WEB) {
             userWebSessionMap.remove(userId);
-            fishCacheRedis.del(getWebKey(userId));
+            FishCacheRedis.del(getWebKey(userId));
         }
     }
 
@@ -409,8 +409,8 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     private void syncSession(UserSession userSession) {
         userSession.setLastSyncTime(System.currentTimeMillis());
         String key = userSession.getType() == UserSession.USER_SESSION_TYPE_CLIENT ? getKey(userSession.getUserId()) : getWebKey(userSession.getUserId());
-        fishCacheRedis.saveToRedis(key, userSession, ChatConstant.HEART_BEAT_INTERVAL * 3);
-        fishCacheRedis.saveToRedis(getOnlineKey(userSession.getUserId()
+        FishCacheRedis.saveToRedis(key, userSession, ChatConstant.HEART_BEAT_INTERVAL * 3);
+        FishCacheRedis.saveToRedis(getOnlineKey(userSession.getUserId()
         ), "", ChatConstant.HEART_BEAT_INTERVAL * 3);
     }
 
@@ -468,7 +468,7 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
             UserSession userSession = userSessionMap.get(userId);
             if (userSession == null) {
                 //这里可以加反向内存cache
-                userSession = fishCacheRedis.getFromRedis(getKey(userId), UserSession.class);
+                userSession = FishCacheRedis.getFromRedis(getKey(userId), UserSession.class);
                 if (userSession != null) {
                     userSessionMap.put(userSession.getUserId(), userSession);
                 }
@@ -478,7 +478,7 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
             UserSession userSession = userWebSessionMap.get(userId);
             if (userSession == null) {
                 //这里可以加反向内存cache
-                userSession = fishCacheRedis.getFromRedis(getWebKey(userId), UserSession.class);
+                userSession = FishCacheRedis.getFromRedis(getWebKey(userId), UserSession.class);
                 if (userSession != null) {
                     userWebSessionMap.put(userSession.getUserId(), userSession);
                 }
@@ -560,27 +560,18 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(fishCacheRedis, "fishCacheRedis must not null!");
-        schedule.scheduleAtFixedRate(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    cache.cleanUp();
-                } catch (Exception e) {
-                    LoggerManager.error("clean up guava Cache error! ", e);
-                }
+        schedule.scheduleAtFixedRate(() -> {
+            try {
+                cache.cleanUp();
+            } catch (Exception e) {
+                LoggerManager.error("clean up guava Cache error! ", e);
             }
         }, 2, 1, TimeUnit.SECONDS);
-        schedule.scheduleAtFixedRate(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    checkSession();
-                } catch (Exception e) {
-                    LoggerManager.error("checkSession error! ", e);
-                }
+        schedule.scheduleAtFixedRate(() -> {
+            try {
+                checkSession();
+            } catch (Exception e) {
+                LoggerManager.error("checkSession error! ", e);
             }
         }, ChatConstant.HEART_BEAT_INTERVAL, ChatConstant.HEART_BEAT_INTERVAL * 3, TimeUnit.SECONDS);
     }
@@ -597,11 +588,4 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
         return "user_chat_web_session_" + userId;
     }
 
-    public void setListeners(List<UserSessionListener> listeners) {
-        this.listeners = listeners;
-    }
-
-    public void setFishCacheRedis(FishCacheRedis fishCacheRedis) {
-        this.fishCacheRedis = fishCacheRedis;
-    }
 }

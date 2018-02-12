@@ -1,6 +1,7 @@
 package org.fish.chat.chat.service.impl;
 
 import org.fish.chat.chat.callback.MessageFinishCallback;
+import org.fish.chat.chat.service.MessageService;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
 import com.googlecode.protobuf.format.JsonFormat;
@@ -20,6 +21,8 @@ import org.fish.chat.mqtt.protocol.MqttMessage;
 import org.fish.chat.mqtt.protocol.wire.MqttPublish;
 import org.fish.chat.mqtt.service.MqttService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -33,16 +36,25 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * User: bdq
- * Date: 11/12/15
- * Time: 16:34
+ * 聊天实现类
+ *
+ * @author adre
  */
+@Service
 public class UserChatServiceImpl implements UserChatService, DeliverService, MessageFinishCallback, InitializingBean {
 
+    @Autowired
     private UserSessionService userSessionService;
+    @Autowired
     private ChatFilter chatFilter;
+    @Autowired
     private DeliverService deliverService;
+    @Autowired
     private MqttService mqttService;
+    @Autowired
+    private MessageService messageService;
+
+    private JsonFormat pbJsonFormat = new JsonFormat();
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -54,7 +66,16 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
 
     @Override
     public void sendUnreadMessage(UserSession userSession) {
-
+        RequestIdUtil.setRequestId(userSession.getUserId());
+        List<Message> messages = messageService.getUnreadMessage(userSession.getUserId(), userSession.getType());
+        if (CollectionUtils.isEmpty(messages)) {
+            LoggerManager.error("UserChatServiceImpl.sendUnreadMessage error userId = " + userSession.getUserId() + " identity = " + userSession.getType());
+            return;
+        }
+        int count = messages != null ? messages.size() : 0;
+        LoggerManager.info("UserChatServiceImpl.sendUnreadMessage find " + count + " message wait to send! userId = " + userSession.getUserId());
+        LoggerManager.info("UserChatServiceImpl.sendUnreadMessage userId = " + userSession.getUserId());
+        sendMessage(userSession, messages);
     }
 
     @Override
@@ -84,26 +105,35 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
             LoggerManager.info("filter return false, shop dispatch message = " + message);
             return;
         }
-        deliverService.deliverMessage(message.getTo().getUid(), message);//本地或网络投递
+        //本地或网络投递
+        deliverService.deliverMessage(message.getTo().getUid(), message);
         chatFilter.afterDeliver(fromUserSession, message);
     }
 
     @Override
-    public void dispatchSystemMessage(long userId, int identity, Message message) {
-
+    public void dispatchSystemMessage(long userId, int type, Message message) {
+        if (message.getFrom().getUid() == message.getTo().getUid()) {
+            LoggerManager.warn("UserChatServiceImpl.dispatchSystemMessage not allow send message to yourself, userId = " + userId + "message = " + message);
+            return;
+        }
+        UserSession tempUserSession = new UserSession();
+        tempUserSession.setUserId(userId);
+        tempUserSession.setType(type);
+        tempUserSession.setTemp(true);
+        dispatchMessage(tempUserSession, message);
     }
 
-    public void sendMessage(UserSession userSession, Message message) {
+    private void sendMessage(UserSession userSession, Message message) {
         sendMessage(userSession, message, ChatConstant.QOS_TYPE_EXACTLY_ONCE);
     }
 
-    public void sendMessage(UserSession userSession, Message message, int qos) {
+    private void sendMessage(UserSession userSession, Message message, int qos) {
         List<Message> messageList = new ArrayList<Message>();
         messageList.add(message);
         sendMessage(userSession, messageList, qos);
     }
 
-    public void sendMessage(UserSession userSession, List<Message> messageList, int qos) {
+    private void sendMessage(UserSession userSession, List<Message> messageList, int qos) {
         if (messageList != null && messageList.size() > 0) {
             if (CollectionUtils.isNotEmpty(messageList)) {
 
@@ -122,7 +152,7 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
                     mqttMsgId = mqttMsgId == 0 ? 1 : mqttMsgId;
                     publish.setMessageId(mqttMsgId);
 
-                    String jsonResponse = JsonFormat.printToString(protocol);
+                    String jsonResponse = pbJsonFormat.printToString(protocol);
                     LoggerManager.info("Send to userSession=" + userSession + " : " + jsonResponse);
                     mqttService.publish(userSession.getUserId(), userSession.getCid(), publish);
                 } else if (userSession.getType() == UserSession.USER_SESSION_TYPE_WEB) {
@@ -138,7 +168,7 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
                         builder.addMessages(ProtocolUtil.convertFishMessage(message));
                     }
                     ChatProtocol.FishChatProtocol protocol = builder.build();
-                    String jsonResponse = JsonFormat.printToString(protocol);
+                    String jsonResponse = pbJsonFormat.printToString(protocol);
                     LoggerManager.debug("sendMessage2web result:" + jsonResponse);
                     //cometService.sendResponse(userSession.getUserId(), userSession.getCid(), "application/json;charset=UTF-8", jsonResponse);
                     // TODO
@@ -149,7 +179,10 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
 
     @Override
     public void sendMessage(long userId, Message message, int sessionType) {
-
+        UserSession userSession = userSessionService.getUserSession(userId, sessionType);
+        if (userSession != null) {
+            sendMessage(userSession, message);
+        }
     }
 
     /**
@@ -159,7 +192,14 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
      */
     @Override
     public void sendMessage(long userId, List<Message> messageList, int sessionType) {
+        UserSession userSession = userSessionService.getUserSession(userId, sessionType);
+        if (userSession != null) {
+            sendMessage(userSession, messageList);
+        }
+    }
 
+    private void sendMessage(UserSession userSession, List<Message> messageList) {
+        sendMessage(userSession, messageList, ChatConstant.QOS_TYPE_EXACTLY_ONCE);
     }
 
     /**
@@ -167,7 +207,14 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
      */
     @Override
     public void sendProtocol(UserSession userSession, ChatProtocol.FishChatProtocol protocol, int msgId) {
-
+        if (userSession != null && protocol != null) {
+            LoggerManager.info("userId=" + userSession.getUserId() + "sendProtocol:" + pbJsonFormat.printToString(protocol));
+            MqttMessage message = new MqttMessage(protocol.toByteArray());
+            message.setQos(ChatConstant.QOS_TYPE_EXACTLY_ONCE);
+            MqttPublish publish = new MqttPublish(ChatConstant.DEFAULT_TOPIC_NAME, message);
+            publish.setMessageId(msgId);
+            mqttService.publish(userSession.getUserId(), userSession.getCid(), publish);
+        }
     }
 
     /**
@@ -175,54 +222,59 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
      */
     @Override
     public void syncMessageId(UserSession userSession, long clientMsgId, long msgId) {
-
+        if (userSession != null && userSession.getType() == UserSession.USER_SESSION_TYPE_CLIENT) {
+            ChatProtocol.FishChatProtocol protocol = ProtocolUtil.getMessageSyncProtocol(clientMsgId, msgId);
+            LoggerManager.info("userId=" + userSession.getUserId() + " ,syncMessageId:" + pbJsonFormat.printToString(protocol));
+            MqttMessage message = new MqttMessage(protocol.toByteArray());
+            message.setQos(ChatConstant.QOS_TYPE_EXACTLY_ONCE);
+            MqttPublish publish = new MqttPublish(ChatConstant.DEFAULT_TOPIC_NAME, message);
+            publish.setMessageId((int) clientMsgId);
+            mqttService.publish(userSession.getUserId(), userSession.getCid(), publish);
+        }
     }
 
     private ExecutorService executorService = new ThreadPoolExecutor(8, 8, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(100000));
 
     @Override
     public void deliverMessage(final long toUserId, final Message message) {
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    RequestIdUtil.setRequestId(toUserId);
-                    List<UserSession> toUserSessionList = userSessionService.getAllUserSession(toUserId);
+        executorService.submit(() -> {
+            try {
+                RequestIdUtil.setRequestId(toUserId);
+                List<UserSession> toUserSessionList = userSessionService.getAllUserSession(toUserId);
 
-                    if (toUserSessionList != null && toUserSessionList.size() > 0) {
-                        for (UserSession toUserSession : toUserSessionList) {
-                            if (toUserSession != null) {
-                                if (toUserSession.getStatus() != UserSession.USER_SESSION_STATUS_WAIT) {
-                                    LoggerManager.info("find userSession=" + toUserSession + " to send message = " + message);
-                                    //发送消息前过滤
-                                    if (!chatFilter.beforeSendMessage(toUserSession, message)) {
-                                        LoggerManager.info("filter beforeSendMessage return false, message will not send 。message = " + message);
-                                        return;
-                                    }
-                                    try {
-                                        sendMessage(toUserSession, message);
-                                    } catch (Exception e) {
-                                        LoggerManager.error("deliverMessage sendMessage has exception", e);
-                                    }
-                                    LoggerManager.info("from=" + message.getFrom().getUid() + ", to=" + toUserSession + " send Message " + message + " finish!");
-                                    //发送消息后
-                                    chatFilter.afterSendMessage(toUserSession, message);
-                                } else {
-                                    //等待状态或者死亡状态
-                                    //用户类型一致
-                                    LoggerManager.warn("message=" + message + " will not send , the resson is one of below, to = " + toUserSession);
-                                    LoggerManager.warn("1、user was unavailable status = " + toUserSession.getStatus());
-                                    LoggerManager.warn("2、user type is same, fromUserType=" + message.getFrom().getIdentity());
+                if (toUserSessionList != null && toUserSessionList.size() > 0) {
+                    for (UserSession toUserSession : toUserSessionList) {
+                        if (toUserSession != null) {
+                            if (toUserSession.getStatus() != UserSession.USER_SESSION_STATUS_WAIT) {
+                                LoggerManager.info("find userSession=" + toUserSession + " to send message = " + message);
+                                //发送消息前过滤
+                                if (!chatFilter.beforeSendMessage(toUserSession, message)) {
+                                    LoggerManager.info("filter beforeSendMessage return false, message will not send 。message = " + message);
+                                    return;
                                 }
+                                try {
+                                    sendMessage(toUserSession, message);
+                                } catch (Exception e) {
+                                    LoggerManager.error("deliverMessage sendMessage has exception", e);
+                                }
+                                LoggerManager.info("from=" + message.getFrom().getUid() + ", to=" + toUserSession + " send Message " + message + " finish!");
+                                //发送消息后
+                                chatFilter.afterSendMessage(toUserSession, message);
+                            } else {
+                                //等待状态或者死亡状态
+                                //用户类型一致
+                                LoggerManager.warn("message=" + message + " will not send , the resson is one of below, to = " + toUserSession);
+                                LoggerManager.warn("1、user was unavailable status = " + toUserSession.getStatus());
+                                LoggerManager.warn("2、user type is same, fromUserType=" + message.getFrom().getIdentity());
                             }
                         }
-                    } else {
-                        chatFilter.onSendMessageNotOnline(toUserId, message);
-                        LoggerManager.info("user [" + toUserId + "] was not online!" + message.getTo().getIdentity() + "|" + message.getFrom().getIdentity());
                     }
-                } catch (Exception e) {
-                    LoggerManager.error("UserChatServiceImpl.deliverMessage has exception", e);
+                } else {
+                    chatFilter.onSendMessageNotOnline(toUserId, message);
+                    LoggerManager.info("user [" + toUserId + "] was not online!" + message.getTo().getIdentity() + "|" + message.getFrom().getIdentity());
                 }
+            } catch (Exception e) {
+                LoggerManager.error("UserChatServiceImpl.deliverMessage has exception", e);
             }
         });
     }
@@ -247,22 +299,6 @@ public class UserChatServiceImpl implements UserChatService, DeliverService, Mes
 //                messageApi.receiveMessage(userId, userSession.getIdentity(), new ArrayList<Long>(idSet));
             }
         }
-    }
-
-    public void setUserSessionService(UserSessionService userSessionService) {
-        this.userSessionService = userSessionService;
-    }
-
-    public void setChatFilter(ChatFilter chatFilter) {
-        this.chatFilter = chatFilter;
-    }
-
-    public void setDeliverService(DeliverService deliverService) {
-        this.deliverService = deliverService;
-    }
-
-    public void setMqttService(MqttService mqttService) {
-        this.mqttService = mqttService;
     }
     
 }

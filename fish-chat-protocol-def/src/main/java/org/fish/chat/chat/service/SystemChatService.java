@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * chat server 发送消息
+ * 不通过mqtt调用的发送
  *
  * @author adre
  */

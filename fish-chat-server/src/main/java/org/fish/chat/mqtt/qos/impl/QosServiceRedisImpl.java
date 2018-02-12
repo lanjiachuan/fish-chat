@@ -3,7 +3,7 @@ package org.fish.chat.mqtt.qos.impl;
 
 import org.fish.chat.chat.listener.impl.UserSessionListenerAdapter;
 import org.fish.chat.chat.model.UserSession;
-import org.fish.chat.mqtt.redis.FishCacheRedis;
+import org.fish.chat.common.cache.redis.FishCacheRedis;
 import org.fish.chat.common.log.LoggerManager;
 import org.apache.commons.codec.binary.Base64;
 import org.fish.chat.mqtt.protocol.MqttException;

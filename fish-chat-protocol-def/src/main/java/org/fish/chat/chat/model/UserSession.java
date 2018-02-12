@@ -32,7 +32,7 @@ public class UserSession implements Serializable {
     private long cid;
     private int status;
     private int type;
-    private int usetType = USER_TYPE_DEFAULT;
+    private int userType = USER_TYPE_DEFAULT;
     private String ip;
     private Date createTime;
     private long lastHeartBeat;

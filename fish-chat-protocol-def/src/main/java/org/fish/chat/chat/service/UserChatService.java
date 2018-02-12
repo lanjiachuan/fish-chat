@@ -32,10 +32,10 @@ public interface UserChatService {
     /**
      * 上行
      * @param userId
-     * @param identity
+     * @param type
      * @param message
      */
-    void dispatchSystemMessage(long userId, int identity, Message message);
+    void dispatchSystemMessage(long userId, int type, Message message);
 
     /**
      * 下行
