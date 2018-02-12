@@ -4,30 +4,109 @@ package org.fish.chat.mqtt.service;
 import org.fish.chat.mqtt.protocol.wire.*;
 
 /**
- * Comments for MqttBizService.java
+ * mqtt协议消息类型
  *
+ * @author adre
  */
 public interface MqttBizService {
 
-    public MqttConnack connect(long userId, long cid, MqttConnect mqttConnect, String ip, int type);
+    /**
+     * 连接
+     * @param userId
+     * @param cid
+     * @param mqttConnect
+     * @param ip
+     * @param type
+     * @return
+     */
+    MqttConnack connect(long userId, long cid, MqttConnect mqttConnect, String ip, int type);
 
-    public void disconnect(long userId, long cid, MqttDisconnect mqttDisconnect);
+    /**
+     * 断开
+     * @param userId
+     * @param cid
+     * @param mqttDisconnect
+     */
+    void disconnect(long userId, long cid, MqttDisconnect mqttDisconnect);
 
-    public boolean publish(long userId, long cid, MqttPublish mqttPublish);
+    /**
+     * 发布消息
+     * @param userId
+     * @param cid
+     * @param mqttPublish
+     * @return
+     */
+    boolean publish(long userId, long cid, MqttPublish mqttPublish);
 
-    public void ping(long userId, long cid);
+    /**
+     * 心跳检测
+     * @param userId
+     * @param cid
+     */
+    void ping(long userId, long cid);
 
-    public boolean pubAck(long userId, long cid, MqttPubAck mqttPuback);
+    /**
+     * 发布确认
+     * Qos=1
+     * @param userId
+     * @param cid
+     * @param mqttPuback
+     * @return
+     */
+    boolean pubAck(long userId, long cid, MqttPubAck mqttPuback);
 
-    public boolean pubRec(long userId, long cid, MqttPubRec mqttPubRec);
+    /**
+     * 发布信息收到
+     * Qos=2
+     * @param userId
+     * @param cid
+     * @param mqttPubRec
+     * @return
+     */
+    boolean pubRec(long userId, long cid, MqttPubRec mqttPubRec);
 
-    public boolean pubRel(long userId, long cid, MqttPubRel mqttPubRel);
+    /**
+     * 发布信息分发
+     * Qos=2
+     * @param userId
+     * @param cid
+     * @param mqttPubRel
+     * @return
+     */
+    boolean pubRel(long userId, long cid, MqttPubRel mqttPubRel);
 
-    public boolean pubComp(long userId, long cid, MqttPubComp mqttPubComp);
+    /**
+     * 发布完成消息
+     * Qos=2
+     * @param userId
+     * @param cid
+     * @param mqttPubComp
+     * @return
+     */
+    boolean pubComp(long userId, long cid, MqttPubComp mqttPubComp);
 
-    public boolean subscribe(long userId, long cid, MqttSubscribe mqttSubscribe);
+    /**
+     * 订阅
+     * @param userId
+     * @param cid
+     * @param mqttSubscribe
+     * @return
+     */
+    boolean subscribe(long userId, long cid, MqttSubscribe mqttSubscribe);
 
-    public boolean unsubscribe(long userId, long cid, MqttUnsubscribe mqttUnubscribe);
+    /**
+     * 取消订阅
+     * @param userId
+     * @param cid
+     * @param mqttUnubscribe
+     * @return
+     */
+    boolean unsubscribe(long userId, long cid, MqttUnsubscribe mqttUnubscribe);
 
-    public void channelInactive(long userId, long cid);
+    /**
+     * channel 失效
+     * @param userId
+     * @param cid
+     */
+    void channelInactive(long userId, long cid);
 }

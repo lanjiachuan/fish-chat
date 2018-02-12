@@ -11,27 +11,6 @@
         <property name="fishCacheRedis" ref="fishCacheRedis"/>
     </bean>
 
-    <bean id="mqttBizServiceQosProxy" class="org.fish.chat.mqtt.service.impl.MqttBizServiceQosProxy">
-        <property name="mqttBizService" ref="mqttBizService"/>
-        <property name="qosService" ref="qosService"/>
-    </bean>
-
-    <bean id="mqttServiceQosProxy" class="org.fish.chat.mqtt.service.impl.MqttServiceQosProxy">
-        <property name="qosService" ref="qosService"/>
-        <property name="messageFinishCallback" ref="userChatService"/>
-        <property name="mqttService" ref="mqttClientService"/>
-        <property name="userSessionService" ref="userSessionService"/>
-    </bean>
-
-    <bean id="mqttBizService" class="org.fish.chat.mqtt.service.impl.MqttBizServiceImpl">
-        <property name="messageAckCallback" ref="mqttServiceQosProxy" />
-        <property name="userSessionService" ref="userSessionService" />
-        <property name="userChatService" ref="userChatService" />
-        <property name="iqHandler" ref="dispatcherIqHandler"/>
-        <property name="messageService" ref="messageService"/>
-        <property name="mqttService" ref="mqttServiceQosProxy"/>
-    </bean>
-
     <bean id="userChatService" class="org.fish.chat.chat.service.impl.UserChatServiceImpl">
         <property name="userSessionService" ref="userSessionService" />
         <property name="mqttService" ref="mqttServiceQosProxy" />
@@ -48,16 +27,5 @@
         <property name="fishCacheRedis" ref="fishCacheRedis"/>
     </bean>
 
-    <!--iq handler-->
-    <bean id="messageHistoryIqHandler" class="org.fish.chat.chat.impl.MessageHistoryIqHandler">
-        <property name="userSessionService" ref="userSessionService"/>
-    </bean>
-    <bean id="dispatcherIqHandler" class="org.fish.chat.chat.impl.DispatcherIqHandler">
-        <property name="handlerMap">
-            <map>
-                <entry key="/message/history" value-ref="messageHistoryIqHandler"/>
-            </map>
-        </property>
-    </bean>
 
 </beans>

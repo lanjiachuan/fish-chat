@@ -17,8 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
- * 分发消息 所有pipeline共享
- *
+ * dispatch message
  * @author adre
  */
 @Component
@@ -33,10 +32,6 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
     private MqttPingReqHandler mqttPingReqHandler;
     @Autowired
     private MqttPubAckHandler mqttPubAckHandler;
-    @Autowired
-    private MqttSubscribeHandler mqttSubscribeHandler;
-    @Autowired
-    private MqttUnsubscribeHandler mqttUnsubscribeHandler;
     @Autowired
     private MqttPubRecHandler mqttPubRecHandler;
     @Autowired
@@ -72,10 +67,6 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
                 mqttPubRelHandler.channelRead(ctx, (MqttPubRel) msg);
             } else if (msg instanceof MqttPubComp) {
                 mqttPubCompHandler.channelRead(ctx, (MqttPubComp) msg);
-            } else if (msg instanceof MqttSubscribe) {
-                mqttSubscribeHandler.channelRead(ctx, (MqttSubscribe) msg);
-            } else if (msg instanceof MqttUnsubscribe) {
-                mqttUnsubscribeHandler.channelRead(ctx, (MqttUnsubscribe) msg);
             } else if (msg instanceof MqttDisconnect) {
                 mqttDisconnectHandler.channelRead(ctx, (MqttDisconnect) msg);
             }
@@ -116,14 +107,12 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
 
     }
 
-
     @Override
-    public void afterPropertiesSet() {
+    public void afterPropertiesSet() throws Exception {
         Assert.notNull(mqttConnectHandler, "mqttConnectHandler must not null!");
         Assert.notNull(mqttPublishHandler, "mqttPublishHandler must not null!");
         Assert.notNull(mqttPubAckHandler, "mqttPubAckHandler must not null!");
         Assert.notNull(mqttPingReqHandler, "mqttPingReqHandler must not null!");
-        Assert.notNull(mqttSubscribeHandler, "mqttSubscribeHandler must not null!");
         Assert.notNull(mqttPubRecHandler, "mqttPubRecHandler must not null!");
         Assert.notNull(mqttPubRelHandler, "mqttPubRecHandler must not null!");
         Assert.notNull(mqttPubCompHandler, "mqttPubCompHandler must not null!");
@@ -131,4 +120,5 @@ public class MqttDispatcherHandler extends ChannelInboundHandlerAdapter implemen
         Assert.notNull(mqttBizService, "mqttBizService must not null!");
         Assert.notNull(mqttDisconnectHandler, "mqttDisconnectHandler must not null!");
     }
+
 }

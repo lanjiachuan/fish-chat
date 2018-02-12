@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 线程池工具类
+ * @author adre
  */
 public class ThreadUtils {
 
@@ -32,7 +33,7 @@ public class ThreadUtils {
                 maxPoolSize,
                 keepAliveTime,
                 unit,
-                new LinkedBlockingQueue<Runnable>(workQueueSize),
+                new LinkedBlockingQueue<>(workQueueSize),
                 ThreadUtils.newThreadFactory(threadFactoryName),
                 new ThreadPoolExecutor.CallerRunsPolicy());
     }

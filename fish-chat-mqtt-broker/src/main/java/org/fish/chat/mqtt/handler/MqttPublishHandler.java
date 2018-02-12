@@ -9,14 +9,13 @@ import org.fish.chat.mqtt.protocol.wire.MqttPublish;
 import org.fish.chat.mqtt.session.ChannelSession;
 
 /**
- * Comments for MqttPublishHandler.java
+ * 发布消息
+ * Qos=0,1,2
  *
+ * @author adre
  */
 public class MqttPublishHandler extends AbstractMqttHandler<MqttPublish> {
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttPublish msg) throws Exception {
 
@@ -36,6 +35,8 @@ public class MqttPublishHandler extends AbstractMqttHandler<MqttPublish> {
                 LoggerManager.info(channelSession == null ? "" : channelSession.toString()
                         + "send " + mqttPubRec);
                 ctx.writeAndFlush(mqttPubRec);
+                break;
+            default:
                 break;
         }
         if (channelSession != null) {

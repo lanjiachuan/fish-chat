@@ -15,8 +15,7 @@ import java.util.Map;
 /**
  * 历史消息 undone
  *
- * Comments for MessageHistoryIqHandler.java
- *
+ * @author adre
  */
 public class MessageHistoryIqHandler implements IqHandler, InitializingBean {
 

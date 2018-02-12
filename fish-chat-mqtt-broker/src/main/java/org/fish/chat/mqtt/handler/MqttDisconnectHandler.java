@@ -4,17 +4,15 @@ import org.fish.chat.common.log.LoggerManager;
 import io.netty.channel.ChannelHandlerContext;
 import org.fish.chat.mqtt.protocol.wire.MqttDisconnect;
 import org.fish.chat.mqtt.session.ChannelSession;
+import org.springframework.stereotype.Component;
 
 /**
- * Comments for MqttDisConnectHandler.java
- *
  * mqtt disconnect destroy channel session
+ * @author adre
  */
+@Component
 public class MqttDisconnectHandler extends AbstractMqttHandler<MqttDisconnect> {
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.ChannelInboundHandlerAdapter#channelRead(io.netty.channel.ChannelHandlerContext, java.lang.Object)
-     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, MqttDisconnect msg) throws Exception {
         MqttDisconnect mqttDisconnect = msg;

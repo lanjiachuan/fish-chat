@@ -1,9 +1,12 @@
 package org.fish.chat.chat.impl;
 
 
+import com.google.common.collect.ImmutableMap;
 import org.fish.chat.chat.ChatProtocol;
 import org.fish.chat.chat.handler.IqHandler;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Map;
@@ -11,12 +14,14 @@ import java.util.Map;
 /**
  * 选择器
  *
- * Comments for IqDispatchHandler.java
- *
+ * @author adre
  */
+@Service
 public class DispatcherIqHandler implements IqHandler, InitializingBean {
 
-    private Map<String, IqHandler> handlerMap;
+    @Autowired
+    private MessageHistoryIqHandler messageHistoryIqHandler;
+    private Map<String, IqHandler> handlerMap = ImmutableMap.of("/message/history", messageHistoryIqHandler);
 
     @Override
     public ChatProtocol.FishChatProtocol handle(long userId, long qid, String query, Map<String, String> params) {
@@ -31,9 +36,4 @@ public class DispatcherIqHandler implements IqHandler, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(handlerMap, "handlerMap must not null!");
     }
-
-    public void setHandlerMap(Map<String, IqHandler> handlerMap) {
-        this.handlerMap = handlerMap;
-    }
-
 }
