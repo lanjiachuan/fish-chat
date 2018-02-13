@@ -1,6 +1,7 @@
 package org.fish.chat.chat.service.impl;
 
 
+import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.chat.model.ActionMessage;
@@ -11,7 +12,10 @@ import org.fish.chat.chat.service.MessageService;
 import org.fish.chat.chat.service.UserChatService;
 import org.fish.chat.chat.utils.MessageUtil;
 import org.fish.chat.common.constants.ChatConstant;
+import org.fish.chat.common.utils.ThreadUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
@@ -26,35 +30,35 @@ import java.util.concurrent.TimeUnit;
 /**
  * 对外提供的发消息接口
  *
+ * @author adre
  */
+@Service
 public class SystemChatServiceImpl implements SystemChatService, InitializingBean {
 
+    @Autowired
     private MessageService messageService;
+    @Autowired
     private UserChatService userChatService;
 
-    private ExecutorService executorService = new ThreadPoolExecutor(16, 16, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(1000000));
+    private ExecutorService executorService = ThreadUtils.newUnthrowThreadPool(16, 16, 100, TimeUnit.SECONDS, 10000, "system-chat-service");
+
+    private Gson gson = new Gson();
 
     @Override
     public void sendTextMessage(final long fromId, final int identity, final long toId, final int toIdentity, final String text) {
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                Message message = MessageUtil.createTextMessage(0, fromId, identity, toId, toIdentity,
-                        Message.MESSAGE_TEMPLATE_NORMAL, Message.MESSAGE_TYPE_SYSTEM, text);
-                userChatService.dispatchSystemMessage(fromId, identity, message);
-            }
+        executorService.submit(() -> {
+            Message message = MessageUtil.createTextMessage(0, fromId, identity, toId, toIdentity,
+                    Message.MESSAGE_TEMPLATE_NORMAL, Message.MESSAGE_TYPE_SYSTEM, text);
+            userChatService.dispatchSystemMessage(fromId, identity, message);
         });
     }
 
     @Override
     public void sendTextMessage(final long fromId, final int identity, final long toId, final int toIdentity, final String text, final int messageType) {
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                Message message = MessageUtil.createTextMessage(0, fromId, identity, toId, toIdentity,
-                        Message.MESSAGE_TEMPLATE_NORMAL, messageType, text);
-                userChatService.dispatchSystemMessage(fromId, identity, message);
-            }
+        executorService.submit(() -> {
+            Message message = MessageUtil.createTextMessage(0, fromId, identity, toId, toIdentity,
+                    Message.MESSAGE_TEMPLATE_NORMAL, messageType, text);
+            userChatService.dispatchSystemMessage(fromId, identity, message);
         });
     }
 
@@ -68,14 +72,10 @@ public class SystemChatServiceImpl implements SystemChatService, InitializingBea
             message.setId(messageId);
         }
 
-        executorService.submit(new Runnable() {
-
-            @Override
-            public void run() {
-                for (long toUid : toUidList) {
-                    message.setTo(toUid);
-                    userChatService.dispatchSystemMessage(fromUid, identity, message);
-                }
+        executorService.submit(() -> {
+            for (long toUid : toUidList) {
+                message.setTo(toUid);
+                userChatService.dispatchSystemMessage(fromUid, identity, message);
             }
         });
     }
@@ -97,7 +97,7 @@ public class SystemChatServiceImpl implements SystemChatService, InitializingBea
     @Override
     public void identityFreeze(long userId, int identity, boolean canExplain) {
         ActionMessage message = new ActionMessage();
-        message.setTo(userId, identity); // TODO
+        message.setTo(userId, identity);
         message.setFrom(ChatConstant.SYSTEM_USER_ID);
         message.setActionType(ActionMessage.ActionType.IDENTITY_FREEZE);
         message.setPersistence(false);
@@ -106,7 +106,7 @@ public class SystemChatServiceImpl implements SystemChatService, InitializingBea
         message.setCreateTime(new Date());
         Map<String, Object> map = new HashMap<String, Object>();
 
-        message.setExtend(JsonReader.fetchString(map));
+        message.setExtend(gson.toJson(map));
         sendMessage(message.getFrom().getUid(), message);
     }
 
@@ -143,19 +143,15 @@ public class SystemChatServiceImpl implements SystemChatService, InitializingBea
             }
         }
 
-        executorService.submit(new Runnable() {
-
-            @Override
-            public void run() {
+        executorService.submit(() -> {
 //                message.setChatType(identity); // TODO
-                for (long toUid : toUidList) {
-                    message.setTo(toUid);
-                    message.setCreateTime(new Date());
-                    try {
-                        userChatService.dispatchSystemMessage(fromUid, identity, message);
-                    } catch (Exception e) {
-                        LoggerManager.error("", e);
-                    }
+            for (long toUid : toUidList) {
+                message.setTo(toUid);
+                message.setCreateTime(new Date());
+                try {
+                    userChatService.dispatchSystemMessage(fromUid, identity, message);
+                } catch (Exception e) {
+                    LoggerManager.error("", e);
                 }
             }
         });
@@ -168,11 +164,4 @@ public class SystemChatServiceImpl implements SystemChatService, InitializingBea
         Assert.notNull(messageService, "messageService must not null!");
     }
 
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    public void setUserChatService(UserChatService userChatService) {
-        this.userChatService = userChatService;
-    }
 }

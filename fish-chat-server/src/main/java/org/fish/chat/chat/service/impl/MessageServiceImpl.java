@@ -2,14 +2,18 @@ package org.fish.chat.chat.service.impl;
 
 import org.fish.chat.chat.model.Message;
 import org.fish.chat.chat.service.MessageService;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by adre on 2017/1/7.
+ *
+ * @author adre
+ * @date 2017/1/7
  */
+@Service
 public class MessageServiceImpl implements MessageService {
 
     @Override
@@ -58,16 +62,6 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageChatStatistics> getMessageChatStatistics(List<Long> uids) {
-        return null;
-    }
-
-    @Override
-    public List<UserMessageStatistics> getUserMessageStatistics(List<Long> uids) {
-        return null;
-    }
-
-    @Override
     public List<Message> syncMessage(long uid, int identity, Collection<Long> friendIds, int friendIdentity, long lastMessageId) {
         return null;
     }
@@ -85,11 +79,6 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public boolean updateMessage(Message message) {
         return false;
-    }
-
-    @Override
-    public Map<Long, TaskReceiveCount> getReceivedCountByTaskId(List<Long> taskIdList) {
-        return null;
     }
 
     @Override

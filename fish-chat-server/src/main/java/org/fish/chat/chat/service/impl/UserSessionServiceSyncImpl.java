@@ -14,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -23,9 +24,11 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * Comments for UserSessionServiceSyncImpl.java
+ * user session
  *
+ * @author adre
  */
+@Service
 public class UserSessionServiceSyncImpl implements UserSessionService, UserSessionListener, InitializingBean
         , RemovalListener<Long, UserSession>, OnlineStatusService {
 
@@ -96,17 +99,13 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     @Override
     public void onSessionDestroy(final UserSession userSession) {
         try {
-            executorService.submit(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (listeners != null && listeners.size() > 0) {
-                        for (UserSessionListener listener : listeners) {
-                            try {
-                                listener.onSessionDestroy(userSession);
-                            } catch (Exception e) {
-                                LoggerManager.error("", e);
-                            }
+            executorService.submit(() -> {
+                if (listeners != null && listeners.size() > 0) {
+                    for (UserSessionListener listener : listeners) {
+                        try {
+                            listener.onSessionDestroy(userSession);
+                        } catch (Exception e) {
+                            LoggerManager.error("", e);
                         }
                     }
                 }
@@ -119,22 +118,18 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     @Override
     public void onSessionCreate(final UserSession userSession) {
         try {
-            executorService.submit(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (listeners != null && listeners.size() > 0) {
+            executorService.submit(() -> {
+                if (listeners != null && listeners.size() > 0) {
+                    try {
+                        //睡10ms 保证客户端已经收到connack
+                        Thread.sleep(10);
+                    } catch (InterruptedException e1) {
+                    }
+                    for (UserSessionListener listener : listeners) {
                         try {
-                            //睡10ms 保证客户端已经收到connack
-                            Thread.sleep(10);
-                        } catch (InterruptedException e1) {
-                        }
-                        for (UserSessionListener listener : listeners) {
-                            try {
-                                listener.onSessionCreate(userSession);
-                            } catch (Exception e) {
-                                LoggerManager.error("", e);
-                            }
+                            listener.onSessionCreate(userSession);
+                        } catch (Exception e) {
+                            LoggerManager.error("", e);
                         }
                     }
                 }
@@ -148,18 +143,14 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     @Override
     public void onSessionOwnerChange(final UserSession oldUserSession, final UserSession newUserSession) {
         try {
-            executorService.submit(new Runnable() {
+            executorService.submit(() -> {
+                if (listeners != null && listeners.size() > 0) {
 
-                @Override
-                public void run() {
-                    if (listeners != null && listeners.size() > 0) {
-
-                        for (UserSessionListener listener : listeners) {
-                            try {
-                                listener.onSessionOwnerChange(oldUserSession, newUserSession);
-                            } catch (Exception e) {
-                                LoggerManager.error("", e);
-                            }
+                    for (UserSessionListener listener : listeners) {
+                        try {
+                            listener.onSessionOwnerChange(oldUserSession, newUserSession);
+                        } catch (Exception e) {
+                            LoggerManager.error("", e);
                         }
                     }
                 }
@@ -173,18 +164,14 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     public void onSessionReconnect(final UserSession userSession) {
         try {
             cache.invalidate(userSession.getUserId());
-            executorService.submit(new Runnable() {
+            executorService.submit(() -> {
+                if (listeners != null && listeners.size() > 0) {
 
-                @Override
-                public void run() {
-                    if (listeners != null && listeners.size() > 0) {
-
-                        for (UserSessionListener listener : listeners) {
-                            try {
-                                listener.onSessionReconnect(userSession);
-                            } catch (Exception e) {
-                                LoggerManager.error("", e);
-                            }
+                    for (UserSessionListener listener : listeners) {
+                        try {
+                            listener.onSessionReconnect(userSession);
+                        } catch (Exception e) {
+                            LoggerManager.error("", e);
                         }
                     }
                 }
@@ -198,18 +185,14 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     public void onSessionDisconnect(final UserSession userSession) {
         try {
             cache.put(userSession.getUserId(), userSession);
-            executorService.submit(new Runnable() {
+            executorService.submit(() -> {
+                if (listeners != null && listeners.size() > 0) {
 
-                @Override
-                public void run() {
-                    if (listeners != null && listeners.size() > 0) {
-
-                        for (UserSessionListener listener : listeners) {
-                            try {
-                                listener.onSessionDisconnect(userSession);
-                            } catch (Exception e) {
-                                LoggerManager.error("", e);
-                            }
+                    for (UserSessionListener listener : listeners) {
+                        try {
+                            listener.onSessionDisconnect(userSession);
+                        } catch (Exception e) {
+                            LoggerManager.error("", e);
                         }
                     }
                 }
@@ -512,16 +495,13 @@ public class UserSessionServiceSyncImpl implements UserSessionService, UserSessi
     public void afterPresence(final ChatProtocol.FishPresence presence, final UserSession userSession) {
         try {
             LoggerManager.warn("UserSession.afterPresence session =" + userSession);
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    if (CollectionUtils.isNotEmpty(listeners)) {
-                        for (UserSessionListener listener : listeners) {
-                            try {
-                                listener.afterPresence(presence, userSession);
-                            } catch (Exception e) {
-                                LoggerManager.error("", e);
-                            }
+            executorService.submit(() -> {
+                if (CollectionUtils.isNotEmpty(listeners)) {
+                    for (UserSessionListener listener : listeners) {
+                        try {
+                            listener.afterPresence(presence, userSession);
+                        } catch (Exception e) {
+                            LoggerManager.error("", e);
                         }
                     }
                 }
