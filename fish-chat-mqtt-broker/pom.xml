@@ -20,10 +20,6 @@
             <groupId>org.fish</groupId>
             <artifactId>fish-chat-protocol-def</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.fish</groupId>
-            <artifactId>fish-chat-server-client</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>

@@ -22,10 +22,6 @@
             <groupId>org.fish</groupId>
             <artifactId>fish-chat-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.fish</groupId>
-            <artifactId>fish-chat-mqtt-client</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
