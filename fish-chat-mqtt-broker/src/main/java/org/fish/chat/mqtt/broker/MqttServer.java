@@ -30,7 +30,7 @@ import java.util.concurrent.Executors;
 @Component
 public class MqttServer implements InitializingBean {
 
-    private int port;
+    private int port = 2578;
     @Autowired
     private MqttDispatcherHandler mqttDispatcherHandler;
     @Autowired
@@ -83,6 +83,7 @@ public class MqttServer implements InitializingBean {
     public void afterPropertiesSet() {
         Assert.notNull(mqttDispatcherHandler, "mqttDispatcherHandler must not null!");
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
+        start();
     }
 
 }

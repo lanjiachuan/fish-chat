@@ -44,8 +44,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
     @Autowired
     private MessageFinishCallback messageFinishCallback;
     @Autowired
-    private MqttService mqttService;
-    @Autowired
     private QosService qosService;
 
     private final Cache<Long, MqttPersistableWireMessage> cache = CacheBuilder.newBuilder()
@@ -89,7 +87,8 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
             LoggerManager.debug("pub release to client faild . publish = " + message + " , pubrel="
                     + mqttPubRel);
         }
-        writeAndRetry(userId, mqttPubRel);//将消息替换为状态
+        //将消息替换为状态
+        writeAndRetry(userId, mqttPubRel);
         return true;
     }
 
@@ -185,7 +184,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(mqttService, "mqttService must not null!");
         Assert.notNull(qosService, "qosService must not null!");
         scheduled.scheduleWithFixedDelay(() -> {
             try {
@@ -196,20 +194,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
             }
 
         }, 2, 1, TimeUnit.SECONDS);
-    }
-
-    /**
-     * @param mqttService the mqttService to set
-     */
-    public void setMqttService(MqttService mqttService) {
-        this.mqttService = mqttService;
-    }
-
-    /**
-     * @param qosService the qosService to set
-     */
-    public void setQosService(QosService qosService) {
-        this.qosService = qosService;
     }
 
     private void writeAndRetry(long userId, MqttPersistableWireMessage message) {
@@ -258,19 +242,6 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
         }
     }
 
-    /**
-     * @param userSessionService the userSessionService to set
-     */
-    public void setUserSessionService(UserSessionService userSessionService) {
-        this.userSessionService = userSessionService;
-    }
-
-    /**
-     * @param messageFinishCallback the messageFinishCallback to set
-     */
-    public void setMessageFinishCallback(MessageFinishCallback messageFinishCallback) {
-        this.messageFinishCallback = messageFinishCallback;
-    }
 
     @Override
     public boolean publishAndClose(long userId, long cid, MqttPublish publish) {

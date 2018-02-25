@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.10.RELEASE</version>
+        <version>2.0.0.RC2</version>
     </parent>
 
     <groupId>org.fish</groupId>
@@ -23,6 +23,17 @@
         <module>fish-chat-common</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
         <xmemcached-version>2.0.0</xmemcached-version>
         <jedis-version>2.4.0</jedis-version>
@@ -35,7 +46,7 @@
         <netty-all-version>4.1.20.Final</netty-all-version>
         <protobuf-version>3.5.1</protobuf-version>
         <protobuf-java-format>1.4</protobuf-java-format>
-        <org.springframework-version>4.3.14.RELEASE</org.springframework-version>
+        <org.springframework-version>5.0.4.RELEASE</org.springframework-version>
         <joda.time-version>2.9.9</joda.time-version>
         <xmemcached-version>2.0.0</xmemcached-version>
         <guava-version>23.6-jre</guava-version>
@@ -241,6 +252,17 @@
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${log4j-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>3.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okio</groupId>
+                <artifactId>okio</artifactId>
+                <version>1.14.0</version>
             </dependency>
 
         </dependencies>

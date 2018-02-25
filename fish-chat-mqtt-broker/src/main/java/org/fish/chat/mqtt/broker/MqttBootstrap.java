@@ -2,7 +2,8 @@ package org.fish.chat.mqtt.broker;
 
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 /**
  * 入口
@@ -11,13 +12,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author adre
  */
+@EnableAutoConfiguration
 public class MqttBootstrap {
 
     private static volatile boolean running = true;
-
-    private static final String[] CONFIG_FILES = new String[] { "classpath*:spring/*.xml" };
-
-    private static ClassPathXmlApplicationContext context = null;
 
     /**
      * @param args
@@ -25,18 +23,17 @@ public class MqttBootstrap {
     public static void main(String[] args) {
         final long start = System.currentTimeMillis();
 
-        context = new ClassPathXmlApplicationContext(CONFIG_FILES);
-        MqttServer mqttServer = context.getBean(MqttServer.class);
-        mqttServer.start();
+        // 启动spring boot服务
+        SpringApplication.run(MqttBootstrap.class, args);
+
         RequestIdUtil.setRequestId();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                context.stop();
                 LoggerManager.info(" App [MqttBootstrap] stopped!");
             } catch (Throwable t) {
                 LoggerManager.error(t.getMessage(), t);
             } finally {
-                LoggerManager.info("shutdown [ MqttBootstrap] sucess, running time:"
+                LoggerManager.info("shutdown [ MqttBootstrap] success, running time:"
                         + ((System.currentTimeMillis() - start) / 60000) + " m");
             }
             synchronized (MqttBootstrap.class) {
