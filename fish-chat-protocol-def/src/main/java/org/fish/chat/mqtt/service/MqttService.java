@@ -24,10 +24,10 @@ public interface MqttService {
      * pubRel
      * @param userId
      * @param cid
-     * @param mqttPubRel
+     * @param pubRel
      * @return
      */
-    boolean pubRel(long userId, long cid, MqttPubRel mqttPubRel);
+    boolean pubRel(long userId, long cid, MqttPubRel pubRel);
 
     /**
      * publish close

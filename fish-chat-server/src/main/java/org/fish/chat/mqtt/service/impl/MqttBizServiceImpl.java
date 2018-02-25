@@ -53,7 +53,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
     @Autowired
     private MessageService messageService;
     @Autowired
-    private MqttService mqttService;
+    private MqttClient mqttClient;
 
     private JsonFormat pbJsonFormat;
 
@@ -126,7 +126,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         try {
             UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
             if (userSession == null) {
-                mqttService.close(userId, cid);
+                mqttClient.close(userId, cid);
             } else {
                 final ChatProtocol.FishChatProtocol protocol = ChatProtocol.FishChatProtocol.parseFrom(mqttPublish.getPayload());
 
@@ -218,7 +218,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         if (userSession != null) {
             userSessionService.heartBeat(userId, UserSession.USER_SESSION_TYPE_CLIENT);
         } else {
-            mqttService.close(userId, cid);
+            mqttClient.close(userId, cid);
         }
     }
 
@@ -235,7 +235,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
             });
             return true;
         } else {
-            mqttService.close(userId, cid);
+            mqttClient.close(userId, cid);
         }
 
         return false;
@@ -253,7 +253,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
                 }
             });
         } else {
-            mqttService.close(userId, cid);
+            mqttClient.close(userId, cid);
         }
 
         return true;
@@ -277,7 +277,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
             });
             return true;
         } else {
-            mqttService.close(userId, cid);
+            mqttClient.close(userId, cid);
         }
         return false;
     }
@@ -302,6 +302,6 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         Assert.notNull(userSessionService, "userSessionService must not null!");
         Assert.notNull(userChatService, "userChatService must not null!");
         Assert.notNull(messageAckCallback, "messageAckCallback must not null!");
-        Assert.notNull(mqttService, "mqttService must not null!");
+        Assert.notNull(mqttClient, "mqttClient must not null!");
     }
 }

@@ -3,6 +3,7 @@ package org.fish.chat.mqtt.service.impl;
 import com.google.common.cache.*;
 import org.fish.chat.chat.ChatProtocol;
 import org.fish.chat.common.log.LoggerManager;
+import org.fish.chat.common.utils.OkHttpClientUtil;
 import org.fish.chat.common.utils.RequestIdUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.fish.chat.chat.callback.MessageAckCallback;
@@ -45,6 +46,8 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
     private MessageFinishCallback messageFinishCallback;
     @Autowired
     private QosService qosService;
+    @Autowired
+    private MqttClient mqttClient;
 
     private final Cache<Long, MqttPersistableWireMessage> cache = CacheBuilder.newBuilder()
             .expireAfterWrite(EXPIRE_TIME, TimeUnit.SECONDS).removalListener(this).build();
@@ -68,7 +71,7 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
             }
         } else {
             LoggerManager.info("<==qos = 0 ,  immediately send");
-            mqttService.publish(userId, cid, publish);
+            mqttClient.publish(userId, cid, publish);
             messageFinish(userId, publish);
         }
 
@@ -207,10 +210,10 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
             return;
         }
         if (message instanceof MqttPublish) {
-            mqttService.publish(userSession.getUserId(), userSession.getCid(),
+            mqttClient.publish(userSession.getUserId(), userSession.getCid(),
                     (MqttPublish) message);
         } else {
-            mqttService.pubRel(userSession.getUserId(), userSession.getCid(), (MqttPubRel) message);
+            mqttClient.pubRel(userSession.getUserId(), userSession.getCid(), (MqttPubRel) message);
         }
 
     }
@@ -246,12 +249,12 @@ public class MqttServiceQosProxy implements MqttService, MessageAckCallback, Ini
     @Override
     public boolean publishAndClose(long userId, long cid, MqttPublish publish) {
         publish.getMessage().setQos(0);
-        return mqttService.publishAndClose(userId, cid, publish);
+        return mqttClient.publishAndClose(userId, cid, publish);
     }
 
     @Override
     public boolean close(long userId, long cid) {
-        return mqttService.close(userId, cid);
+        return mqttClient.close(userId, cid);
     }
 
 }
