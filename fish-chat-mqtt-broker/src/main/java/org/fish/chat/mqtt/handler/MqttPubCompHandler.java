@@ -18,7 +18,7 @@ public class MqttPubCompHandler extends AbstractMqttHandler<MqttPubComp> {
     public void channelRead(ChannelHandlerContext ctx, MqttPubComp msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
         if (channelSession != null) {
-            mqttBizService.pubComp(channelSession.getUserId(), channelSession.getCid(), msg);
+            chatFeignClient.pubComp(channelSession.getUserId(), channelSession.getCid(), msg);
         } else {
             ctx.close();
         }

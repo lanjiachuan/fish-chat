@@ -25,9 +25,9 @@ public interface MqttFeignClient extends MqttService {
      */
     @RequestMapping("publish")
     @Override
-    boolean publish(@RequestParam long userId,
-                    @RequestParam long cid,
-                    @RequestParam MqttPublish publish);
+    boolean publish(@RequestParam(name = "userId") long userId,
+                    @RequestParam(name = "cid") long cid,
+                    @RequestParam(name = "publish") MqttPublish publish);
 
     /**
      * pubRel
@@ -38,9 +38,9 @@ public interface MqttFeignClient extends MqttService {
      */
     @RequestMapping("pubRel")
     @Override
-    boolean pubRel(@RequestParam long userId,
-                   @RequestParam long cid,
-                   @RequestParam MqttPubRel pubRel);
+    boolean pubRel(@RequestParam(name = "userId") long userId,
+                   @RequestParam(name = "cid") long cid,
+                   @RequestParam(name = "pubRel") MqttPubRel pubRel);
 
     /**
      * publish close
@@ -51,9 +51,9 @@ public interface MqttFeignClient extends MqttService {
      */
     @RequestMapping("publishAndClose")
     @Override
-    boolean publishAndClose(@RequestParam long userId,
-                            @RequestParam long cid,
-                            @RequestParam MqttPublish publish);
+    boolean publishAndClose(@RequestParam(name = "userId") long userId,
+                            @RequestParam(name = "cid") long cid,
+                            @RequestParam(name = "publish") MqttPublish publish);
 
     /**
      * close channel
@@ -63,6 +63,6 @@ public interface MqttFeignClient extends MqttService {
      */
     @RequestMapping("close")
     @Override
-    boolean close(@RequestParam long userId,
-                  @RequestParam long cid);
+    boolean close(@RequestParam(name = "userId") long userId,
+                  @RequestParam(name = "cid") long cid);
 }

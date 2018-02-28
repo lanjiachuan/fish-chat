@@ -6,17 +6,27 @@ import org.apache.commons.collections.CollectionUtils;
 import org.fish.chat.chat.model.Message;
 import org.fish.chat.chat.model.UserSession;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Comments for ChatFilterChain.java
+ * 责任链
  *
+ * @author adre
  */
+@Service
 public class ChatFilterChain implements ChatFilter, InitializingBean {
 
     private List<ChatFilter> chain;
+
+    @Autowired
+    private ChatFilter persistenceFilter;
+    @Autowired
+    private ChatFilter syncMessageFilter;
 
     @Override
     public boolean beforeDeliver(UserSession fromUserSession, Message message) {
@@ -97,11 +107,13 @@ public class ChatFilterChain implements ChatFilter, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(chain, "filter chain must not null!");
-    }
-
-    public void setChain(List<ChatFilter> chain) {
-        this.chain = chain;
+        chain = new ArrayList<>();
+        if (persistenceFilter != null) {
+            chain.add(persistenceFilter);
+        }
+        if (syncMessageFilter != null) {
+            chain.add(syncMessageFilter);
+        }
     }
 
 }

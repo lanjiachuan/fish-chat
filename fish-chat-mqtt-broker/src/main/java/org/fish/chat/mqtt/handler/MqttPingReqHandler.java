@@ -21,7 +21,7 @@ public class MqttPingReqHandler extends AbstractMqttHandler<MqttPingReq> {
             ctx.close();
         } else {
             LoggerManager.debug(channelSession + " ping");
-            mqttBizService.ping(channelSession.getUserId(), channelSession.getCid());
+            chatFeignClient.ping(channelSession.getUserId(), channelSession.getCid());
             ctx.writeAndFlush(new MqttPingResp());
         }
     }

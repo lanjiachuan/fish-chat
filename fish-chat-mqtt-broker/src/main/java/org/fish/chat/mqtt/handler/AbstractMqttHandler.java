@@ -2,6 +2,7 @@ package org.fish.chat.mqtt.handler;
 
 
 import io.netty.channel.ChannelHandlerContext;
+import org.fish.chat.mqtt.feign.ChatFeignClient;
 import org.fish.chat.mqtt.service.MqttBizService;
 import org.fish.chat.mqtt.session.manager.ChannelSessionManager;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,7 +19,7 @@ public abstract class AbstractMqttHandler<T> implements InitializingBean {
     @Autowired
     protected ChannelSessionManager channelSessionManager;
     @Autowired
-    protected MqttBizService mqttBizService;
+    protected ChatFeignClient chatFeignClient;
 
     /**
      * channel read
@@ -31,6 +32,6 @@ public abstract class AbstractMqttHandler<T> implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(channelSessionManager, "channelSessionManager must not null!");
-        Assert.notNull(mqttBizService, "mqttBizService must not null!");
+        Assert.notNull(chatFeignClient, "chatFeignClient must not null!");
     }
 }

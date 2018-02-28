@@ -1,9 +1,11 @@
-package org.fish.chat.mqtt.broker;
+package org.fish.chat.mqtt;
 
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 入口
@@ -13,7 +15,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
  * @author adre
  */
 @EnableAutoConfiguration
-public class MqttBootstrap {
+@ComponentScan
+@EnableFeignClients
+public class MqttApplication {
 
     private static volatile boolean running = true;
 
@@ -24,36 +28,36 @@ public class MqttBootstrap {
         final long start = System.currentTimeMillis();
 
         // 启动spring boot服务
-        SpringApplication.run(MqttBootstrap.class, args);
+        SpringApplication.run(MqttApplication.class, args);
 
         RequestIdUtil.setRequestId();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                LoggerManager.info(" App [MqttBootstrap] stopped!");
+                LoggerManager.info(" App [MqttApplication] stopped!");
             } catch (Throwable t) {
                 LoggerManager.error(t.getMessage(), t);
             } finally {
-                LoggerManager.info("shutdown [ MqttBootstrap] success, running time:"
+                LoggerManager.info("shutdown [ MqttApplication] success, running time:"
                         + ((System.currentTimeMillis() - start) / 60000) + " m");
             }
-            synchronized (MqttBootstrap.class) {
+            synchronized (MqttApplication.class) {
                 running = false;
-                MqttBootstrap.class.notify();
+                MqttApplication.class.notify();
             }
         }));
 
-        LoggerManager.info("start up [MqttBootstrap] sucess, time used:"
+        LoggerManager.info("start up [MqttApplication] sucess, time used:"
                 + (System.currentTimeMillis() - start) + " ms");
 
-        synchronized (MqttBootstrap.class) {
+        synchronized (MqttApplication.class) {
             while (running) {
                 try {
-                    MqttBootstrap.class.wait();
+                    MqttApplication.class.wait();
                 } catch (Throwable e) {}
             }
         }
 
-        LoggerManager.info("shutdown[MqttBootstrap] success!");
+        LoggerManager.info("shutdown[MqttApplication] success!");
     }
 
 }

@@ -6,8 +6,9 @@ import org.fish.chat.chat.model.Message;
 import org.fish.chat.chat.model.UserSession;
 
 /**
- * Comments for ChatFilterAdapter.java
+ * 适配器
  *
+ * @author adre
  */
 public class ChatFilterAdapter implements ChatFilter {
 

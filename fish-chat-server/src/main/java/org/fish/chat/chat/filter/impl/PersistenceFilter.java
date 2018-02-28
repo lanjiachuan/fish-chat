@@ -9,8 +9,9 @@ import org.springframework.util.Assert;
 
 
 /**
- * Comments for PersistenceFilter.java
+ * 持久化
  *
+ * @author adre
  */
 public class PersistenceFilter extends ChatFilterAdapter implements InitializingBean {
 

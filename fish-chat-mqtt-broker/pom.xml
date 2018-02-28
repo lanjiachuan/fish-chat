@@ -50,6 +50,11 @@
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-all</artifactId>
         </dependency>
     </dependencies>
@@ -70,8 +75,6 @@
                     <exclude>.svn</exclude>
                 </excludes>
             </resource>
-            <!-- <resource> <directory>src/main/resources</directory> <includes> <include>**/*</include>
-                </includes> <excludes> <exclude>.svn</exclude> </excludes> </resource> -->
         </resources>
         <plugins>
             <plugin>

@@ -6,15 +6,21 @@ import org.fish.chat.chat.model.UserSession;
 import org.fish.chat.chat.service.UserChatService;
 import org.fish.chat.chat.service.UserSessionService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
- * Comments for SyncMessageFilter.java
+ * 同步消息
  *
+ * @author adre
  */
+@Component
 public class SyncMessageFilter extends ChatFilterAdapter implements InitializingBean {
 
+    @Autowired
     private UserSessionService userSessionService;
+    @Autowired
     private UserChatService userChatService;
 
     @Override
@@ -46,14 +52,6 @@ public class SyncMessageFilter extends ChatFilterAdapter implements Initializing
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(userChatService, "userChatService must not null!");
         Assert.notNull(userSessionService, "userSessionService must not null!");
-    }
-
-    public void setUserChatService(UserChatService userChatService) {
-        this.userChatService = userChatService;
-    }
-
-    public void setUserSessionService(UserSessionService userSessionService) {
-        this.userSessionService = userSessionService;
     }
 
 }

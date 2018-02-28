@@ -19,7 +19,7 @@ public class MqttPubRecHandler extends AbstractMqttHandler<MqttPubRec> {
     public void channelRead(ChannelHandlerContext ctx, MqttPubRec msg) throws Exception {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
         if (channelSession != null) {
-            mqttBizService.pubRec(channelSession.getUserId(), channelSession.getCid(), msg);
+            chatFeignClient.pubRec(channelSession.getUserId(), channelSession.getCid(), msg);
         } else {
             LoggerManager.error("channelSession was null, but receive " + msg);
             ctx.close();

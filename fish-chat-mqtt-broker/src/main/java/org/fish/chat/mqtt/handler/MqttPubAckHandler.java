@@ -20,7 +20,7 @@ public class MqttPubAckHandler extends AbstractMqttHandler<MqttPubAck> {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
         if (channelSession != null) {
             MqttPubAck mqttPuback = msg;
-            mqttBizService.pubAck(channelSession.getUserId(), channelSession.getCid(), mqttPuback);
+            chatFeignClient.pubAck(channelSession.getUserId(), channelSession.getCid(), mqttPuback);
         } else {
             LoggerManager.error("channelSession was null, but receive " + msg);
             ctx.close();

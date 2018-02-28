@@ -42,7 +42,7 @@ public class MqttPublishHandler extends AbstractMqttHandler<MqttPublish> {
                 break;
         }
         if (channelSession != null) {
-            boolean result = mqttBizService.publish(channelSession.getUserId(),
+            boolean result = chatFeignClient.publish(channelSession.getUserId(),
                     channelSession.getCid(), mqttPublish);
             if (!result) {
                 ctx.close();

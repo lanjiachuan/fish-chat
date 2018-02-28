@@ -19,7 +19,7 @@ public class MqttUnsubscribeHandler extends AbstractMqttHandler<MqttUnsubscribe>
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
         if (channelSession != null) {
             ctx.writeAndFlush(new MqttUnsubAck(msg));
-            mqttBizService.unsubscribe(channelSession.getUserId(), channelSession.getCid(), msg);
+            chatFeignClient.unsubscribe(channelSession.getUserId(), channelSession.getCid(), msg);
         } else {
             ctx.close();
         }

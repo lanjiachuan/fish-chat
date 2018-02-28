@@ -18,7 +18,7 @@ public class MqttDisconnectHandler extends AbstractMqttHandler<MqttDisconnect> {
         MqttDisconnect mqttDisconnect = msg;
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
         if (channelSession != null) {
-            mqttBizService.disconnect(channelSession.getUserId(), channelSession.getCid(),
+            chatFeignClient.disconnect(channelSession.getUserId(), channelSession.getCid(),
                     mqttDisconnect);
             channelSessionManager.destroyChannelSession(channelSession);
             LoggerManager.info("destroy channelSession successful,uid="

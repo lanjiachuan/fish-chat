@@ -2,29 +2,29 @@ package org.fish.chat.chat.server;
 
 import org.fish.chat.common.log.LoggerManager;
 import org.fish.chat.common.utils.RequestIdUtil;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Comments for ChatBootstrap.java
+ * 聊天业务服务入口
  *
+ * @author adre
  */
+@EnableAutoConfiguration
 public class ChatServerBootstrap {
 
     private static volatile boolean running = true;
 
-    private static final String[] CONFIG_FILES = new String[] { "applicationContext*.xml", "classpath*:spring/*.xml" };
-
-    private static ClassPathXmlApplicationContext context = null;
-
     public static void main(String[] args) {
         final long start = System.currentTimeMillis();
 
-        context = new ClassPathXmlApplicationContext(CONFIG_FILES);
-        context.start();
+        // 启动spring boot服务
+        SpringApplication.run(ChatServerBootstrap.class, args);
+
         RequestIdUtil.setRequestId();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                context.stop();
                 LoggerManager.info(" App [ChatServerBootstrap] stopped!");
             } catch (Throwable t) {
                 LoggerManager.error(t.getMessage(), t);

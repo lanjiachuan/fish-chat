@@ -67,7 +67,7 @@ public class MqttConnectHandler extends AbstractMqttHandler<MqttConnect> {
         LoggerManager.info("==>connect params--mqttClientId:" + mqttClientId + " uname:" + userName
                 + " password:" + password + " cleanSession:" + cleanSession + ",cid=" + channelSession.getCid());
         
-        MqttConnack mqttConnack = mqttBizService.connect(channelSession.getUserId(),
+        MqttConnack mqttConnack = chatFeignClient.connect(channelSession.getUserId(),
                 channelSession.getCid(), mqttConnect, ctx.channel().remoteAddress().toString(),
                 UserSession.USER_TYPE_DEFAULT);
         if (mqttConnack == null) {

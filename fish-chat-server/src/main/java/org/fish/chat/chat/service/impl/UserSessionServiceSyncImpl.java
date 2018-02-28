@@ -28,7 +28,7 @@ import java.util.concurrent.*;
  *
  * @author adre
  */
-@Service
+@Service(value = "userSessionService")
 public class UserSessionServiceSyncImpl implements UserSessionService, UserSessionListener, InitializingBean
         , RemovalListener<Long, UserSession>, OnlineStatusService {
 

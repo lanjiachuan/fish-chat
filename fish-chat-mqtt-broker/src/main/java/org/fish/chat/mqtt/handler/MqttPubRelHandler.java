@@ -27,7 +27,7 @@ public class MqttPubRelHandler extends AbstractMqttHandler<MqttPubRel> {
         ctx.writeAndFlush(mqttPubComp);
         
         if (channelSession != null) {
-            mqttBizService.pubRel(channelSession.getUserId(), channelSession.getCid(), msg);
+            chatFeignClient.pubRel(channelSession.getUserId(), channelSession.getCid(), msg);
         } else {
             LoggerManager.error("channelSession was null, but receive " + msg);
             ctx.close();

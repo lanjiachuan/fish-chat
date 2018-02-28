@@ -19,7 +19,7 @@ public class MqttSubscribeHandler extends AbstractMqttHandler<MqttSubscribe> {
         ChannelSession channelSession = channelSessionManager.getChannelSession(ctx.channel());
         if (channelSession != null) {
             ctx.writeAndFlush(new MqttSuback(msg));
-            mqttBizService.subscribe(channelSession.getUserId(), channelSession.getCid(), msg);
+            chatFeignClient.subscribe(channelSession.getUserId(), channelSession.getCid(), msg);
         } else {
             ctx.close();
         }

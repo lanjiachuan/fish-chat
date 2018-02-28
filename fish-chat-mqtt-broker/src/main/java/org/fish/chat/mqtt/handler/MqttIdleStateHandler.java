@@ -21,17 +21,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class MqttIdleStateHandler extends IdleStateHandler {
 
+    @Autowired
     private ChannelSessionManager channelSessionManager;
 
-    /**
-     * @param readerIdleTimeSeconds
-     * @param writerIdleTimeSeconds
-     * @param allIdleTimeSeconds
-     */
-    public MqttIdleStateHandler(int readerIdleTimeSeconds, int writerIdleTimeSeconds,
-            int allIdleTimeSeconds, ChannelSessionManager channelSessionManager) {
+    private static final int readerIdleTimeSeconds = 180;
+    private static final int writerIdleTimeSeconds = 200;
+    private static final int allIdleTimeSeconds = 200;
+
+
+    public MqttIdleStateHandler() {
         super(readerIdleTimeSeconds, writerIdleTimeSeconds, allIdleTimeSeconds);
-        this.channelSessionManager = channelSessionManager;
     }
 
     @Override

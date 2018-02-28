@@ -34,6 +34,8 @@ public class MqttServer implements InitializingBean {
     @Autowired
     private MqttDispatcherHandler mqttDispatcherHandler;
     @Autowired
+    private MqttIdleStateHandler mqttIdleStateHandler;
+    @Autowired
     private ChannelSessionManager channelSessionManager;
 
     public boolean start() {
@@ -53,8 +55,7 @@ public class MqttServer implements InitializingBean {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) {
-                            ch.pipeline().addLast(new MqttIdleStateHandler(
-                                    180, 200, 200, channelSessionManager));
+                            ch.pipeline().addLast(mqttIdleStateHandler);
                             ch.pipeline().addLast(new MqttProtocolDecoder());
                             ch.pipeline().addLast(new MqttProtocolEncoder());
                             ch.pipeline().addLast(mqttDispatcherHandler);
@@ -73,10 +74,6 @@ public class MqttServer implements InitializingBean {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }
-    }
-
-    public MqttServer(int port) {
-        this.port = port;
     }
 
     @Override
