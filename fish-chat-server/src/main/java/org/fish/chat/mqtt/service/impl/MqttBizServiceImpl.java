@@ -20,6 +20,7 @@ import org.fish.chat.chat.service.UserSessionService;
 import org.fish.chat.chat.utils.ProtocolUtil;
 import org.fish.chat.common.constants.ChatConstant;
 import org.fish.chat.common.utils.ThreadUtils;
+import org.fish.chat.mqtt.feign.MqttFeignClient;
 import org.fish.chat.mqtt.protocol.MqttException;
 import org.fish.chat.mqtt.protocol.wire.*;
 import org.fish.chat.mqtt.service.MqttBizService;
@@ -53,7 +54,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
     @Autowired
     private MessageService messageService;
     @Autowired
-    private MqttClient mqttClient;
+    private MqttFeignClient mqttFeignClient;
 
     private JsonFormat pbJsonFormat;
 
@@ -126,7 +127,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         try {
             UserSession userSession = userSessionService.getUserSession(userId, UserSession.USER_SESSION_TYPE_CLIENT);
             if (userSession == null) {
-                mqttClient.close(userId, cid);
+                mqttFeignClient.close(userId, cid);
             } else {
                 final ChatProtocol.FishChatProtocol protocol = ChatProtocol.FishChatProtocol.parseFrom(mqttPublish.getPayload());
 
@@ -218,7 +219,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         if (userSession != null) {
             userSessionService.heartBeat(userId, UserSession.USER_SESSION_TYPE_CLIENT);
         } else {
-            mqttClient.close(userId, cid);
+            mqttFeignClient.close(userId, cid);
         }
     }
 
@@ -235,7 +236,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
             });
             return true;
         } else {
-            mqttClient.close(userId, cid);
+            mqttFeignClient.close(userId, cid);
         }
 
         return false;
@@ -253,7 +254,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
                 }
             });
         } else {
-            mqttClient.close(userId, cid);
+            mqttFeignClient.close(userId, cid);
         }
 
         return true;
@@ -277,7 +278,7 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
             });
             return true;
         } else {
-            mqttClient.close(userId, cid);
+            mqttFeignClient.close(userId, cid);
         }
         return false;
     }
@@ -302,6 +303,6 @@ public class MqttBizServiceImpl implements MqttBizService, InitializingBean {
         Assert.notNull(userSessionService, "userSessionService must not null!");
         Assert.notNull(userChatService, "userChatService must not null!");
         Assert.notNull(messageAckCallback, "messageAckCallback must not null!");
-        Assert.notNull(mqttClient, "mqttClient must not null!");
+        Assert.notNull(mqttFeignClient, "mqttFeignClient must not null!");
     }
 }

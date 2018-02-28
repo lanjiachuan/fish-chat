@@ -73,6 +73,9 @@
         <jackson-all-version>1.9.12</jackson-all-version>
 
         <log4j-version>1.2.16</log4j-version>
+
+        <!-- spring cloud -->
+        <spring-cloud-version>Finchley.M7</spring-cloud-version>
     </properties>
 
     <dependencyManagement>
@@ -263,6 +266,23 @@
                 <groupId>com.squareup.okio</groupId>
                 <artifactId>okio</artifactId>
                 <version>1.14.0</version>
+            </dependency>
+
+            <!-- cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-consul-dependencies</artifactId>
+                <version>2.0.0.M6</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
         </dependencies>
