@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.0.RC2</version>
+        <version>2.0.0.M7</version>
     </parent>
 
     <groupId>org.fish</groupId>
@@ -46,7 +46,6 @@
         <netty-all-version>4.1.20.Final</netty-all-version>
         <protobuf-version>3.5.1</protobuf-version>
         <protobuf-java-format>1.4</protobuf-java-format>
-        <org.springframework-version>5.0.4.RELEASE</org.springframework-version>
         <joda.time-version>2.9.9</joda.time-version>
         <xmemcached-version>2.0.0</xmemcached-version>
         <guava-version>23.6-jre</guava-version>
@@ -175,39 +174,6 @@
                 <version>${guava-version}</version>
             </dependency>
 
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${org.springframework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${org.springframework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${org.springframework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${org.springframework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-expression</artifactId>
-                <version>${org.springframework-version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${org.springframework-version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
@@ -277,19 +243,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-consul-dependencies</artifactId>
-                <version>2.0.0.M6</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-feign</artifactId>
-                <version>1.4.3.RELEASE</version>
-            </dependency>
 
         </dependencies>
     </dependencyManagement>
