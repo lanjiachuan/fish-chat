@@ -81,22 +81,4 @@ public class ChannelSession {
         return "[cid=" + cid + ", userId=" + userId + "]";
     }
 
-    public static void main(String[] args) {
-        int a = (1 << 28);
-        System.out.println(a);
-        sender.set(Integer.MAX_VALUE-10);
-        for (int i = 0; i < 100; i++) {
-            int id = sender.getAndIncrement();
-            if(id <=0) {
-                sender.set(1);
-                id = 1;
-            }
-            long cid = (IpUtil.getLocalInnerIp() + (1L << 32)) << 28 | id;
-            System.out.println(cid);
-            String ip = ChannelSessionUtil.getIpByChannelId(cid);
-            System.out.println(ip);
-
-        }
-
-    }
 }
